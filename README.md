@@ -1,2 +1,3 @@
 # Styleguide-Example
-Repository for example styleguide project
+
+Repository for example styleguide project.
