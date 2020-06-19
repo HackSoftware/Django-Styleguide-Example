@@ -16,3 +16,9 @@ To create Postgres database:
 ```
 sudo -u postgres createdb -O your_postgres_user_here database_name_here
 ```
+
+If you want to recreate your database, you can use the bootstrap script:
+
+```
+./scripts/bootstrap.sh your_postgres_user_here
+```
