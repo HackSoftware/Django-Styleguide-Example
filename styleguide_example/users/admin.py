@@ -13,7 +13,6 @@ class BaseUserAdmin(admin.ModelAdmin):
 
     list_filter = ('is_active', 'is_admin', 'is_superuser')
 
-
     fieldsets = (
         (None, {'fields': ('email',)}),
     )
@@ -26,4 +25,3 @@ class BaseUserAdmin(admin.ModelAdmin):
             user_create(**form.cleaned_data)
         except ValidationError as exc:
             self.message_user(request, str(exc), messages.ERROR)
-

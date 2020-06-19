@@ -14,7 +14,7 @@ class UserCreateTests(TestCase):
         self.assertFalse(user.has_usable_password())
 
     def test_user_with_capitalized_email_cannot_be_created(self):
-        user = user_create(
+        user_create(
             email='random_user@hacksoft.io'
         )
 
