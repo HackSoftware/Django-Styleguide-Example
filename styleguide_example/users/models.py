@@ -17,7 +17,7 @@ class BaseUserManager(BUM):
             raise ValueError('Users must have an email address')
 
         user = self.model(
-            email=self.normalize_email(email),
+            email=self.normalize_email(email.lower()),
             is_active=is_active,
             is_admin=is_admin
         )
@@ -27,6 +27,7 @@ class BaseUserManager(BUM):
         else:
             user.set_unusable_password()
 
+        user.full_clean()
         user.save(using=self._db)
 
         return user
