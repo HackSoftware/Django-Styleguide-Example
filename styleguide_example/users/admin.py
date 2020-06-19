@@ -7,7 +7,7 @@ from styleguide_example.users.services import user_create
 
 @admin.register(BaseUser)
 class BaseUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'is_admin', 'is_superuser', 'is_active')
+    list_display = ('email', 'is_admin', 'is_superuser', 'is_active', 'created_at', 'updated_at')
 
     search_fields = ('email',)
 
