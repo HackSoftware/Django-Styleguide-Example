@@ -36,6 +36,10 @@ LOCAL_APPS = [
     'styleguide_example.users.apps.UsersConfig'
 ]
 
+THIRD_PARTY_APPS = [
+    'rest_framework'
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    *LOCAL_APPS
+    *THIRD_PARTY_APPS,
+    *LOCAL_APPS,
 ]
 
 MIDDLEWARE = [
