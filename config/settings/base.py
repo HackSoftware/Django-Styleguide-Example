@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+from datetime import timedelta
+
 from .env_reader import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -33,7 +35,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 LOCAL_APPS = [
-    'styleguide_example.users.apps.UsersConfig'
+    'styleguide_example.api.apps.ApiConfig',
+    'styleguide_example.users.apps.UsersConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -142,3 +145,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=31),
+    # TODO: Open issue for having a callable with a user here
+    'SIGNING_KEY': env('DJANGO_JWT_SIGNING_KEY', default=SECRET_KEY)
+    # TODO: https://github.com/SimpleJWT/django-rest-framework-simplejwt/pull/157/files
+    # Add settings for http support
+}
