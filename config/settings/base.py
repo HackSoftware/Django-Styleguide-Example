@@ -35,7 +35,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 LOCAL_APPS = [
-    'styleguide_example.users.apps.UsersConfig'
+    'styleguide_example.api.apps.ApiConfig',
+    'styleguide_example.users.apps.UsersConfig',
 ]
 
 THIRD_PARTY_APPS = [
