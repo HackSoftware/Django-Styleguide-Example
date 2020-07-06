@@ -6,3 +6,4 @@ djangorestframework-simplejwt==4.4.0
 
 celery==4.4.6
 django-celery-results==1.2.1
+django-celery-beat==2.0.0
