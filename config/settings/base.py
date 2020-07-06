@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 LOCAL_APPS = [
+    'styleguide_example.tasks.apps.TasksConfig',
     'styleguide_example.api.apps.ApiConfig',
     'styleguide_example.users.apps.UsersConfig',
 ]
@@ -155,3 +156,5 @@ SIMPLE_JWT = {
     # TODO: https://github.com/SimpleJWT/django-rest-framework-simplejwt/pull/157/files
     # Add settings for http support
 }
+
+from .celery import *  # noqa
