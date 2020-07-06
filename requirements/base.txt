@@ -3,3 +3,7 @@ django-environ==0.4.5
 psycopg2==2.8.5
 djangorestframework==3.11.0
 djangorestframework-simplejwt==4.4.0
+
+celery==4.4.6
+django-celery-results==1.2.1
+django-celery-beat==2.0.0

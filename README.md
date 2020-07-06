@@ -23,3 +23,15 @@ If you want to recreate your database, you can use the bootstrap script:
 ```
 ./scripts/bootstrap.sh your_postgres_user_here
 ```
+
+To start Celery:
+
+```
+celery --without-gossip --without-mingle --without-heartbeat worker -A styleguide_example.tasks -l info
+```
+
+To start Celery Beat:
+
+```
+celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+```
