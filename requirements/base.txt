@@ -5,3 +5,4 @@ djangorestframework==3.11.0
 djangorestframework-simplejwt==4.4.0
 
 celery==4.4.6
+django-celery-results==1.2.1
