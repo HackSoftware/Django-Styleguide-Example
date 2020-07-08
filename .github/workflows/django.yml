@@ -32,7 +32,7 @@ jobs:
       run: py.test
   deploy_to_heroku:
     runs-on: ubuntu-latest
-    needs: tests
+    needs: build
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v1
