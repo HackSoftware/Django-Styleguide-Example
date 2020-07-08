@@ -35,3 +35,7 @@ To start Celery Beat:
 ```
 celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
 ```
+
+## Heroku
+
+The project is ready to be deployed on Heroku. There's a current deployment that can be found - <https://hacksoft-styleguide-example.herokuapp.com/>
