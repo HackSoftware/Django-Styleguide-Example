@@ -69,7 +69,7 @@ class ErrorFormatter:
                 serializer_errors=self.exception.get_full_details()
             )
         else:
-            formatted_errors = self._get_response_json_from_error_message(message=str(self.exception))
+            formatted_errors = self._get_response_json_from_error_message(message=get_error_message(self.exception))
 
         return formatted_errors
 
