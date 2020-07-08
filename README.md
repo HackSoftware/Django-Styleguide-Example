@@ -9,6 +9,8 @@ Few important things:
 * Linux / Ubuntu is our primary OS and things are tested for that. It will mostly not work on Mac & certainly not work on Windows.
 * It uses Postgres as primary database.
 * It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
+* It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
+* It can be easily deployed to Heroku.
 
 ## Helpful commands
 
