@@ -2,6 +2,23 @@ from rest_framework.views import exception_handler
 from rest_framework.settings import api_settings
 from rest_framework import exceptions
 
+from styleguide_example.common.utils import get_first_matching_attr
+
+
+def get_error_message(exc):
+    if hasattr(exc, 'message_dict'):
+        return exc.message_dict
+
+    error_msg = get_first_matching_attr(exc, 'message', 'messages')
+
+    if isinstance(error_msg, list):
+        error_msg = ', '.join(error_msg)
+
+    if error_msg is None:
+        error_msg = str(exc)
+
+    return error_msg
+
 
 def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
