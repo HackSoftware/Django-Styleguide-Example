@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from styleguide_example.api.errors import ErrorFormatter
+from styleguide_example.common.apis import TopLevelIntegerSerializer, TopLevelCharSerializer
 
 from django.core.exceptions import ValidationError
 
@@ -44,6 +45,46 @@ class ErrorFormatterTests(TestCase):
                 'message': {
                     'foo': ['bar', 'foobar'],
                     'Some error': ['error text']
+                },
+                'code': 'error'
+            }]
+        }
+
+        self.assertEqual(actual, expected)
+
+    def test_error_formatter_with_django_validation_error_with_message_dict_field(self):
+        actual = ErrorFormatter(ValidationError({
+            'foo': ['bar', 'foobar'],
+            'Some error': 'error text',
+            'field': 'some message'
+        }))()
+
+        expected = {
+            'errors': [{
+                'message': {
+                    'foo': ['bar', 'foobar'],
+                    'Some error': ['error text'],
+                    'field': ['some message']
+                },
+                'code': 'error'
+            }]
+        }
+
+        self.assertEqual(actual, expected)
+
+    def test_error_formatter_with_django_validation_error_with_message_dict_field_list(self):
+        actual = ErrorFormatter(ValidationError({
+            'foo': ['bar', 'foobar'],
+            'Some error': 'error text',
+            'field': ['some message 1', 'some message 2']
+        }))()
+
+        expected = {
+            'errors': [{
+                'message': {
+                    'foo': ['bar', 'foobar'],
+                    'Some error': ['error text'],
+                    'field': ['some message 1', 'some message 2']
                 },
                 'code': 'error'
             }]
@@ -118,3 +159,73 @@ class ErrorFormatterTests(TestCase):
         }
 
         self.assertEqual(actual, expected)
+
+    # Nested errors
+
+    def test_error_formatter_with_nested_errors_int(self):
+        serializer = TopLevelIntegerSerializer(
+            data = {
+                'foo': {
+                    'bar': 'xyz'
+                },
+                'array': [
+                    1, 2, {}
+                ]
+            }
+        )
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as exc:
+            actual = ErrorFormatter(exc)()
+
+            expected = {
+                "errors": [
+                    {
+                        "message": "A valid integer is required.",
+                        "code": "invalid",
+                        "field": "foo.bar"
+                    },
+                    {
+                        "message": "A valid integer is required.",
+                        "code": "invalid",
+                        "field": "array.2"
+                    }
+                ]
+            }
+
+            self.assertEqual(actual, expected)
+
+    def test_error_formatter_with_nested_errors_string(self):
+        serializer = TopLevelCharSerializer(
+            data = {
+                'foo': {
+                    'bar': {}
+                },
+                'array': [
+                    'foo', {}, 'bar'
+                ]
+            }
+        )
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as exc:
+            actual = ErrorFormatter(exc)()
+
+            expected = {
+                "errors": [
+                    {
+                        "message": "Not a valid string.",
+                        "code": "invalid",
+                        "field": "foo.bar"
+                    },
+                    {
+                        "message": "Not a valid string.",
+                        "code": "invalid",
+                        "field": "array.1"
+                    }
+                ]
+            }
+
+            self.assertEqual(actual, expected)

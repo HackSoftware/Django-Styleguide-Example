@@ -11,14 +11,24 @@ def trigger_error():
     raise ValidationError('Error from service')
 
 
-class NestedSerializer(serializers.Serializer):
+class NestedIntegerSerializer(serializers.Serializer):
     bar = serializers.IntegerField()
 
 
-class TopLevelSerializer(serializers.Serializer):
-    foo = NestedSerializer()
+class TopLevelIntegerSerializer(serializers.Serializer):
+    foo = NestedIntegerSerializer()
 
     array = serializers.ListField(child=serializers.IntegerField())
+
+
+class NestedCharSerializer(serializers.Serializer):
+    bar = serializers.CharField()
+
+
+class TopLevelCharSerializer(serializers.Serializer):
+    foo = NestedCharSerializer()
+
+    array = serializers.ListField(child=serializers.CharField())
 
 
 class TriggerErrorApi(ApiErrorsMixin, APIView):
@@ -28,13 +38,25 @@ class TriggerErrorApi(ApiErrorsMixin, APIView):
     Instead of 500 Server Error
     """
     def get(self, request):
-        serializer = TopLevelSerializer(
+        # serializer = TopLevelIntegerSerializer(
+        #     data={
+        #         'foo': {
+        #             'bar': 'xyz'
+        #         },
+        #         'array': [
+        #             1, 2, {}
+        #         ]
+        #     }
+        # )
+        # serializer.is_valid(raise_exception=True)
+
+        serializer = TopLevelCharSerializer(
             data={
                 'foo': {
-                    'bar': 'xyz'
+                    'bar': {}
                 },
                 'array': [
-                    1, 2, {}
+                    'foo', 'bar', {}
                 ]
             }
         )
@@ -42,4 +64,5 @@ class TriggerErrorApi(ApiErrorsMixin, APIView):
 
         # trigger_error()
 
+        # return Response(serializer.validated_data)
         return Response(serializer.validated_data)
