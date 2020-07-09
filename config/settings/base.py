@@ -163,4 +163,8 @@ SIMPLE_JWT = {
     # Add settings for http support
 }
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'styleguide_example.api.errors.custom_exception_handler',
+}
+
 from .celery import *  # noqa
