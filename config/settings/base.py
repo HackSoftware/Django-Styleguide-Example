@@ -38,6 +38,7 @@ LOCAL_APPS = [
     'styleguide_example.tasks.apps.TasksConfig',
     'styleguide_example.api.apps.ApiConfig',
     'styleguide_example.users.apps.UsersConfig',
+    'styleguide_example.user_profile.apps.UserProfileConfig'
 ]
 
 THIRD_PARTY_APPS = [
