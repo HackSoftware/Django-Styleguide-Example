@@ -9,3 +9,8 @@ def user_get_login_data(*, user: BaseUser):
         'is_admin': user.is_admin,
         'is_superuser': user.is_superuser,
     }
+
+
+# TODO: Add queryset return type
+def user_list():
+    return BaseUser.objects.all()
