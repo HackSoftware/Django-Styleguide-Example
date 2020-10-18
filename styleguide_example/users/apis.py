@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import serializers
 
 from styleguide_example.api.mixins import ApiErrorsMixin
+from styleguide_example.api.pagination import get_paginated_response, LimitOffsetPagination
 
 from styleguide_example.users.selectors import user_list
 from styleguide_example.users.models import BaseUser
@@ -10,9 +10,13 @@ from styleguide_example.users.models import BaseUser
 
 # TODO: When JWT is resolved, add authenticated version
 class UserListApi(ApiErrorsMixin, APIView):
+    class Pagination(LimitOffsetPagination):
+        default_limit = 1
+
     class FilterSerializer(serializers.Serializer):
         id = serializers.IntegerField(required=False)
-        is_admin = serializers.BooleanField(required=False)
+        # Important: If we use BooleanField, it will default to False
+        is_admin = serializers.NullBooleanField(required=False)
         email = serializers.EmailField(required=False)
 
     class OutputSerializer(serializers.ModelSerializer):
@@ -31,6 +35,10 @@ class UserListApi(ApiErrorsMixin, APIView):
 
         users = user_list(filters=filters_serializer.validated_data)
 
-        data = self.OutputSerializer(users, many=True).data
-
-        return Response(data)
+        return get_paginated_response(
+            pagination_class=self.Pagination,
+            serializer_class=self.OutputSerializer,
+            queryset=users,
+            request=request,
+            view=self
+        )
