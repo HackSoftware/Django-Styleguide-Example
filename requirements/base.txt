@@ -9,3 +9,5 @@ django-celery-results==1.2.1
 django-celery-beat==2.0.0
 
 whitenoise==5.1.0
+
+django-filter==2.4.0

@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_celery_results',
     'django_celery_beat',
+    'django_filters'
 ]
 
 INSTALLED_APPS = [
@@ -165,6 +166,9 @@ SIMPLE_JWT = {
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'styleguide_example.api.errors.custom_exception_handler',
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 
 from .celery import *  # noqa
