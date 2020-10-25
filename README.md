@@ -11,6 +11,38 @@ Few important things:
 * It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
 * It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
 * It can be easily deployed to Heroku.
+* It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
+
+## Example List API
+
+List API is located at:
+
+<http://localhost:8000/api/users/>
+
+The API can be filtered:
+
+* <http://localhost:8000/api/users/?is_admin=True>
+* <http://localhost:8000/api/users/?id=1>
+* <http://localhost:8000/api/users/?email=radorado@hacksoft.io>
+
+Example data structure:
+
+```
+{
+    "limit": 1,
+    "offset": 0,
+    "count": 4,
+    "next": "http://localhost:8000/api/users/?limit=1&offset=1",
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "email": "radorado@hacksoft.io",
+            "is_admin": false
+        }
+    ]
+}
+```
 
 ## Helpful commands
 
