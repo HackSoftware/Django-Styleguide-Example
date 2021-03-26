@@ -2,13 +2,13 @@ from django.core.exceptions import ValidationError
 
 from rest_framework import exceptions as rest_exceptions
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
 
 from styleguide_example.api.errors import get_error_message
 
 
 class ApiAuthMixin:
-    authentication_classes = (JWTAuthentication, )
+    authentication_classes = (SessionAuthentication, )
     permission_classes = (IsAuthenticated, )
 
 
