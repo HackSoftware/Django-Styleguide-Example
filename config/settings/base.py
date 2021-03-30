@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from datetime import timedelta
-
 from .env_reader import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -29,7 +27,7 @@ SECRET_KEY = '=ug_ucl@yi6^mrcjyz%(u0%&g2adt#bz3@yos%#@*t#t!ypx=a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,7 +42,8 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'django_celery_results',
     'django_celery_beat',
-    'django_filters'
+    'django_filters',
+    'corsheaders'
 ]
 
 INSTALLED_APPS = [
@@ -60,6 +59,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -153,22 +153,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=31),
-    # TODO: Open issue for having a callable with a user here
-    'SIGNING_KEY': env('DJANGO_JWT_SIGNING_KEY', default=SECRET_KEY)
-    # TODO: https://github.com/SimpleJWT/django-rest-framework-simplejwt/pull/157/files
-    # Add settings for http support
-}
-
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'styleguide_example.api.errors.custom_exception_handler',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': []
 }
 
+from .cors import *  # noqa
+from .sessions import *  # noqa
 from .celery import *  # noqa
