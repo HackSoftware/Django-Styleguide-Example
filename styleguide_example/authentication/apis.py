@@ -35,7 +35,7 @@ class UserLoginApi(APIView):
         session_key = request.session.session_key
 
         return Response({
-            'token': session_key,
+            'session': session_key,
             'data': data
         })
 
