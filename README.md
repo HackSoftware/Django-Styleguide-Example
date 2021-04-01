@@ -107,6 +107,17 @@ Since cookies can be somewhat elusive, check the following urls:
 1. `GET` <http://localhost:8000/api/auth/me/> returns the current user information, if the request is authenticated (has the corresponding `sessionid` cookie)
 1. `GET` or `POST` <http://localhost:8000/api/auth/logout/> will remove the `sessionid` cookie, effectively logging you out.
 
+### `HTTP Only` / `SameSite`
+
+The current implementation of `/auth/login` does 2 things:
+
+1. Sets a `HTTP Only` cookie with the session id.
+1. Returns the actual session id from the JSON payload.
+
+The second thing is required, because Safari is not respecting the `SameSite = None` option for cookies.
+
+More on the issue here - <https://www.chromium.org/updates/same-site/incompatible-clients>
+
 ## Example List API
 
 You can find the `UserListApi` in [`styleguide_example/users/apis.py`](https://github.com/HackSoftware/Styleguide-Example/blob/master/styleguide_example/users/apis.py#L12)

@@ -32,8 +32,12 @@ class UserLoginApi(APIView):
         login(request, user)
 
         data = user_get_login_data(user=user)
+        session_key = request.session.session_key
 
-        return Response(data)
+        return Response({
+            'session': session_key,
+            'data': data
+        })
 
 
 class UserLogoutApi(APIView):

@@ -1,6 +1,10 @@
 from django.urls import path
 
-from .apis import UserLoginApi, UserLogoutApi, UserMeApi
+from .apis import (
+    UserLoginApi,
+    UserLogoutApi,
+    UserMeApi,
+)
 
 urlpatterns = [
     path(
@@ -17,5 +21,5 @@ urlpatterns = [
         'me/',
         UserMeApi.as_view(),
         name='me'
-    ),
+    )
 ]
