@@ -2,5 +2,5 @@
 
 pytest==5.4.3
 pytest-django==3.9.0
-flake8==3.8.3
+flake8==3.9.2
 ipdb==0.13.3
