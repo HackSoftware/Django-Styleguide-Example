@@ -168,7 +168,7 @@ If you want to recreate your database, you can use the bootstrap script:
 To start Celery:
 
 ```
-celery --without-gossip --without-mingle --without-heartbeat worker -A styleguide_example.tasks -l info
+celery -A styleguide_example.tasks worker -l info --without-gossip --without-mingle --without-heartbeat
 ```
 
 To start Celery Beat:
