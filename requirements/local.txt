@@ -1,6 +1,6 @@
 -r base.txt
 
-pytest==5.4.3
+pytest==6.2.4
 pytest-django==4.4.0
 flake8==3.9.2
 ipdb==0.13.3
