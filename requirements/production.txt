@@ -1,5 +1,5 @@
 -r base.txt
 
 whitenoise==5.1.0
-gunicorn==20.0.4
+gunicorn==20.1.0
 sentry-sdk==0.16.0
