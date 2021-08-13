@@ -14,7 +14,7 @@ from collections import Iterable
 DjangoModel = TypeVar('DjangoModel')
 
 
-class QuerySetType(Generic[DjangoModel], extra=Iterable):
+class QuerySetType(Generic[DjangoModel], Iterable):
     """
     This type represents django.db.models.QuerySet interface.
     Defined Types:

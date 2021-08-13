@@ -14,7 +14,6 @@ def user_get_login_data(*, user: BaseUser):
     }
 
 
-# TODO: Add queryset return type
 def user_list(*, filters=None) -> QuerySetType[BaseUser]:
     filters = filters or {}
 
