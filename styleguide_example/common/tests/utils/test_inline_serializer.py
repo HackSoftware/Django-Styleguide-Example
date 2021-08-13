@@ -58,3 +58,34 @@ class InlineSerializerTests(unittest.TestCase):
             }
 
             self.assertEqual(expected, result)
+
+    def test_inline_serializer_passes_kwargs(self):
+        obj = make_mock_object(
+            foo=1,
+        )
+
+        serializer = inline_serializer(many=True, fields={
+            "foo": serializers.IntegerField(),
+        })
+
+        objects = [obj]
+
+        with self.subTest("Output serialization"):
+            result = serializer.to_representation(objects)
+            expected = [{
+                "foo": 1
+            }]
+
+            self.assertEqual(expected, result)
+
+        with self.subTest("Input serialization"):
+            payload = [{
+                "foo": 1,
+            }]
+
+            result = serializer.to_internal_value(payload)
+            expected = [{
+                "foo": 1
+            }]
+
+            self.assertEqual(expected, result)
