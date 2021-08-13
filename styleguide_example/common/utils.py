@@ -4,6 +4,10 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 
+def make_mock_object(**kwargs):
+    return type("", (object, ), kwargs)
+
+
 def get_first_matching_attr(obj, *attrs, default=None):
     for attr in attrs:
         if hasattr(obj, attr):
