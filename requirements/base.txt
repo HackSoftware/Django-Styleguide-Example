@@ -1,5 +1,5 @@
 Django==3.2.6
-django-environ==0.4.5
+django-environ==0.7.0
 psycopg2==2.9.1
 djangorestframework==3.12.4
 
