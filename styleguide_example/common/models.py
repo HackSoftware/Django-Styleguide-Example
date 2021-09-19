@@ -12,6 +12,10 @@ class BaseModel(models.Model):
 
 
 class RandomModel(BaseModel):
+    """
+    This is an example model, to be used as reference in the Styleguide,
+    when discussing model validation via constraints.
+    """
     start_date = models.DateField()
     end_date = models.DateField()
 
