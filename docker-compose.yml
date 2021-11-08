@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:13.2
+    environment:
+      - POSTGRES_DB=styleguide_example_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  django:
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
+      - CELERY_BROKER_URL=redis://redis
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    restart: on-failure
+
+  celery:
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    command: celery --app=styleguide_example.tasks.celery worker --without-gossip --without-heartbeat --without-mingle --loglevel=info
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
+      - CELERY_BROKER_URL=redis://redis
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    restart: on-failure
+
+  beats:
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    command: celery --app=styleguide_example.tasks.celery beat --loglevel=info
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
+      - CELERY_BROKER_URL=redis://redis
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    restart: on-failure
+
+  redis:
+    image: "redis:alpine"
