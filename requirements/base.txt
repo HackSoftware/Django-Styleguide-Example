@@ -1,6 +1,6 @@
 Django==3.2.9
 django-environ==0.7.0
-psycopg2==2.9.1
+psycopg2==2.9.2
 djangorestframework==3.12.4
 
 celery==5.1.2
