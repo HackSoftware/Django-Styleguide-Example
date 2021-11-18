@@ -48,7 +48,8 @@ THIRD_PARTY_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'django_filters',
-    'corsheaders'
+    'corsheaders',
+    'django_extensions',
 ]
 
 INSTALLED_APPS = [

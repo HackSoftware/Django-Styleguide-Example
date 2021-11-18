@@ -29,13 +29,23 @@ class Student(models.Model):
 
 class SchoolClass(models.Model):
     name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=255)
     school = models.ForeignKey(School, related_name='school_classes', on_delete=models.CASCADE)
 
+    start_date = models.DateField()
+    end_date = models.DateField()
+
     class Meta:
-        unique_together = (
-            ('slug', 'school'),
-        )
+        constraints = [
+            models.CheckConstraint(
+                name="school_class_start_before_end",
+                check=Q(start_date__lt=F("end_date"))
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.name} in {self.school}'
 
 
 class Roster(models.Model):
@@ -46,7 +56,7 @@ class Roster(models.Model):
     end_date = models.DateField()
 
     active = models.BooleanField(default=True)
-    deactivated_at = models.DateField(null=True)
+    deactivated_at = models.DateField(null=True, blank=True)
 
     class Meta:
         constraints = [
