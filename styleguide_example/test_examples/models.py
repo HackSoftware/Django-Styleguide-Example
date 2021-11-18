@@ -27,11 +27,11 @@ class Student(models.Model):
         return f'Student {self.email} ({self.identifier})'
 
 
-class SchoolClass(models.Model):
+class SchoolCourse(models.Model):
     name = models.CharField(max_length=255)
     short_name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=255)
-    school = models.ForeignKey(School, related_name='school_classes', on_delete=models.CASCADE)
+    school = models.ForeignKey(School, related_name='school_courses', on_delete=models.CASCADE)
 
     start_date = models.DateField()
     end_date = models.DateField()
@@ -39,10 +39,14 @@ class SchoolClass(models.Model):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                name="school_class_start_before_end",
+                name="school_course_start_before_end",
                 check=Q(start_date__lt=F("end_date"))
             )
         ]
+
+        unique_together = (
+            ('name', 'slug', 'start_date', 'end_date', ),
+        )
 
     def __str__(self):
         return f'{self.name} in {self.school}'
@@ -50,7 +54,7 @@ class SchoolClass(models.Model):
 
 class Roster(models.Model):
     student = models.ForeignKey(Student, related_name='rosters', on_delete=models.CASCADE)
-    school_class = models.ForeignKey(SchoolClass, related_name='rosters', on_delete=models.CASCADE)
+    school_course = models.ForeignKey(SchoolCourse, related_name='rosters', on_delete=models.CASCADE)
 
     start_date = models.DateField()
     end_date = models.DateField()
