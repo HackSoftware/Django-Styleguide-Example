@@ -29,7 +29,6 @@ class Student(models.Model):
 
 class SchoolCourse(models.Model):
     name = models.CharField(max_length=255)
-    short_name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=255)
     school = models.ForeignKey(School, related_name='school_courses', on_delete=models.CASCADE)
 

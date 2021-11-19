@@ -45,7 +45,6 @@ class SchoolCourseFactory(factory.django.DjangoModelFactory):
         model = SchoolCourse
 
     name = factory.LazyAttribute(lambda _: faker.unique.sentence(nb_words=3)[:-1])  # remove the end punctuation
-    short_name = factory.LazyAttribute(lambda self: self.name.split(' ')[0])
     slug = factory.LazyAttribute(lambda self: slugify(self.name))
     school = factory.SubFactory(SchoolFactory)
 

@@ -33,7 +33,7 @@ class RosterSchoolCourseInline(admin.TabularInline):
 
 @admin.register(SchoolCourse)
 class SchoolCourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'short_name', 'slug', 'school', 'start_date', 'end_date', )
+    list_display = ('name', 'slug', 'school', 'start_date', 'end_date', )
     list_filter = ('school', )
     inlines = (RosterSchoolCourseInline, )
 
