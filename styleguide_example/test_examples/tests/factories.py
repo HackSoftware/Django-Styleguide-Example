@@ -32,11 +32,10 @@ class StudentFactory(factory.django.DjangoModelFactory):
 
 class SchoolWithStudentsFactory(SchoolFactory):
     @factory.post_generation
-    def students(obj, created, extracted, **kwargs):
-        if created and extracted is None:
-            students = StudentFactory.create_batch(kwargs.get('count', 5))
+    def students(obj, create, extracted, **kwargs):
+        if create:
+            students = extracted or StudentFactory.create_batch(kwargs.get('count', 5))
             obj.students.set(students)
-
             return students
 
 
@@ -67,10 +66,10 @@ class RosterFactory(factory.django.DjangoModelFactory):
     # end_date = factory.LazyAttribute(lambda _: faker.future_date())
     start_date = factory.LazyAttribute(lambda self: faker.date_between_dates(
         date_start=self.school_course.start_date,
-        date_end=self.school_course.end_date - timedelta(days=1)
+        date_end=self.school_course.end_date - timedelta(days=2)
     ))
     end_date = factory.LazyAttribute(lambda self: faker.date_between_dates(
-        date_start=self.start_date,
+        date_start=self.start_date + timedelta(days=1),
         date_end=self.school_course.end_date
     ))
 
@@ -87,12 +86,13 @@ class RosterFactory(factory.django.DjangoModelFactory):
 
 class SchoolCourseWithRostersFactory(SchoolCourseFactory):
     @factory.post_generation
-    def rosters(obj, created, extracted, **kwargs):
-        if created and extracted is None:
-            rosters = RosterFactory.create_batch(
+    def rosters(obj, create, extracted, **kwargs):
+        if create:
+            rosters = extracted or RosterFactory.create_batch(
                 kwargs.get('count', 5),
                 student__school=obj.school  # NOTE!
             )
+
             obj.rosters.set(rosters)
 
             return rosters
