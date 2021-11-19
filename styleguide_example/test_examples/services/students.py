@@ -34,7 +34,8 @@ def student_create(
         roster_create(
             student=student,
             school_course=school_course,
-            start_date=None
+            start_date=start_date,
+            end_date=school_course.end_date
         )
 
     return student
