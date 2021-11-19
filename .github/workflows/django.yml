@@ -28,7 +28,7 @@ jobs:
       run: python manage.py migrate
     - name: Run tests
       run: |
-        pip install -r requirements/test.txt
+        pip install -r requirements/tests.txt
         py.test -s styleguide_example/
   deploy_to_heroku:
     runs-on: ubuntu-latest

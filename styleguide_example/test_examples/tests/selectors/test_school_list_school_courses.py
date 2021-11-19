@@ -88,7 +88,7 @@ class SchoolListSchoolCoursesTests(TestCase):
     def test_selector_returns_all_school_courses_for_a_given_period(self):
         school = SchoolFactory()
 
-        period_start = timezone.now()
+        period_start = faker.date_object()
         period_end = period_start + timedelta(days=100)
 
         started_school_course = SchoolCourseFactory(
