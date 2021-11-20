@@ -3,6 +3,7 @@ from django.core.exceptions import (
     ObjectDoesNotExist,
     PermissionDenied
 )
+from django.http import Http404
 
 from rest_framework import serializers, exceptions
 from rest_framework.exceptions import ValidationError as RestValidationError
@@ -37,6 +38,7 @@ def trigger_error():
 
     # raise ObjectDoesNotExist()
     # raise PermissionDenied()
+    raise Http404()
 
     # serializer = PlainSerializer(data={
     #     "email": "foo",
