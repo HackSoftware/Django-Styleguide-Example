@@ -4,8 +4,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import serializers
 
-from styleguide_example.api.mixins import ApiErrorsMixin
-
 
 def trigger_error():
     raise ValidationError('Error from service')
@@ -31,7 +29,7 @@ class TopLevelCharSerializer(serializers.Serializer):
     array = serializers.ListField(child=serializers.CharField())
 
 
-class TriggerErrorApi(ApiErrorsMixin, APIView):
+class TriggerErrorApi(APIView):
     """
     Since we have ApiErrorsMixin,
     The API will fail with 400 Bad Request,

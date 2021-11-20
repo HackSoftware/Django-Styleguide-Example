@@ -38,6 +38,7 @@ LOCAL_APPS = [
     'styleguide_example.tasks.apps.TasksConfig',
     'styleguide_example.api.apps.ApiConfig',
     'styleguide_example.users.apps.UsersConfig',
+    'styleguide_example.errors.apps.ErrorsConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -156,7 +157,7 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'styleguide_example.api.errors.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'styleguide_example.api.errors.drf_default_with_modifications_exception_handler',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
