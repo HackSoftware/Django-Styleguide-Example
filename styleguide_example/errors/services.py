@@ -11,8 +11,7 @@ from rest_framework import serializers, exceptions
 from rest_framework.exceptions import ValidationError as RestValidationError
 
 from styleguide_example.users.models import BaseUser
-
-from styleguide_example.api.errors import drf_default_with_modifications_exception_handler
+from styleguide_example.core.exceptions import ApplicationError
 
 
 class NestedSerializer(serializers.Serializer):
@@ -95,7 +94,11 @@ def trigger_rest_parse_error():
     raise exceptions.ParseError()
 
 
-def trigger_errors():
+def trigger_application_error():
+    raise ApplicationError(message="Something is not correct", extra={"type": "RANDOM"})
+
+
+def trigger_errors(exception_handler):
     result = {}
 
     for name, member in inspect.getmembers(sys.modules[__name__]):
@@ -103,10 +106,12 @@ def trigger_errors():
             try:
                 member()
             except Exception as exc:
-                response = drf_default_with_modifications_exception_handler(exc, {})
+                response = exception_handler(exc, {})
 
                 if response is None:
-                    raise
+                    # raise
+                    result[name] = "500 SERVER ERROR"
+                    continue
 
                 result[name] = response.data
 

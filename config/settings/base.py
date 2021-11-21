@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 LOCAL_APPS = [
+    'styleguide_example.core.apps.CoreConfig',
     'styleguide_example.common.apps.CommonConfig',
     'styleguide_example.tasks.apps.TasksConfig',
     'styleguide_example.api.apps.ApiConfig',

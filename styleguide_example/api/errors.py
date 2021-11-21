@@ -4,6 +4,9 @@ from django.http import Http404
 from rest_framework.views import exception_handler
 from rest_framework import exceptions
 from rest_framework.serializers import as_serializer_error
+from rest_framework.response import Response
+
+from styleguide_example.core.exceptions import ApplicationError
 
 
 def drf_default_with_modifications_exception_handler(exc, ctx):
@@ -30,32 +33,49 @@ def drf_default_with_modifications_exception_handler(exc, ctx):
     return response
 
 
-# def custom_exception_handler(exc, ctx):
-#     if isinstance(exc, DjangoValidationError):
-#         exc = exceptions.ValidationError(as_serializer_error(exc))
+def hacksoft_proposed_exception_handler(exc, ctx):
+    """
+    {
+        "message": "Error message",
+        "extra": {}
+    }
+    """
+    if isinstance(exc, DjangoValidationError):
+        exc = exceptions.ValidationError(as_serializer_error(exc))
 
-#     response = exception_handler(exc, ctx)
+    if isinstance(exc, Http404):
+        exc = exceptions.NotFound()
 
-#     # If unexpected error occurs (server error, etc.)
-#     if response is None:
+    if isinstance(exc, PermissionDenied):
+        exc = exceptions.PermissionDenied()
 
-#         if isinstance(exc, ApplicationError):
-#             return Response({
-#                 "message": exc.message,
-#                 "extra": exc.extra,
-#                 },
-#                 status=400
-#             )
+    response = exception_handler(exc, ctx)
 
-#         return response
+    # If unexpected error occurs (server error, etc.)
+    if response is None:
+        if isinstance(exc, ApplicationError):
+            data = {
+                "message": exc.message,
+                "extra": exc.extra
+            }
+            return Response(data, status=400)
 
-#     # exception_detail = exc.detail
+        return response
 
-#     # We want to handle the case, where we throw ValidationError("Some message")
-#     # And the detail is ["Some message"]
-#     # if isinstance(exception_detail, list):
-#     #     response.data = {
-#     #         "detail": exception_detail[0]
-#     #     }
+    if isinstance(exc.detail, (list, dict)):
+        response.data = {
+            "detail": response.data
+        }
 
-#     return response
+    if isinstance(exc, exceptions.ValidationError):
+        response.data["message"] = "Validation error"
+        response.data["extra"] = {
+            "fields": response.data["detail"]
+        }
+    else:
+        response.data["message"] = response.data["detail"]
+        response.data["extra"] = {}
+
+    del response.data["detail"]
+
+    return response
