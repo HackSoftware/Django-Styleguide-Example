@@ -158,7 +158,7 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'styleguide_example.api.errors.drf_default_with_modifications_exception_handler',
+    'EXCEPTION_HANDLER': 'styleguide_example.api.exception_handlers.drf_default_with_modifications_exception_handler',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),

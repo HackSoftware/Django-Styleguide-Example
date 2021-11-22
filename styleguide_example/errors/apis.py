@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from styleguide_example.api.errors import (
+from styleguide_example.api.exception_handlers import (
     drf_default_with_modifications_exception_handler,
     hacksoft_proposed_exception_handler
 )
