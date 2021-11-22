@@ -8,6 +8,8 @@ from styleguide_example.api.exception_handlers import (
 
 from styleguide_example.errors.services import trigger_errors
 
+from styleguide_example.users.services import user_create
+
 
 class TriggerErrorApi(APIView):
     def get(self, request):
@@ -17,3 +19,12 @@ class TriggerErrorApi(APIView):
         }
 
         return Response(data)
+
+
+class TriggerValidateUniqueErrorApi(APIView):
+    def get(self, request):
+        # Due to the fiddling with transactions, this example a different API
+        user_create(email="unique@hacksoft.io", password="user")
+        user_create(email="unique@hacksoft.io", password="user")
+
+        return Response()

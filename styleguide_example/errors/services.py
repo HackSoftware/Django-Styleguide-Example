@@ -109,7 +109,6 @@ def trigger_errors(exception_handler):
                 response = exception_handler(exc, {})
 
                 if response is None:
-                    # raise
                     result[name] = "500 SERVER ERROR"
                     continue
 
