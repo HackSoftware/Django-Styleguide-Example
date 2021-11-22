@@ -3,7 +3,8 @@ import sys
 
 from django.core.exceptions import (
     ValidationError as DjangoValidationError,
-    PermissionDenied
+    PermissionDenied,
+    ObjectDoesNotExist
 )
 from django.http import Http404
 
@@ -31,6 +32,10 @@ def trigger_django_validation():
 
 def trigger_django_permission_denied():
     raise PermissionDenied()
+
+
+def trigger_django_object_does_not_exist():
+    raise ObjectDoesNotExist()
 
 
 def trigger_django_404():
