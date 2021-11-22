@@ -18,6 +18,8 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: "0"
+    - name: Fetch history, because Heroku deploy fails otherwise.
+      run: git fetch --prune --unshallow
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
