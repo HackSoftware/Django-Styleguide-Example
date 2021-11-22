@@ -28,3 +28,10 @@ class TriggerValidateUniqueErrorApi(APIView):
         user_create(email="unique@hacksoft.io", password="user")
 
         return Response()
+
+
+class TriggerUnhandledExceptionApi(APIView):
+    def get(self, request):
+        raise Exception("Oops")
+
+        return Response()

@@ -1,6 +1,10 @@
 from django.urls import path
 
-from .apis import TriggerErrorApi, TriggerValidateUniqueErrorApi
+from .apis import (
+    TriggerErrorApi,
+    TriggerValidateUniqueErrorApi,
+    TriggerUnhandledExceptionApi
+)
 
 
 urlpatterns = [
@@ -9,7 +13,11 @@ urlpatterns = [
         TriggerErrorApi.as_view()
     ),
     path(
-        "trigger/unique",
+        "trigger/unique/",
         TriggerValidateUniqueErrorApi.as_view()
-    )
+    ),
+    path(
+        "trigger/exception/",
+        TriggerUnhandledExceptionApi.as_view()
+    ),
 ]

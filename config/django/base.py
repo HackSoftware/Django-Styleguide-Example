@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from .env_reader import env, environ
+from config.env import env, environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = environ.Path(__file__) - 3
@@ -166,6 +166,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': []
 }
 
-from .cors import *  # noqa
-from .sessions import *  # noqa
-from .celery import *  # noqa
+from config.settings.cors import *  # noqa
+from config.settings.sessions import *  # noqa
+from config.settings.celery import *  # noqa
+from config.settings.sentry import *  # noqa
