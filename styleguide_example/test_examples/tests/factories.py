@@ -59,19 +59,13 @@ class RosterFactory(factory.django.DjangoModelFactory):
 
     student = factory.SubFactory(StudentFactory)
     # Make sure the student and the school_course are from the same school
-    school_course = factory.SubFactory(SchoolCourseFactory, school=factory.SelfAttribute('..student.school'))
+    school_course = factory.SubFactory(
+        SchoolCourseFactory,
+        school=factory.SelfAttribute('..student.school')
+    )
 
-    # The code below might cause bugs because of the school_course period
-    # start_date = factory.LazyAttribute(lambda _: faker.past_date())
-    # end_date = factory.LazyAttribute(lambda _: faker.future_date())
-    start_date = factory.LazyAttribute(lambda self: faker.date_between_dates(
-        date_start=self.school_course.start_date,
-        date_end=self.school_course.end_date - timedelta(days=2)
-    ))
-    end_date = factory.LazyAttribute(lambda self: faker.date_between_dates(
-        date_start=self.start_date + timedelta(days=1),
-        date_end=self.school_course.end_date
-    ))
+    start_date = factory.SelfAttribute('school_course.start_date')
+    end_date = factory.SelfAttribute('school_course.end_date')
 
     active = True
     deactivated_at = factory.Maybe(
@@ -82,6 +76,20 @@ class RosterFactory(factory.django.DjangoModelFactory):
         )),
         yes_declaration=None
     )
+
+
+def get_future_roster_start_date(roster_obj):
+    if not roster_obj.start_after:
+        return faker.future_date()
+
+    return roster_obj.start_after + timedelta(days=faker.pyint(2, 100))
+
+
+class FutureRosterFactory(RosterFactory):
+    class Params:
+        start_after = None
+
+    start_date = factory.LazyAttribute(get_future_roster_start_date)
 
 
 class SchoolCourseWithRostersFactory(SchoolCourseFactory):
