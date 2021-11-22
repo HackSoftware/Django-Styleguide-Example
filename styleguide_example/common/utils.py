@@ -8,14 +8,6 @@ def make_mock_object(**kwargs):
     return type("", (object, ), kwargs)
 
 
-def get_first_matching_attr(obj, *attrs, default=None):
-    for attr in attrs:
-        if hasattr(obj, attr):
-            return getattr(obj, attr)
-
-    return default
-
-
 def get_object(model_or_queryset, **kwargs):
     """
     Reuse get_object_or_404 since the implementation supports both Model && queryset.

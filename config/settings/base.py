@@ -12,11 +12,12 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from .env_reader import env
+from .env_reader import env, environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = environ.Path(__file__) - 3
 
+env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -33,10 +34,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 LOCAL_APPS = [
+    'styleguide_example.core.apps.CoreConfig',
     'styleguide_example.common.apps.CommonConfig',
     'styleguide_example.tasks.apps.TasksConfig',
     'styleguide_example.api.apps.ApiConfig',
     'styleguide_example.users.apps.UsersConfig',
+    'styleguide_example.errors.apps.ErrorsConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -155,7 +158,8 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'styleguide_example.api.errors.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'styleguide_example.api.exception_handlers.drf_default_with_modifications_exception_handler',
+    # 'EXCEPTION_HANDLER': 'styleguide_example.api.exception_handlers.hacksoft_proposed_exception_handler',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),

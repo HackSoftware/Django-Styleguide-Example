@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework import serializers
 
-from styleguide_example.api.mixins import ApiErrorsMixin
 from styleguide_example.api.pagination import get_paginated_response, LimitOffsetPagination
 
 from styleguide_example.users.selectors import user_list
@@ -9,7 +8,7 @@ from styleguide_example.users.models import BaseUser
 
 
 # TODO: When JWT is resolved, add authenticated version
-class UserListApi(ApiErrorsMixin, APIView):
+class UserListApi(APIView):
     class Pagination(LimitOffsetPagination):
         default_limit = 1
 
