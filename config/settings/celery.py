@@ -1,4 +1,4 @@
-from .env_reader import env
+from config.env import env
 
 # https://docs.celeryproject.org/en/stable/userguide/configuration.html
 

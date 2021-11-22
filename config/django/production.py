@@ -1,5 +1,6 @@
 from .base import *  # noqa
-from .env_reader import env
+
+from config.env import env
 
 DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
