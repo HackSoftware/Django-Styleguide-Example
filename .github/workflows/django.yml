@@ -16,8 +16,6 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: "0"
     - name: Fetch history, because Heroku deploy fails otherwise.
       run: git fetch --prune --unshallow
     - name: Set up Python 3.9
