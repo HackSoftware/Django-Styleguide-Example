@@ -28,7 +28,7 @@ For `production.py`, we have the following:
 
 ```python
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN_WHITELIST', default=[])
+CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST', default=[])
 ```
 
 ### DRF
