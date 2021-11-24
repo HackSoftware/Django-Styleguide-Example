@@ -63,11 +63,17 @@ class RosterFactory(factory.django.DjangoModelFactory):
         SchoolCourseFactory,
         school=factory.SelfAttribute('..student.school')
     )
+    # The `SelfAttribute` is just an interface that uses LazyAttribute under the hood:
+    # school_course = factory.SubFactory(
+    #     SchoolCourseFactory,
+    #     school=factory.LazyAttribute(lambda course: course.factory_parent.student.school)
+    # )
 
     start_date = factory.SelfAttribute('school_course.start_date')
     end_date = factory.SelfAttribute('school_course.end_date')
 
     active = True
+    # We'd recommend you using LazyAttribute instead of Maybe as it's more explicit
     deactivated_at = factory.Maybe(
         'active',
         no_declaration=factory.LazyAttribute(lambda self: faker.date_between_dates(
@@ -86,6 +92,12 @@ def get_future_roster_start_date(roster_obj):
 
 
 class FutureRosterFactory(RosterFactory):
+    """
+    Example usage:
+        future_roster1 = FutureRosterFactory()
+        future_roster2 = FutureRosterFactory(start_after=future_roster1.end_date)
+    """
+
     class Params:
         start_after = None
 
