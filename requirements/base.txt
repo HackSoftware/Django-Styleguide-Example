@@ -10,4 +10,4 @@ django-celery-beat==2.2.1
 whitenoise==5.3.0
 
 django-filter==21.1
-django-cors-headers==3.10.0
+django-cors-headers==3.10.1
