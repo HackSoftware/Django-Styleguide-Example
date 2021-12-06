@@ -26,7 +26,9 @@ def file_create_for_upload(*, user: BaseUser, file_name: str, file_type: str) ->
 
 
 @transaction.atomic
-def file_generate_private_presigned_post_data(*, user: BaseUser, file_name: str, file_type: str):
+def file_generate_private_presigned_post_data(*, request, file_name: str, file_type: str):
+    user = request.user
+
     file = file_create_for_upload(user=user, file_name=file_name, file_type=file_type)
 
     if settings.USE_S3_UPLOAD:
@@ -43,9 +45,12 @@ def file_generate_private_presigned_post_data(*, user: BaseUser, file_name: str,
         file.file = file.file.field.attr_class(file, file.file.field, upload_path)
         file.save()
     else:
+        """
+        Use "Token {user.auth_token} if you're using Token Authentication
+        """
         presigned_data = {
             "url": file_generate_local_upload_url(file_id=file.id),
-            "params": {"headers": {"Authorization": f"Token {user.auth_token}"}},
+            "params": {"headers": {"Authorization": f"Session {request.session.session_key}"}},
         }
 
     return {"identifier": file.id, **presigned_data}

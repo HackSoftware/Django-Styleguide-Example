@@ -24,7 +24,7 @@ class FileGeneratePrivatePresignedPostApi(ApiAuthMixin, APIView):
         serializer.is_valid(raise_exception=True)
 
         presigned_data = file_generate_private_presigned_post_data(
-            user=request.user, **serializer.validated_data
+            request=request, **serializer.validated_data
         )
 
         return Response(data=presigned_data)
