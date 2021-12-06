@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
@@ -36,6 +38,20 @@ class FileLocalUploadAPI(ApiAuthMixin, APIView):
         file = get_object_or_404(File, id=file_id)
 
         file.file = request.FILES["file"]
+
+        file.full_clean()
+        file.save()
+
+        return Response(status=status.HTTP_201_CREATED)
+
+
+class FileVerifyUploadAPI(ApiAuthMixin, APIView):
+    def post(self, request, file_id):
+        file = get_object_or_404(File, id=file_id)
+
+        file.uploaded_at = timezone.now()
+
+        file.full_clean()
         file.save()
 
         return Response(status=status.HTTP_201_CREATED)
