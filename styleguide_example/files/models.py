@@ -9,7 +9,7 @@ from styleguide_example.files.utils import file_generate_upload_path
 
 
 class File(BaseModel):
-    file = models.FileField(upload_to=file_generate_upload_path)
+    file = models.FileField(upload_to=file_generate_upload_path, null=True, blank=True)
     file_name = models.CharField(max_length=255)
     file_type = models.CharField(max_length=255)
 
