@@ -175,8 +175,14 @@ REST_FRAMEWORK = {
 
 SERVER_HOST_DOMAIN = env("SERVER_HOST_DOMAIN", default="http://localhost:8000")
 
+# # Media
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
+
 from config.settings.cors import *  # noqa
 from config.settings.jwt import *  # noqa
 from config.settings.sessions import *  # noqa
 from config.settings.celery import *  # noqa
 from config.settings.sentry import *  # noqa
+from config.settings.aws import *  # noqa
