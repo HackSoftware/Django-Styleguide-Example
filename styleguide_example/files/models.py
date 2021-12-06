@@ -13,6 +13,7 @@ class File(BaseModel):
     file_name = models.CharField(max_length=255)
     file_type = models.CharField(max_length=255)
 
+    uploaded_at = models.DateTimeField(null=True, blank=True)
     uploaded_by = models.ForeignKey(BaseUser, on_delete=models.CASCADE)
 
     @property
