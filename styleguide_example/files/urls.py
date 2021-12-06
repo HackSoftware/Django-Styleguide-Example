@@ -9,11 +9,11 @@ from styleguide_example.files.apis import (
 urlpatterns = [
     path("private-presigned-post/", FileGeneratePrivatePresignedPostApi.as_view()),
     path(
-        "<uuid:file_id>/local-upload/",
+        "<int:file_id>/local-upload/",
         FileLocalUploadAPI.as_view(),
     ),
     path(
-        "<uuid:file_id>/verify-upload/",
+        "<int:file_id>/verify-upload/",
         FileVerifyUploadAPI.as_view(),
     ),
 ]
