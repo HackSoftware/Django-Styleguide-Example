@@ -41,6 +41,8 @@ LOCAL_APPS = [
     'styleguide_example.users.apps.UsersConfig',
     'styleguide_example.errors.apps.ErrorsConfig',
     'styleguide_example.testing_examples.apps.TestingExamplesConfig',
+    'styleguide_example.integrations.apps.IntegrationsConfig',
+    'styleguide_example.files.apps.FilesConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -170,6 +172,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': []
 }
+
+SERVER_HOST_DOMAIN = env("SERVER_HOST_DOMAIN", default="http://localhost:8000")
 
 from config.settings.cors import *  # noqa
 from config.settings.jwt import *  # noqa
