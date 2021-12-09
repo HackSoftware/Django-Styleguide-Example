@@ -34,7 +34,10 @@ class SchoolWithStudentsFactory(SchoolFactory):
     @factory.post_generation
     def students(obj, create, extracted, **kwargs):
         if create:
-            students = extracted or StudentFactory.create_batch(kwargs.get('count', 5))
+            students = extracted or StudentFactory.create_batch(
+                kwargs.pop('count', 5),
+                **kwargs
+            )
             obj.students.set(students)
             return students
 
@@ -58,30 +61,18 @@ class RosterFactory(factory.django.DjangoModelFactory):
         model = Roster
 
     student = factory.SubFactory(StudentFactory)
-    # Make sure the student and the school_course are from the same school
+
+    # NOTE: You can use `factory.SelfAttribute` for the below attributes.
+    # We prefer using `factory.LazyAttribute` as we find the definition more explicit.
     school_course = factory.SubFactory(
         SchoolCourseFactory,
-        school=factory.SelfAttribute('..student.school')
+        school=factory.LazyAttribute(
+            lambda course: course.factory_parent.student.school
+        )
     )
-    # The `SelfAttribute` is just an interface that uses LazyAttribute under the hood:
-    # school_course = factory.SubFactory(
-    #     SchoolCourseFactory,
-    #     school=factory.LazyAttribute(lambda course: course.factory_parent.student.school)
-    # )
 
-    start_date = factory.SelfAttribute('school_course.start_date')
-    end_date = factory.SelfAttribute('school_course.end_date')
-
-    active = True
-    # We'd recommend you using LazyAttribute instead of Maybe as it's more explicit
-    deactivated_at = factory.Maybe(
-        'active',
-        no_declaration=factory.LazyAttribute(lambda self: faker.date_between_dates(
-            date_start=self.start_date,
-            date_end=self.end_date
-        )),
-        yes_declaration=None
-    )
+    start_date = factory.LazyAttribute(lambda _self: _self.school_course.start_date)
+    end_date = factory.LazyAttribute(lambda _self: _self.school_course.end_date)
 
 
 def get_future_roster_start_date(roster_obj):
@@ -109,7 +100,8 @@ class SchoolCourseWithRostersFactory(SchoolCourseFactory):
     def rosters(obj, create, extracted, **kwargs):
         if create:
             rosters = extracted or RosterFactory.create_batch(
-                kwargs.get('count', 5),
+                kwargs.pop('count', 5),
+                **kwargs,
                 student__school=obj.school  # NOTE!
             )
 
