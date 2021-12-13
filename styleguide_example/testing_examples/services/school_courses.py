@@ -4,7 +4,7 @@ from datetime import date
 from django.db import transaction
 from django.utils.text import slugify
 
-from styleguide_example.test_examples.models import (
+from styleguide_example.testing_examples.models import (
     SchoolCourse,
     School,
     Student,

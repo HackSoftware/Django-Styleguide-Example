@@ -7,11 +7,11 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from styleguide_example.utils.tests import faker
-from styleguide_example.test_examples.selectors import (
+from styleguide_example.testing_examples.selectors import (
     school_list_school_courses,
     SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG
 )
-from styleguide_example.test_examples.tests.factories import (
+from styleguide_example.testing_examples.tests.factories import (
     SchoolFactory,
     SchoolCourseFactory
 )

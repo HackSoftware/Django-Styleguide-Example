@@ -5,7 +5,7 @@ import factory
 from django.utils.text import slugify
 
 from styleguide_example.utils.tests import faker
-from styleguide_example.test_examples.models import (
+from styleguide_example.testing_examples.models import (
     School,
     Student,
     Roster,

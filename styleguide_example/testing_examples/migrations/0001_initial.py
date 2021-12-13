@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('email', models.EmailField(max_length=255)),
                 ('identifier', models.UUIDField(default=uuid.uuid4)),
-                ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='students', to='test_examples.school')),
+                ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='students', to='testing_examples.school')),
             ],
             options={
                 'unique_together': {('identifier', 'school'), ('email', 'school')},
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(max_length=255)),
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),
-                ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='school_courses', to='test_examples.school')),
+                ('school', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='school_courses', to='testing_examples.school')),
             ],
         ),
         migrations.CreateModel(
@@ -53,8 +53,8 @@ class Migration(migrations.Migration):
                 ('end_date', models.DateField()),
                 ('active', models.BooleanField(default=True)),
                 ('deactivated_at', models.DateField(blank=True, null=True)),
-                ('school_course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rosters', to='test_examples.schoolcourse')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rosters', to='test_examples.student')),
+                ('school_course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rosters', to='testing_examples.schoolcourse')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rosters', to='testing_examples.student')),
             ],
         ),
         migrations.AddConstraint(

@@ -4,9 +4,9 @@ from typing import Optional
 from django.utils import timezone
 from django.db import transaction
 
-from styleguide_example.test_examples.models import Student, School
-from styleguide_example.test_examples.services.rosters import roster_create
-from styleguide_example.test_examples.selectors.schools import school_list_school_courses
+from styleguide_example.testing_examples.models import Student, School
+from styleguide_example.testing_examples.services.rosters import roster_create
+from styleguide_example.testing_examples.selectors.schools import school_list_school_courses
 
 
 @transaction.atomic

@@ -40,7 +40,7 @@ LOCAL_APPS = [
     'styleguide_example.api.apps.ApiConfig',
     'styleguide_example.users.apps.UsersConfig',
     'styleguide_example.errors.apps.ErrorsConfig',
-    'styleguide_example.test_examples.apps.TestExamplesConfig',
+    'styleguide_example.testing_examples.apps.TestingExamplesConfig',
 ]
 
 THIRD_PARTY_APPS = [

@@ -4,13 +4,13 @@ from django.test import TestCase
 
 from styleguide_example.utils.tests import faker
 
-from styleguide_example.test_examples.services import student_create
-from styleguide_example.test_examples.tests.factories import SchoolFactory, SchoolCourseFactory
+from styleguide_example.testing_examples.services import student_create
+from styleguide_example.testing_examples.tests.factories import SchoolFactory, SchoolCourseFactory
 
 
 class StudentCreateTests(TestCase):
-    @patch('styleguide_example.test_examples.services.students.school_list_school_courses')
-    @patch('styleguide_example.test_examples.services.students.roster_create')
+    @patch('styleguide_example.testing_examples.services.students.school_list_school_courses')
+    @patch('styleguide_example.testing_examples.services.students.roster_create')
     def test_student_is_rostered_to_all_active_school_courses(
         self,
         roster_create_mock,

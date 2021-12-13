@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from styleguide_example.test_examples.models import (
+from styleguide_example.testing_examples.models import (
     School,
     SchoolCourse,
     Student,

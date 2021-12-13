@@ -3,7 +3,7 @@ from typing import Optional
 
 from django.core.exceptions import ValidationError
 
-from styleguide_example.test_examples.models import Student, SchoolCourse, Roster
+from styleguide_example.testing_examples.models import Student, SchoolCourse, Roster
 
 
 ROSTER_VALIDATE_PERIOD_OUTSIDE_COURSE_PERIOD = 'Roster period cannot be outside {school_course} period'

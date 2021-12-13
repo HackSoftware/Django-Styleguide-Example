@@ -3,8 +3,8 @@ from datetime import timedelta
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from styleguide_example.test_examples.tests.factories import SchoolCourseFactory
-from styleguide_example.test_examples.services import (
+from styleguide_example.testing_examples.tests.factories import SchoolCourseFactory
+from styleguide_example.testing_examples.services import (
     roster_validate_period,
     ROSTER_VALIDATE_PERIOD_OUTSIDE_COURSE_PERIOD
 )

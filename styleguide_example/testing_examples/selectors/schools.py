@@ -4,7 +4,7 @@ from typing import Optional, Iterable
 from django.db.models.query import Q
 from django.core.exceptions import ValidationError
 
-from styleguide_example.test_examples.models import School, SchoolCourse
+from styleguide_example.testing_examples.models import School, SchoolCourse
 
 
 SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG =\
