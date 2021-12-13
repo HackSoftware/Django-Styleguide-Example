@@ -1,21 +1,27 @@
-from django.urls import path
+from django.urls import path, include
 
 from .apis import (
-    UserLoginApi,
-    UserLogoutApi,
+    UserSessionLoginApi,
+    UserSessionLogoutApi,
     UserMeApi,
 )
 
 urlpatterns = [
     path(
-        'login/',
-        UserLoginApi.as_view(),
-        name='login'
-    ),
-    path(
-        'logout/',
-        UserLogoutApi.as_view(),
-        name='logout'
+        'session/',
+        include(([
+            path(
+                'login/',
+                UserSessionLoginApi.as_view(),
+                name='login'
+            ),
+            path(
+                'logout/',
+                UserSessionLogoutApi.as_view(),
+                name='logout'
+            )
+
+        ], "session"))
     ),
     path(
         'me/',

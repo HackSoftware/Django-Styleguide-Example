@@ -10,7 +10,7 @@ from styleguide_example.api.mixins import ApiAuthMixin
 from styleguide_example.users.selectors import user_get_login_data
 
 
-class UserLoginApi(APIView):
+class UserSessionLoginApi(APIView):
     """
     Following https://docs.djangoproject.com/en/3.1/topics/auth/default/#how-to-log-a-user-in
     """
@@ -40,7 +40,7 @@ class UserLoginApi(APIView):
         })
 
 
-class UserLogoutApi(APIView):
+class UserSessionLogoutApi(APIView):
     def get(self, request):
         logout(request)
 
