@@ -9,6 +9,7 @@ Few important things:
 * Linux / Ubuntu is our primary OS and things are tested for that. It will mostly not work on Mac & certainly not work on Windows.
 * It uses Postgres as primary database.
 * It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
+* It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
 * It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
 * It can be easily deployed to Heroku.
 * It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.

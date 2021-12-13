@@ -40,6 +40,7 @@ LOCAL_APPS = [
     'styleguide_example.api.apps.ApiConfig',
     'styleguide_example.users.apps.UsersConfig',
     'styleguide_example.errors.apps.ErrorsConfig',
+    'styleguide_example.testing_examples.apps.TestingExamplesConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -47,7 +48,8 @@ THIRD_PARTY_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'django_filters',
-    'corsheaders'
+    'corsheaders',
+    'django_extensions',
 ]
 
 INSTALLED_APPS = [
@@ -105,12 +107,12 @@ DATABASES['default']['ATOMIC_REQUESTS'] = True
 if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
-           'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'github_actions',
-           'USER': 'postgres',
-           'PASSWORD': 'postgres',
-           'HOST': '127.0.0.1',
-           'PORT': '5432',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'github_actions',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
         }
     }
 
