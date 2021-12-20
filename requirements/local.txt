@@ -4,4 +4,4 @@ pytest==6.2.5
 pytest-django==4.5.2
 flake8==4.0.1
 ipdb==0.13.9
-ipython==7.29.0
+ipython==7.30.1
