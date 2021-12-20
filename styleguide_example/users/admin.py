@@ -14,8 +14,24 @@ class BaseUserAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'is_admin', 'is_superuser')
 
     fieldsets = (
-        (None, {'fields': ('email',)}),
+        (
+            None, {
+                'fields': ('email',)
+            }
+        ),
+        (
+            "Booleans", {
+                "fields": ("is_active", "is_admin", "is_superuser")
+            }
+        ),
+        (
+            "Timestamps", {
+                "fields": ("created_at", "updated_at")
+            }
+        )
     )
+
+    readonly_fields = ("created_at", "updated_at", )
 
     def save_model(self, request, obj, form, change):
         if change:

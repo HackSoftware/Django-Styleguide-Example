@@ -3,6 +3,10 @@ from django.urls import path, include
 from .apis import (
     UserSessionLoginApi,
     UserSessionLogoutApi,
+
+    UserJwtLoginApi,
+    UserJwtLogoutApi,
+
     UserMeApi,
 )
 
@@ -22,6 +26,21 @@ urlpatterns = [
             )
 
         ], "session"))
+    ),
+    path(
+        'jwt/',
+        include(([
+            path(
+                "login/",
+                UserJwtLoginApi.as_view(),
+                name="login"
+            ),
+            path(
+                "logout/",
+                UserJwtLogoutApi.as_view(),
+                name="logout"
+            )
+        ], "jwt"))
     ),
     path(
         'me/',

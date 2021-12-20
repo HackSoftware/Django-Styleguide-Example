@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager as BUM,
@@ -57,6 +59,9 @@ class BaseUser(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+
+    # This should potentially be an encrypted field
+    jwt_key = models.UUIDField(default=uuid.uuid4)
 
     objects = BaseUserManager()
 
