@@ -1,7 +1,7 @@
 Django==3.2.10
 django-environ==0.8.1
 psycopg2==2.9.2
-djangorestframework==3.12.4
+djangorestframework==3.13.1
 
 celery==5.2.3
 django-celery-results==2.2.0
