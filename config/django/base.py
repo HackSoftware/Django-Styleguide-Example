@@ -50,6 +50,7 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'corsheaders',
     'django_extensions',
+    'rest_framework_jwt',
 ]
 
 INSTALLED_APPS = [
@@ -169,6 +170,7 @@ REST_FRAMEWORK = {
 }
 
 from config.settings.cors import *  # noqa
+from config.settings.jwt import *  # noqa
 from config.settings.sessions import *  # noqa
 from config.settings.celery import *  # noqa
 from config.settings.sentry import *  # noqa
