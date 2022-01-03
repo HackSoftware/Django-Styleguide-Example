@@ -7,7 +7,7 @@ The structure is inspired by [cookiecutter-django](https://github.com/pydanny/co
 Few important things:
 
 * Linux / Ubuntu is our primary OS and things are tested for that. It will mostly not work on Mac & certainly not work on Windows.
-* It uses Postgres as primary database.
+* It uses Postgres as the primary database.
 * It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
 * It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
 * It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
@@ -32,11 +32,46 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST', default=[])
 ```
 
-### DRF
+## Authentication - JWT
 
-We have removed the default authentication classes, since they were causing trouble.
+The project is using <https://github.com/Styria-Digital/django-rest-framework-jwt> for having authentication via JWT capabilities.
 
-## Authentication - General
+### Settings
+
+All JWT related settings are located in `config/settings/jwt.py`.
+
+> ⚠️ We highly recommend reading the entire settings page from the project documentation - <https://styria-digital.github.io/django-rest-framework-jwt/#additional-settings> - to figure out your needs & the proper defaults for you!
+
+The default settings also include the JWT token as a cookie.
+
+The specific details about how the cookie is set, can be found here - <https://github.com/Styria-Digital/django-rest-framework-jwt/blob/master/src/rest_framework_jwt/compat.py#L43>
+
+### APIs
+
+The JWT related APIs are:
+
+1. `/api/auth/jwt/login/`
+1. `/api/auth/jwt/logout/`
+
+The current implementation of the login API returns just the token:
+
+```json
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InJhZG9yYWRvQGhhY2tzb2Z0LmlvIiwiaWF0IjoxNjQxMjIxMDMxLCJleHAiOjE2NDE4MjU4MzEsImp0aSI6ImIyNTEyNmY4LTM3ZDctNGI5NS04Y2M0LTkzZjI3MjE4ZGZkOSIsInVzZXJfaWQiOjJ9.TUoQQPSijO2O_3LN-Pny4wpQp-0rl4lpTs_ulkbxzO4"
+}
+```
+
+This can be changed from `auth_jwt_response_payload_handler`.
+
+
+### Requiring authentication
+
+We follow this concept:
+
+1. All APIs are public by default (no default authentication classes)
+1. If you want a certain API to require authentication, you add the `ApiAuthMixin` to it.
+
+## Authentication - Sessions
 
 This project is using the already existing [**cookie-based session authentication**](https://docs.djangoproject.com/en/3.1/topics/auth/default/#how-to-log-a-user-in) in Django:
 
@@ -95,22 +130,15 @@ We have the following general cases:
 1. If the backend is located on `*.domain.com` and the frontend is located on `*.domain.com`, the configuration is going to work out of the box.
 1. If the backend is located on `somedomain.com` and the frontend is located on `anotherdomain.com`, then you'll need to set `SESSION_COOKIE_SAMESITE = 'None'` and `SESSION_COOKIE_SECURE = True`
 
-### Reading list
+### APIs
 
-Since cookies can be somewhat elusive, check the following urls:
-
-1. <https://docs.djangoproject.com/en/3.1/ref/settings/#sessions> - It's a good idea to just read every description for `SESSION_*`
-1. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies> - It's a good idea to read everything, several times.
-
-## Authentication APIs
-
-1. `POST` <http://localhost:8000/api/auth/login/> requires JSON body with `email` and `password`.
-1. `GET` <http://localhost:8000/api/auth/me/> returns the current user information, if the request is authenticated (has the corresponding `sessionid` cookie)
-1. `GET` or `POST` <http://localhost:8000/api/auth/logout/> will remove the `sessionid` cookie, effectively logging you out.
+1. `POST` to `/api/auth/session/login/` requires JSON body with `email` and `password`.
+1. `GET` to `/api/auth/me/` returns the current user information, if the request is authenticated (has the corresponding `sessionid` cookie)
+1. `GET` or `POST` to `/api/auth/logout/` will remove the `sessionid` cookie, effectively logging you out.
 
 ### `HTTP Only` / `SameSite`
 
-The current implementation of `/auth/login` does 2 things:
+The current implementation of `/api/auth/session/login` does 2 things:
 
 1. Sets a `HTTP Only` cookie with the session id.
 1. Returns the actual session id from the JSON payload.
@@ -118,6 +146,14 @@ The current implementation of `/auth/login` does 2 things:
 The second thing is required, because Safari is not respecting the `SameSite = None` option for cookies.
 
 More on the issue here - <https://www.chromium.org/updates/same-site/incompatible-clients>
+
+### Reading list
+
+Since cookies can be somewhat elusive, check the following urls:
+
+1. <https://docs.djangoproject.com/en/3.1/ref/settings/#sessions> - It's a good idea to just read every description for `SESSION_*`
+1. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies> - It's a good idea to read everything, several times.
+
 
 ## Example List API
 
