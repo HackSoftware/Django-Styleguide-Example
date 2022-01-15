@@ -1,7 +1,7 @@
 from datetime import date
-from typing import Optional, Iterable
+from typing import Optional
 
-from django.db.models.query import Q
+from django.db.models.query import Q, QuerySet
 from django.core.exceptions import ValidationError
 
 from styleguide_example.testing_examples.models import School, SchoolCourse
@@ -16,7 +16,7 @@ def school_list_school_courses(
     school: School,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None
-) -> Iterable[SchoolCourse]:
+) -> QuerySet[SchoolCourse]:
     if start_date is None and end_date:
         raise ValidationError(SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG)
 

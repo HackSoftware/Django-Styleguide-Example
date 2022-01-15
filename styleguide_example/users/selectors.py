@@ -1,4 +1,4 @@
-from styleguide_example.common.types import QuerySetType
+from django.db.models.query import QuerySet
 
 from styleguide_example.users.models import BaseUser
 from styleguide_example.users.filters import BaseUserFilter
@@ -14,7 +14,7 @@ def user_get_login_data(*, user: BaseUser):
     }
 
 
-def user_list(*, filters=None) -> QuerySetType[BaseUser]:
+def user_list(*, filters=None) -> QuerySet[BaseUser]:
     filters = filters or {}
 
     qs = BaseUser.objects.all()
