@@ -22,6 +22,9 @@ Few important things:
 * It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
 * It can be easily deployed to Heroku.
 * It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
+* It comes with [`mypy`](https://mypy.readthedocs.io/en/stable/) configured, using both <https://github.com/typeddjango/django-stubs> and <https://github.com/typeddjango/djangorestframework-stubs/>
+  * Basic `mypy` configuration is located in [`setup.cfg`](setup.cfg)
+  * `mypy` is ran as a build step in [`.github/workflows/django.yml`](.github/workflows/django.yml)
 
 ## General API Stuff
 
