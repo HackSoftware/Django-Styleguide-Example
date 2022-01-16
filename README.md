@@ -25,6 +25,7 @@ Few important things:
 * It comes with [`mypy`](https://mypy.readthedocs.io/en/stable/) configured, using both <https://github.com/typeddjango/django-stubs> and <https://github.com/typeddjango/djangorestframework-stubs/>
   * Basic `mypy` configuration is located in [`setup.cfg`](setup.cfg)
   * `mypy` is ran as a build step in [`.github/workflows/django.yml`](.github/workflows/django.yml)
+  * ⚠️  The provided configuration is quite minimal. **You should figure out your team needs & configure accordingly** - <https://mypy.readthedocs.io/en/stable/config_file.html>
 
 ## General API Stuff
 
