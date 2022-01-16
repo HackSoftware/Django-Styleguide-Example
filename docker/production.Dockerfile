@@ -1,3 +1,4 @@
+# This docker file is used for production
 # Creating image based on official python3 image
 FROM python:3.9.4
 

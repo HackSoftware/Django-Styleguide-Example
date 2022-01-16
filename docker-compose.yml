@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: docker/local.Dockerfile
-    command: celery --app=styleguide_example.tasks.celery worker --without-gossip --without-heartbeat --without-mingle --loglevel=info
+    command: celery -A styleguide_example.tasks worker -l info --without-gossip --without-mingle --without-heartbeat
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
       - CELERY_BROKER_URL=redis://redis
@@ -44,7 +44,7 @@ services:
     build:
       context: .
       dockerfile: docker/local.Dockerfile
-    command: celery --app=styleguide_example.tasks.celery beat --loglevel=info
+    command: celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
       - CELERY_BROKER_URL=redis://redis

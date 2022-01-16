@@ -20,7 +20,8 @@ Few important things:
 * It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
 * It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
 * It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
-* It can be easily deployed to Heroku.
+* It can be easily deployed to Heroku or AWS ECS.
+* Dockerized for local development with docker-compose.
 * It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
 * It comes with [`mypy`](https://mypy.readthedocs.io/en/stable/) configured, using both <https://github.com/typeddjango/django-stubs> and <https://github.com/typeddjango/djangorestframework-stubs/>
   * Basic `mypy` configuration is located in [`setup.cfg`](setup.cfg)
@@ -201,7 +202,7 @@ Example data structure:
 }
 ```
 
-## Helpful commands
+## Helpful commands for local development without docker-compose
 
 To create Postgres database:
 
@@ -225,6 +226,25 @@ To start Celery Beat:
 
 ```
 celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+```
+
+## Helpful commands for local development with docker-compose
+To build and run everything
+
+```
+docker-compose up
+```
+
+To run migrations
+
+```
+docker-compose run django python manage.py migrate
+```
+
+To shell
+
+```
+docker-compose run django python manage.py shell
 ```
 
 ## Heroku
