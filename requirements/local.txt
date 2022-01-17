@@ -9,7 +9,7 @@ Faker==11.3.0
 flake8==4.0.1
 
 ipdb==0.13.9
-ipython==7.31.0
+ipython==8.0.0
 
 mypy==0.931
 django-stubs==1.9.0
