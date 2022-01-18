@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:13.2
+    image: postgres:14.1
     environment:
       - POSTGRES_DB=styleguide_example_db
       - POSTGRES_USER=postgres
