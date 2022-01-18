@@ -8,6 +8,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
+  rabbitmq:
+    image: "rabbitmq:alpine"
+
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
   django:
     build:
       context: .
@@ -15,14 +24,14 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
-      - CELERY_BROKER_URL=redis://redis
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
-      - redis
+      - rabbitmq
     restart: on-failure
 
   celery:
@@ -32,12 +41,12 @@ services:
     command: celery -A styleguide_example.tasks worker -l info --without-gossip --without-mingle --without-heartbeat
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
-      - CELERY_BROKER_URL=redis://redis
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
     volumes:
       - .:/app
     depends_on:
       - db
-      - redis
+      - rabbitmq
     restart: on-failure
 
   beats:
@@ -47,13 +56,10 @@ services:
     command: celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/styleguide_example_db
-      - CELERY_BROKER_URL=redis://redis
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
     volumes:
       - .:/app
     depends_on:
       - db
-      - redis
+      - rabbitmq
     restart: on-failure
-
-  redis:
-    image: "redis:alpine"

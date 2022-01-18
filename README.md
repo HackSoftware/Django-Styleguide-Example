@@ -229,6 +229,7 @@ celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.s
 ```
 
 ## Helpful commands for local development with docker-compose
+
 To build and run everything
 
 ```
