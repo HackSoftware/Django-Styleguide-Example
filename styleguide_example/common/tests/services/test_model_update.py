@@ -12,23 +12,6 @@ class ModelUpdateTests(unittest.TestCase):
             field_c=None
         )
 
-    def test_model_update_does_not_update_if_instance_is_none(self):
-        updated_instance, has_updated = model_update(
-            instance=self.instance,
-            fields=[],
-            data={}
-        )
-
-        self.assertEqual(updated_instance, self.instance)
-        self.assertFalse(has_updated)
-
-        self.assertIsNone(updated_instance.field_a)
-        self.assertIsNone(updated_instance.field_b)
-        self.assertIsNone(updated_instance.field_c)
-
-        self.instance.full_clean.assert_not_called()
-        self.instance.save.assert_not_called()
-
     def test_model_update_does_not_update_if_none_of_the_fields_are_in_the_data(self):
         update_fields = ['non_existing_field']
         data = {'field_a': 'value_a'}

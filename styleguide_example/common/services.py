@@ -1,21 +1,22 @@
 from typing import List, Dict, Any, Tuple
 
+from styleguide_example.common.types import DjangoModelType
 
-# TODO: Decide typing for the `instance` argument
+
 def model_update(
     *,
-    instance: Any,
+    instance: DjangoModelType,
     fields: List[str],
     data: Dict[str, Any]
-) -> Tuple[Any, bool]:
+) -> Tuple[DjangoModelType, bool]:
     """
     Generic update service meant to be reused in local update services
 
     For example:
 
-    def user_update(*, user: User, **data) -> User:
+    def user_update(*, user: User, data) -> User:
         fields = ['first_name', 'last_name']
-        user = model_update(instance=user, fields=fields, data=data)
+        user, has_updated = model_update(instance=user, fields=fields, data=data)
 
         // Do other actions with the user here
 
@@ -26,9 +27,6 @@ def model_update(
         2. A boolean value representing whether we performed an update or not.
     """
     has_updated = False
-
-    if instance is None:
-        return instance, has_updated
 
     for field in fields:
         # Skip if a field is not present in the actual data
