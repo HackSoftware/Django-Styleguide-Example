@@ -1,39 +1,50 @@
-from typing import TypeVar
-
-from django.db import transaction
-
-T = TypeVar('T')
+from typing import List, Dict, Any, Tuple
 
 
-@transaction.atomic
-def generic_update(*, instance: T, **fields_to_update) -> T:
+# TODO: Decide typing for the `instance` argument
+def model_update(
+    *,
+    instance: Any,
+    fields: List[str],
+    data: Dict[str, Any]
+) -> Tuple[Any, bool]:
     """
     Generic update service meant to be reused in local update services
 
     For example:
 
-    def user_update(*, user: User, **fields_to_update) -> User:
-        user = generic_update(instance=user, **fields_to_update)
+    def user_update(*, user: User, **data) -> User:
+        fields = ['first_name', 'last_name']
+        user = model_update(instance=user, fields=fields, data=data)
 
         // Do other actions with the user here
 
         return user
+
+    Return value: Tuple with the following elements:
+        1. The instance we updated
+        2. A boolean value representing whether we performed an update or not.
     """
-    # If the passed instance is `None` - do nothing.
+    has_updated = False
+
     if instance is None:
-        return instance
+        return instance, has_updated
 
-    # If there's nothing to update - do not perform unnecessary actions.
-    if not fields_to_update:
-        return instance
+    for field in fields:
+        # Skip if a field is not present in the actual data
+        if field not in data:
+            continue
 
-    for attr, value in fields_to_update.items():
-        setattr(instance, attr, value)
+        if getattr(instance, field) != data[field]:
+            has_updated = True
+            setattr(instance, field, data[field])
 
-    instance.full_clean()
-    # Update only the fields that are meant to be updated.
-    # Django docs reference: https://docs.djangoproject.com/en/dev/ref/models/instances/#specifying-which-fields-to-save
-    update_fields = list(fields_to_update.keys())
-    instance.save(update_fields=update_fields)
+    # Perform an update only if any of the fields was actually changed
+    if has_updated:
+        instance.full_clean()
+        # Update only the fields that are meant to be updated.
+        # Django docs reference:
+        # https://docs.djangoproject.com/en/dev/ref/models/instances/#specifying-which-fields-to-save
+        instance.save(update_fields=fields)
 
-    return instance
+    return instance, has_updated
