@@ -1,6 +1,6 @@
 -r base.txt
 
-pytest==6.2.5
+pytest==7.0.0
 pytest-django==4.5.2
 
 factory-boy==3.2.1
