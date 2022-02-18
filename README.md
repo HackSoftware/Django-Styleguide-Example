@@ -15,18 +15,18 @@ The structure is inspired by [cookiecutter-django](https://github.com/pydanny/co
 
 Few important things:
 
-* Linux / Ubuntu is our primary OS and things are tested for that. It will mostly not work on Mac & certainly not work on Windows.
+* Linux / Ubuntu is our primary OS and things are tested for that.
+* It's dockerized for local development with `docker-compose`.
 * It uses Postgres as the primary database.
-* It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
-* It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
-* It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup.
-* It can be easily deployed to Heroku or AWS ECS.
-* Dockerized for local development with docker-compose.
-* It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
+* It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup, even for local development.
 * It comes with [`mypy`](https://mypy.readthedocs.io/en/stable/) configured, using both <https://github.com/typeddjango/django-stubs> and <https://github.com/typeddjango/djangorestframework-stubs/>
   * Basic `mypy` configuration is located in [`setup.cfg`](setup.cfg)
   * `mypy` is ran as a build step in [`.github/workflows/django.yml`](.github/workflows/django.yml)
   * ⚠️  The provided configuration is quite minimal. **You should figure out your team needs & configure accordingly** - <https://mypy.readthedocs.io/en/stable/config_file.html>
+* It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
+* It can be easily deployed to Heroku or AWS ECS.
+* It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
+* It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
 
 ## General API Stuff
 
