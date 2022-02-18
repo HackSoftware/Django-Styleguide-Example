@@ -24,6 +24,23 @@ class LimitOffsetPagination(_LimitOffsetPagination):
     default_limit = 10
     max_limit = 50
 
+    def get_count(self, queryset) -> int:
+        """
+        Determine an object count, supporting either querysets or regular lists.
+        """
+        try:
+            # We remove the prefetches in order to optimize the queryset
+            clone = queryset._clone()  # type: ignore
+            return (
+                clone.prefetch_related(None)
+                .select_related(None)
+                .only("pk")
+                .values_list("pk")
+                .count()
+            )
+        except (AttributeError, TypeError):
+            return len(queryset)
+
     def get_paginated_data(self, data):
         return OrderedDict([
             ('limit', self.limit),
