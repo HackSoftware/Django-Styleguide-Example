@@ -1,30 +1,33 @@
 from collections import OrderedDict
+from typing import Optional, Sequence, Tuple, Type, Union
 from urllib.parse import parse_qs, urlparse
 
-from rest_framework.pagination import LimitOffsetPagination as _LimitOffsetPagination
+from django.db.models import QuerySet
+from rest_framework import serializers
+from rest_framework.pagination import BasePagination
 from rest_framework.pagination import CursorPagination as _CursorPagination
+from rest_framework.pagination import LimitOffsetPagination as _LimitOffsetPagination
+from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
-def get_paginated_response(*, pagination_class, serializer_class, queryset, request, view):
-    paginator = pagination_class()
+class _TurnOffPaginationSerializer(serializers.Serializer):
+    paginate = serializers.BooleanField(default=True)
 
-    page = paginator.paginate_queryset(queryset, request, view=view)
 
-    if page is not None:
-        serializer = serializer_class(page, many=True)
-        return paginator.get_paginated_response(serializer.data)
+def turn_off_pagination(data):
+    serializer = _TurnOffPaginationSerializer(data=data)
+    serializer.is_valid(raise_exception=True)
 
-    serializer = serializer_class(queryset, many=True)
-
-    return Response(data=serializer.data)
+    return serializer.validated_data["paginate"]
 
 
 class LimitOffsetPagination(_LimitOffsetPagination):
     default_limit = 10
     max_limit = 50
 
-    def get_count(self, queryset) -> int:
+    def get_count(self, queryset: Union[QuerySet, Sequence]) -> int:
         """
         Determine an object count, supporting either querysets or regular lists.
         """
@@ -42,44 +45,52 @@ class LimitOffsetPagination(_LimitOffsetPagination):
             return len(queryset)
 
     def get_paginated_data(self, data):
-        return OrderedDict([
-            ('limit', self.limit),
-            ('offset', self.offset),
-            ('count', self.count),
-            ('next', self.get_next_link()),
-            ('previous', self.get_previous_link()),
-            ('results', data)
-        ])
+        return OrderedDict(
+            [
+                ("limit", self.limit),
+                ("offset", self.offset),
+                ("count", self.count),
+                ("next", self.get_next_link()),
+                ("previous", self.get_previous_link()),
+                ("results", data),
+            ]
+        )
 
     def get_paginated_response(self, data):
         """
         We redefine this method in order to return `limit` and `offset`.
         This is used by the frontend to construct the pagination itself.
         """
-        return Response(OrderedDict([
-            ('limit', self.limit),
-            ('offset', self.offset),
-            ('count', self.count),
-            ('next', self.get_next_link()),
-            ('previous', self.get_previous_link()),
-            ('results', data)
-        ]))
+        return Response(
+            OrderedDict(
+                [
+                    ("limit", self.limit),
+                    ("offset", self.offset),
+                    ("count", self.count),
+                    ("next", self.get_next_link()),
+                    ("previous", self.get_previous_link()),
+                    ("results", data),
+                ]
+            )
+        )
 
 
 class CursorPagination(_CursorPagination):
     page_size = 50  # Return 50 items by default
 
-    def __init__(self, ordering):
+    def __init__(self, ordering: Optional[str]):
         self.ordering: str = ordering or "-created_at"
 
-    def get_ordering(self, request, queryset, view):
+    def get_ordering(
+        self, request: Request, queryset: QuerySet, view: APIView
+    ) -> Tuple[str]:
         # The DRF CursorPagination expects the ordering as a tuple
         if isinstance(self.ordering, str):
             return (self.ordering,)
 
         return tuple(self.ordering)
 
-    def _get_cursor(self, url):
+    def _get_cursor(self, url: Optional[str]) -> Optional[str]:
         if not url:
             return None
 
@@ -109,3 +120,42 @@ class CursorPagination(_CursorPagination):
                 ]
             )
         )
+
+
+def _init_pagination_class(
+    pagination_class: Type[BasePagination],
+    ordering: Optional[str],
+) -> BasePagination:
+    if isinstance(pagination_class, CursorPagination):
+        return pagination_class(ordering=ordering)
+
+    return pagination_class()
+
+
+def response_paginate(
+    *,
+    pagination_class: Type[BasePagination],
+    serializer_class: Type[serializers.Serializer],
+    queryset: QuerySet,
+    request: Request,
+    view: APIView,
+    ordering: Optional[str] = "-created_at"
+) -> Response:
+    paginate = turn_off_pagination(data=request.GET)
+
+    if not paginate:
+        data = serializer_class(queryset, many=True).data
+
+        return Response(data=data)
+
+    paginator = _init_pagination_class(pagination_class, ordering)
+
+    page = paginator.paginate_queryset(queryset, request, view=view)
+
+    if page is not None:
+        serializer = serializer_class(page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    serializer = serializer_class(queryset, many=True)
+
+    return Response(data=serializer.data)

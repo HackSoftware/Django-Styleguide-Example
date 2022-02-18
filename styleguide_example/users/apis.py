@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import serializers
 
-from styleguide_example.api.pagination import get_paginated_response, LimitOffsetPagination
+from styleguide_example.api.pagination import response_paginate, LimitOffsetPagination
 
 from styleguide_example.users.selectors import user_list
 from styleguide_example.users.models import BaseUser
@@ -34,7 +34,7 @@ class UserListApi(APIView):
 
         users = user_list(filters=filters_serializer.validated_data)
 
-        return get_paginated_response(
+        return response_paginate(
             pagination_class=self.Pagination,
             serializer_class=self.OutputSerializer,
             queryset=users,
