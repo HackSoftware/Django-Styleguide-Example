@@ -1,6 +1,8 @@
 from collections import OrderedDict
+from urllib.parse import parse_qs, urlparse
 
 from rest_framework.pagination import LimitOffsetPagination as _LimitOffsetPagination
+from rest_framework.pagination import CursorPagination as _CursorPagination
 from rest_framework.response import Response
 
 
@@ -45,3 +47,48 @@ class LimitOffsetPagination(_LimitOffsetPagination):
             ('previous', self.get_previous_link()),
             ('results', data)
         ]))
+
+
+class CursorPagination(_CursorPagination):
+    page_size = 50  # Return 50 items by default
+
+    def __init__(self, ordering):
+        self.ordering: str = ordering or "-created_at"
+
+    def get_ordering(self, request, queryset, view):
+        # The DRF CursorPagination expects the ordering as a tuple
+        if isinstance(self.ordering, str):
+            return (self.ordering,)
+
+        return tuple(self.ordering)
+
+    def _get_cursor(self, url):
+        if not url:
+            return None
+
+        parsed_params = parse_qs(urlparse(url).query)
+        # `parse_qs` values are lists
+        cursor_params = parsed_params.get("cursor", [])
+        if not cursor_params:
+            return None
+
+        return cursor_params[0]
+
+    def get_paginated_response(self, data):
+        next_url = self.get_next_link()
+        next_cursor = self._get_cursor(next_url)
+
+        previous_url = self.get_previous_link()
+        previous_cursor = self._get_cursor(previous_url)
+
+        return Response(
+            OrderedDict(
+                [
+                    ("next", next_url),
+                    ("next_cursor", next_cursor),
+                    ("previous", previous_url),
+                    ("previous_cursor", previous_cursor),
+                    ("results", data),
+                ]
+            )
+        )
