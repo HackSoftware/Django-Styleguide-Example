@@ -1,5 +1,8 @@
+import mimetypes
+
 from django.conf import settings
 from django.db import transaction
+from django.utils import timezone
 
 from styleguide_example.files.models import File
 from styleguide_example.files.utils import (
@@ -10,6 +13,69 @@ from styleguide_example.files.utils import (
 from styleguide_example.integrations.aws.client import s3_generate_private_presigned_post
 
 from styleguide_example.users.models import BaseUser
+
+from styleguide_example.files.utils import file_generate_name
+
+
+def file_create_for_direct_upload(
+    *,
+    user: BaseUser,
+    file_object,
+    file_name: str = "",
+    file_type: str = "",
+) -> File:
+    if not file_name:
+        file_name = file_object.name
+
+    if not file_type:
+        file_type, encoding = mimetypes.guess_type(file_name)
+
+        if file_type is None:
+            file_type = ""
+
+    obj = File(
+        file=file_object,
+        original_file_name=file_name,
+        file_name=file_generate_name(file_name),
+        file_type=file_type,
+        uploaded_by=user,
+        upload_finished_at=timezone.now()
+    )
+
+    obj.full_clean()
+    obj.save()
+
+    return obj
+
+
+def file_update_for_direct_upload(
+    *,
+    file: File,
+    user: BaseUser,
+    file_object,
+    file_name: str = "",
+    file_type: str = "",
+) -> File:
+    if not file_name:
+        file_name = file_object.name
+
+    if not file_type:
+        file_type, encoding = mimetypes.guess_type(file_name)
+
+        if file_type is None:
+            file_type = ""
+
+    file.file = file_object
+    file.original_file_name = file_name
+    file.file_name = file_generate_name(file_name)
+    file.file_type = file_type
+    file.uploaded_by = user
+    file.upload_finished_at = timezone.now()
+
+    file.full_clean()
+    file.save()
+
+    return file
 
 
 def file_create_for_upload(*, user: BaseUser, file_name: str, file_type: str) -> File:
