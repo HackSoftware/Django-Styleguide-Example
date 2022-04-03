@@ -39,7 +39,7 @@ class File(BaseModel):
 
     @property
     def url(self):
-        if settings.USE_S3_UPLOAD:
+        if settings.FILE_UPLOAD_STORAGE == "s3":
             return self.file.url
 
         return f"{settings.SERVER_HOST_DOMAIN}{self.file.url}"
