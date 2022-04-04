@@ -1,9 +1,9 @@
+from typing import Dict, Any
+
 import boto3
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-
-from typing import Optional
 
 
 def s3_get_client():
@@ -28,13 +28,13 @@ def s3_get_client():
     )
 
 
-def s3_generate_presigned_post(*, file_path: str, file_type: str) -> Optional[str]:
+def s3_generate_presigned_post(*, file_path: str, file_type: str) -> Dict[str, Any]:
     s3_client = s3_get_client()
 
     acl = settings.AWS_DEFAULT_ACL
     expires_in = settings.AWS_PRESIGNED_EXPIRY
 
-    url = s3_client.generate_presigned_post(
+    presigned_data = s3_client.generate_presigned_post(
         settings.AWS_STORAGE_BUCKET_NAME,
         file_path,
         Fields={
@@ -48,4 +48,4 @@ def s3_generate_presigned_post(*, file_path: str, file_type: str) -> Optional[st
         ExpiresIn=expires_in,
     )
 
-    return url
+    return presigned_data

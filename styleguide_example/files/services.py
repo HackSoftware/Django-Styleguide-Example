@@ -1,6 +1,6 @@
 import mimetypes
 
-from typing import Tuple
+from typing import Tuple, Dict, Any
 
 from django.conf import settings
 from django.db import transaction
@@ -38,10 +38,12 @@ class FileDirectUploadService:
             file_name = self.file_obj.name
 
         if not file_type:
-            file_type, encoding = mimetypes.guess_type(file_name)
+            guessed_file_type, encoding = mimetypes.guess_type(file_name)
 
-            if file_type is None:
+            if guessed_file_type is None:
                 file_type = ""
+            else:
+                file_type = guessed_file_type
 
         return file_name, file_type
 
@@ -86,7 +88,7 @@ def file_pass_thru_upload_start(
     user: BaseUser,
     file_name: str,
     file_type: str
-):
+) -> Dict[str, Any]:
     file = File(
         original_file_name=file_name,
         file_name=file_generate_name(file_name),
@@ -105,7 +107,7 @@ def file_pass_thru_upload_start(
     file.file = file.file.field.attr_class(file, file.file.field, upload_path)
     file.save()
 
-    presigned_data = {}
+    presigned_data: Dict[str, Any] = {}
 
     if settings.FILE_UPLOAD_STORAGE == "s3":
         presigned_data = s3_generate_presigned_post(
@@ -114,7 +116,7 @@ def file_pass_thru_upload_start(
 
     else:
         presigned_data = {
-            "url": file_generate_local_upload_url(file_id=file.id),
+            "url": file_generate_local_upload_url(file_id=str(file.id)),
         }
 
     return {"id": file.id, **presigned_data}
@@ -142,7 +144,6 @@ def file_pass_thru_upload_finish(
     file: File
 ) -> File:
     # Potentially, check against user
-
     file.upload_finished_at = timezone.now()
     file.full_clean()
     file.save()
