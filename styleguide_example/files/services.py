@@ -1,5 +1,7 @@
 import mimetypes
 
+from typing import Tuple
+
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
@@ -17,78 +19,65 @@ from styleguide_example.users.models import BaseUser
 from styleguide_example.files.utils import file_generate_name
 
 
-def file_create_for_direct_upload(
-    *,
-    user: BaseUser,
-    file_object,
-    file_name: str = "",
-    file_type: str = "",
-) -> File:
-    if not file_name:
-        file_name = file_object.name
+class FileDirectUploadService:
+    """
+    This also serves as an example of a service class,
+    which encapsulates 2 different behaviors (create & update) under a namespace.
 
-    if not file_type:
-        file_type, encoding = mimetypes.guess_type(file_name)
+    Meaning, we use the class here for:
 
-        if file_type is None:
-            file_type = ""
+    1. The namespace
+    2. The ability to reuse `_infer_file_name_and_type` (which can also be an util)
+    """
+    def __init__(self, user: BaseUser, file_obj):
+        self.user = user
+        self.file_obj = file_obj
 
-    obj = File(
-        file=file_object,
-        original_file_name=file_name,
-        file_name=file_generate_name(file_name),
-        file_type=file_type,
-        uploaded_by=user,
-        upload_finished_at=timezone.now()
-    )
+    def _infer_file_name_and_type(self, file_name: str = "", file_type: str = "") -> Tuple[str, str]:
+        if not file_name:
+            file_name = self.file_obj.name
 
-    obj.full_clean()
-    obj.save()
+        if not file_type:
+            file_type, encoding = mimetypes.guess_type(file_name)
 
-    return obj
+            if file_type is None:
+                file_type = ""
 
+        return file_name, file_type
 
-def file_update_for_direct_upload(
-    *,
-    file: File,
-    user: BaseUser,
-    file_object,
-    file_name: str = "",
-    file_type: str = "",
-) -> File:
-    if not file_name:
-        file_name = file_object.name
+    @transaction.atomic
+    def create(self, file_name: str = "", file_type: str = "") -> File:
+        file_name, file_type = self._infer_file_name_and_type(file_name, file_type)
 
-    if not file_type:
-        file_type, encoding = mimetypes.guess_type(file_name)
+        obj = File(
+            file=self.file_obj,
+            original_file_name=file_name,
+            file_name=file_generate_name(file_name),
+            file_type=file_type,
+            uploaded_by=self.user,
+            upload_finished_at=timezone.now()
+        )
 
-        if file_type is None:
-            file_type = ""
+        obj.full_clean()
+        obj.save()
 
-    file.file = file_object
-    file.original_file_name = file_name
-    file.file_name = file_generate_name(file_name)
-    file.file_type = file_type
-    file.uploaded_by = user
-    file.upload_finished_at = timezone.now()
+        return obj
 
-    file.full_clean()
-    file.save()
+    @transaction.atomic
+    def update(self, file: File, file_name: str = "", file_type: str = "") -> File:
+        file_name, file_type = self._infer_file_name_and_type(file_name, file_type)
 
-    return file
+        file.file = self.file_obj
+        file.original_file_name = file_name
+        file.file_name = file_generate_name(file_name)
+        file.file_type = file_type
+        file.uploaded_by = self.user
+        file.upload_finished_at = timezone.now()
 
+        file.full_clean()
+        file.save()
 
-def file_create_for_upload(*, user: BaseUser, file_name: str, file_type: str) -> File:
-    image = File(
-        file_name=file_name,
-        file_type=file_type,
-        uploaded_by=user,
-        file=None
-    )
-    image.full_clean()
-    image.save()
-
-    return image
+        return file
 
 
 @transaction.atomic

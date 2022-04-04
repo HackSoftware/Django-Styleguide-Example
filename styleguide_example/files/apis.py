@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
-    file_create_for_direct_upload,
+    FileDirectUploadService,
     file_pass_thru_upload_start,
     file_pass_thru_upload_local,
     file_pass_thru_upload_finish,
@@ -17,12 +17,11 @@ from styleguide_example.api.mixins import ApiAuthMixin
 
 class FileDirectUploadApi(ApiAuthMixin, APIView):
     def post(self, request):
-        file_object = request.FILES["file"]
-
-        file = file_create_for_direct_upload(
-           file_object=file_object,
-           user=request.user
+        service = FileDirectUploadService(
+            user=request.user,
+            file_obj=request.FILES["file"]
         )
+        file = service.create()
 
         return Response(data={"id": file.id}, status=status.HTTP_201_CREATED)
 
