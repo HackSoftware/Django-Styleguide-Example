@@ -182,5 +182,4 @@ from config.settings.sessions import *  # noqa
 from config.settings.celery import *  # noqa
 from config.settings.sentry import *  # noqa
 
-# from config.settings.aws import *  # noqa
 from config.settings.files_and_storages import *  # noqa

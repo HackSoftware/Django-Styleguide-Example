@@ -1,5 +1,3 @@
-from django.utils import timezone
-
 from django.shortcuts import get_object_or_404
 
 from rest_framework import serializers, status
@@ -9,7 +7,8 @@ from rest_framework.views import APIView
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
     file_create_for_direct_upload,
-    file_generate_private_presigned_post_data
+    file_pass_thru_upload_start,
+    file_pass_thru_upload_finish,
 )
 
 from styleguide_example.api.mixins import ApiAuthMixin
@@ -27,7 +26,7 @@ class FileDirectUploadApi(ApiAuthMixin, APIView):
         return Response(data={"id": file.id}, status=status.HTTP_201_CREATED)
 
 
-class FileGeneratePrivatePresignedPostApi(ApiAuthMixin, APIView):
+class FilePassThruUploadStartApi(ApiAuthMixin, APIView):
     class InputSerializer(serializers.Serializer):
         file_name = serializers.CharField()
         file_type = serializers.CharField()
@@ -36,20 +35,29 @@ class FileGeneratePrivatePresignedPostApi(ApiAuthMixin, APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        presigned_data = file_generate_private_presigned_post_data(
-            request=request, **serializer.validated_data
+        presigned_data = file_pass_thru_upload_start(
+            user=request.user,
+            **serializer.validated_data
         )
 
         return Response(data=presigned_data)
 
 
-class FileVerifyUploadAPI(ApiAuthMixin, APIView):
-    def post(self, request, file_id):
+class FilePassThruUploadFinishApi(ApiAuthMixin, APIView):
+    class InputSerializer(serializers.Serializer):
+        file_id = serializers.CharField()
+
+    def post(self, request):
+        serializer = self.InputSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        file_id = serializer.validated_data["file_id"]
+
         file = get_object_or_404(File, id=file_id)
 
-        file.uploaded_at = timezone.now()
+        file = file_pass_thru_upload_finish(
+            file=file,
+            user=request.user
+        )
 
-        file.full_clean()
-        file.save()
-
-        return Response(status=status.HTTP_201_CREATED)
+        return Response({"id": file.id})

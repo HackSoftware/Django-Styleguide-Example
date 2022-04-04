@@ -10,7 +10,7 @@ from styleguide_example.files.utils import (
     file_generate_local_upload_url
 )
 
-from styleguide_example.integrations.aws.client import s3_generate_private_presigned_post
+from styleguide_example.integrations.aws.client import s3_generate_presigned_post
 
 from styleguide_example.users.models import BaseUser
 
@@ -92,7 +92,61 @@ def file_create_for_upload(*, user: BaseUser, file_name: str, file_type: str) ->
 
 
 @transaction.atomic
-def file_generate_private_presigned_post_data(*, request, file_name: str, file_type: str):
+def file_pass_thru_upload_start(
+    *,
+    user: BaseUser,
+    file_name: str,
+    file_type: str
+):
+    file = File(
+        original_file_name=file_name,
+        file_name=file_generate_name(file_name),
+        file_type=file_type,
+        uploaded_by=user,
+        file=None
+    )
+    file.full_clean()
+    file.save()
+
+    if settings.FILE_UPLOAD_STORAGE == "s3":
+        upload_path = file_generate_upload_path(file, file.file_name)
+
+        presigned_data = s3_generate_presigned_post(
+            file_path=upload_path, file_type=file.file_type
+        )
+
+        """
+        TODO: Why are we doing this?
+
+        Setting the file.file path to be the s3 upload path without uploading the file.
+        The actual file upload will be done by the FE.
+        """
+        file.file = file.file.field.attr_class(file, file.file.field, upload_path)
+        file.save()
+    else:
+        # direct
+        pass
+
+    return {"id": file.id, **presigned_data}
+
+
+@transaction.atomic
+def file_pass_thru_upload_finish(
+    *,
+    user: BaseUser,
+    file: File
+) -> File:
+    # Potentially, check against user
+
+    file.upload_finished_at = timezone.now()
+    file.full_clean()
+    file.save()
+
+    return file
+
+
+@transaction.atomic
+def file_generate_presigned_post_data(*, request, file_name: str, file_type: str):
     user = request.user
 
     file = file_create_for_upload(user=user, file_name=file_name, file_type=file_type)
@@ -100,7 +154,7 @@ def file_generate_private_presigned_post_data(*, request, file_name: str, file_t
     if settings.USE_S3_UPLOAD:
         upload_path = file_generate_upload_path(file, file.file_name)
 
-        presigned_data = s3_generate_private_presigned_post(
+        presigned_data = s3_generate_presigned_post(
             file_path=upload_path, file_type=file.file_type
         )
 

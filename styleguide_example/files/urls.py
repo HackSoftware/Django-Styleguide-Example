@@ -3,15 +3,13 @@ from django.urls import path
 from styleguide_example.files.apis import (
     FileDirectUploadApi,
 
-    FileGeneratePrivatePresignedPostApi,
-    FileVerifyUploadAPI,
+    FilePassThruUploadStartApi,
+    FilePassThruUploadFinishApi,
 )
+
 
 urlpatterns = [
     path("upload/direct/", FileDirectUploadApi.as_view()),
-    path("private-presigned-post/", FileGeneratePrivatePresignedPostApi.as_view()),
-    path(
-        "<int:file_id>/verify-upload/",
-        FileVerifyUploadAPI.as_view(),
-    ),
+    path("upload/pass-thru/start/", FilePassThruUploadStartApi.as_view()),
+    path("upload/pass-thru/finish/", FilePassThruUploadFinishApi.as_view()),
 ]

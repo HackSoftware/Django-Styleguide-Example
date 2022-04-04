@@ -25,3 +25,8 @@ if FILE_UPLOAD_STORAGE == "s3":
     AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
     AWS_S3_SIGNATURE_VERSION = env("AWS_S3_SIGNATURE_VERSION", default="s3v4")
+
+    # https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl
+    AWS_DEFAULT_ACL = env("AWS_DEFAULT_ACL", default="private")
+
+    AWS_PRESIGNED_EXPIRY = env.int("AWS_PRESIGNED_EXPIRY", default=10)  # seconds
