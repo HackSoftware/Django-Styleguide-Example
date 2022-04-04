@@ -108,23 +108,43 @@ def file_pass_thru_upload_start(
     file.full_clean()
     file.save()
 
-    if settings.FILE_UPLOAD_STORAGE == "s3":
-        upload_path = file_generate_upload_path(file, file.file_name)
+    upload_path = file_generate_upload_path(file, file.file_name)
 
+    """
+    We are doing this in order to have an associated file for the field.
+    """
+    file.file = file.file.field.attr_class(file, file.file.field, upload_path)
+    file.save()
+
+    presigned_data = {}
+
+    if settings.FILE_UPLOAD_STORAGE == "s3":
         presigned_data = s3_generate_presigned_post(
             file_path=upload_path, file_type=file.file_type
         )
 
-        """
-        We are doing this in order to have an associated file for the field.
-        """
-        file.file = file.file.field.attr_class(file, file.file.field, upload_path)
-        file.save()
     else:
-        # direct
-        pass
+        presigned_data = {
+            "url": file_generate_local_upload_url(file_id=file.id),
+            # "params": {"headers": {"Authorization": f"Session {request.session.session_key}"}},
+        }
 
     return {"id": file.id, **presigned_data}
+
+
+@transaction.atomic
+def file_pass_thru_upload_local(
+    *,
+    user: BaseUser,
+    file: File,
+    file_object
+) -> File:
+    # Potentially, check against user
+    file.file = file_object
+    file.full_clean()
+    file.save()
+
+    return file
 
 
 @transaction.atomic

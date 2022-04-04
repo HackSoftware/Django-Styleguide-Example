@@ -8,6 +8,7 @@ from styleguide_example.files.models import File
 from styleguide_example.files.services import (
     file_create_for_direct_upload,
     file_pass_thru_upload_start,
+    file_pass_thru_upload_local,
     file_pass_thru_upload_finish,
 )
 
@@ -41,6 +42,21 @@ class FilePassThruUploadStartApi(ApiAuthMixin, APIView):
         )
 
         return Response(data=presigned_data)
+
+
+class FilePassThruUploadLocalApi(ApiAuthMixin, APIView):
+    def post(self, request, file_id):
+        file = get_object_or_404(File, id=file_id)
+
+        file_object = request.FILES["file"]
+
+        file = file_pass_thru_upload_local(
+            user=request.user,
+            file=file,
+            file_object=file_object
+        )
+
+        return Response({"id": file.id})
 
 
 class FilePassThruUploadFinishApi(ApiAuthMixin, APIView):

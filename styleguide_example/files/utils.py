@@ -2,6 +2,7 @@ import pathlib
 
 from uuid import uuid4
 
+from django.urls import reverse
 from django.conf import settings
 
 
@@ -16,4 +17,9 @@ def file_generate_upload_path(instance, filename):
 
 
 def file_generate_local_upload_url(*, file_id: str):
-    return f"{settings.SERVER_HOST_DOMAIN}/api/files/{file_id}/local-upload/"
+    url = reverse(
+        "api:files:upload:pass-thru:local",
+        kwargs={"file_id": file_id}
+    )
+
+    return f"{settings.SERVER_HOST_DOMAIN}{url}"
