@@ -116,10 +116,7 @@ def file_pass_thru_upload_start(
         )
 
         """
-        TODO: Why are we doing this?
-
-        Setting the file.file path to be the s3 upload path without uploading the file.
-        The actual file upload will be done by the FE.
+        We are doing this in order to have an associated file for the field.
         """
         file.file = file.file.field.attr_class(file, file.file.field, upload_path)
         file.save()
