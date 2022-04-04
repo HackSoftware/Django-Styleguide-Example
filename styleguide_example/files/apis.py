@@ -1,17 +1,30 @@
 from django.utils import timezone
 
-from django.conf import settings
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import PermissionDenied
 
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from styleguide_example.files.models import File
-from styleguide_example.files.services import file_generate_private_presigned_post_data
+from styleguide_example.files.services import (
+    file_create_for_direct_upload,
+    file_generate_private_presigned_post_data
+)
 
 from styleguide_example.api.mixins import ApiAuthMixin
+
+
+class FileDirectUploadApi(ApiAuthMixin, APIView):
+    def post(self, request):
+        file_object = request.FILES["file"]
+
+        file = file_create_for_direct_upload(
+           file_object=file_object,
+           user=request.user
+        )
+
+        return Response(data={"id": file.id}, status=status.HTTP_201_CREATED)
 
 
 class FileGeneratePrivatePresignedPostApi(ApiAuthMixin, APIView):
@@ -28,21 +41,6 @@ class FileGeneratePrivatePresignedPostApi(ApiAuthMixin, APIView):
         )
 
         return Response(data=presigned_data)
-
-
-class FileLocalUploadAPI(ApiAuthMixin, APIView):
-    def post(self, request, file_id):
-        if settings.USE_S3_UPLOAD:
-            raise PermissionDenied('USE_S3_UPLOAD is enabled. Access to this API is forbidden.')
-
-        file = get_object_or_404(File, id=file_id)
-
-        file.file = request.FILES["file"]
-
-        file.full_clean()
-        file.save()
-
-        return Response(status=status.HTTP_201_CREATED)
 
 
 class FileVerifyUploadAPI(ApiAuthMixin, APIView):
