@@ -126,7 +126,6 @@ def file_pass_thru_upload_start(
     else:
         presigned_data = {
             "url": file_generate_local_upload_url(file_id=file.id),
-            # "params": {"headers": {"Authorization": f"Session {request.session.session_key}"}},
         }
 
     return {"id": file.id, **presigned_data}
