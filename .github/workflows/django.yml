@@ -38,7 +38,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements/local.txt
     - name: Type check
-      run: mypy --config mypy.ini styleguide_example/
+      run: |
+        mypy --version
+        mypy --config mypy.ini styleguide_example/
     - name: Run migrations
       run: python manage.py migrate
     - name: Run tests
