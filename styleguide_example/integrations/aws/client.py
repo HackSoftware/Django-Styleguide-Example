@@ -61,6 +61,24 @@ def s3_generate_presigned_post(*, file_path: str, file_type: str) -> Dict[str, A
     acl = credentials.default_acl
     expires_in = credentials.presigned_expiry
 
+    """
+    TODO: Create a type for the presigned_data
+    It looks like this:
+
+    {
+        'fields': {
+            'Content-Type': 'image/png',
+            'acl': 'private',
+            'key': 'files/bafdccb665a447468e237781154883b5.png',
+            'policy': 'some-long-base64-string',
+            'x-amz-algorithm': 'AWS4-HMAC-SHA256',
+            'x-amz-credential': 'AKIASOZLZI5FJDJ6XTSZ/20220405/eu-central-1/s3/aws4_request',
+            'x-amz-date': '20220405T114912Z',
+            'x-amz-signature': '7d8be89aabec12b781d44b5b3f099d07be319b9a41d9a9c804bd1075e1ef5735'
+        },
+        'url': 'https://django-styleguide-example.s3.amazonaws.com/'
+    }
+    """
     presigned_data = s3_client.generate_presigned_post(
         credentials.bucket_name,
         file_path,
