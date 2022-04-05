@@ -1,11 +1,9 @@
 import os
 
-from config.env import env, environ, env_to_enum
+from config.env import BASE_DIR, env, env_to_enum
 
 from styleguide_example.files.enums import FileUploadStrategy, FileUploadStorage
 
-# TODO: Dedup
-BASE_DIR = environ.Path(__file__) - 3
 
 FILE_UPLOAD_STRATEGY = env_to_enum(
     FileUploadStrategy,
