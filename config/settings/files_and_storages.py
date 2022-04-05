@@ -7,12 +7,10 @@ from styleguide_example.files.enums import FileUploadStrategy, FileUploadStorage
 # TODO: Dedup
 BASE_DIR = environ.Path(__file__) - 3
 
-# direct | pass-thru
 FILE_UPLOAD_STRATEGY = env_to_enum(
     FileUploadStrategy,
     env("FILE_UPLOAD_STRATEGY", default="direct")
 )
-# local | s3
 FILE_UPLOAD_STORAGE = env_to_enum(
     FileUploadStorage,
     env("FILE_UPLOAD_STORAGE", default="local")
