@@ -9,6 +9,7 @@ from styleguide_example.users.models import BaseUser
 from styleguide_example.files.utils import (
     file_generate_upload_path
 )
+from styleguide_example.files.enums import FileUploadStorage
 
 
 class File(BaseModel):
@@ -39,7 +40,7 @@ class File(BaseModel):
 
     @property
     def url(self):
-        if settings.FILE_UPLOAD_STORAGE == "s3":
+        if settings.FILE_UPLOAD_STORAGE == FileUploadStorage.S3:
             return self.file.url
 
         return f"{settings.SERVER_HOST_DOMAIN}{self.file.url}"

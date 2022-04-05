@@ -1,14 +1,22 @@
 import os
 
-from config.env import env, environ
+from config.env import env, environ, env_to_enum
+
+from styleguide_example.files.enums import FileUploadStrategy, FileUploadStorage
 
 # TODO: Dedup
 BASE_DIR = environ.Path(__file__) - 3
 
 # direct | pass-thru
-FILE_UPLOAD_STRATEGY = env("FILE_UPLOAD_STRATEGY", default="direct")
+FILE_UPLOAD_STRATEGY = env_to_enum(
+    FileUploadStrategy,
+    env("FILE_UPLOAD_STRATEGY", default="direct")
+)
 # local | s3
-FILE_UPLOAD_STORAGE = env("FILE_UPLOAD_STORAGE", default="local")
+FILE_UPLOAD_STORAGE = env_to_enum(
+    FileUploadStorage,
+    env("FILE_UPLOAD_STORAGE", default="local")
+)
 
 if FILE_UPLOAD_STORAGE == "local":
     MEDIA_ROOT_NAME = "media"
