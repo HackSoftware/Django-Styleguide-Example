@@ -43,4 +43,4 @@ class File(BaseModel):
         if settings.FILE_UPLOAD_STORAGE == FileUploadStorage.S3:
             return self.file.url
 
-        return f"{settings.SERVER_HOST_DOMAIN}{self.file.url}"
+        return f"{settings.APP_DOMAIN}{self.file.url}"

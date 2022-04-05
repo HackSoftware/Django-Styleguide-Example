@@ -170,8 +170,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': []
 }
 
-# TODO: Think of a better name?
-SERVER_HOST_DOMAIN = env("SERVER_HOST_DOMAIN", default="http://localhost:8000")
+APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
 
 from config.settings.cors import *  # noqa
 from config.settings.jwt import *  # noqa

@@ -22,4 +22,4 @@ def file_generate_local_upload_url(*, file_id: str):
         kwargs={"file_id": file_id}
     )
 
-    return f"{settings.SERVER_HOST_DOMAIN}{url}"
+    return f"{settings.APP_DOMAIN}{url}"
