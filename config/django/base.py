@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from config.env import env, environ
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = environ.Path(__file__) - 3
+from config.env import env, BASE_DIR
 
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
@@ -41,6 +38,8 @@ LOCAL_APPS = [
     'styleguide_example.users.apps.UsersConfig',
     'styleguide_example.errors.apps.ErrorsConfig',
     'styleguide_example.testing_examples.apps.TestingExamplesConfig',
+    'styleguide_example.integrations.apps.IntegrationsConfig',
+    'styleguide_example.files.apps.FilesConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -171,8 +170,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': []
 }
 
+APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
+
 from config.settings.cors import *  # noqa
 from config.settings.jwt import *  # noqa
 from config.settings.sessions import *  # noqa
 from config.settings.celery import *  # noqa
 from config.settings.sentry import *  # noqa
+
+from config.settings.files_and_storages import *  # noqa

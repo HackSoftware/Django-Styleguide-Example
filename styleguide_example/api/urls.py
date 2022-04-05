@@ -6,4 +6,5 @@ urlpatterns = [
     ),
     path('users/', include(('styleguide_example.users.urls', 'users'))),
     path('errors/', include(('styleguide_example.errors.urls', 'errors'))),
+    path('files/', include(('styleguide_example.files.urls', 'files'))),
 ]
