@@ -9,14 +9,13 @@ from django.utils import timezone
 from styleguide_example.files.models import File
 from styleguide_example.files.utils import (
     file_generate_upload_path,
-    file_generate_local_upload_url
+    file_generate_local_upload_url,
+    file_generate_name
 )
 
 from styleguide_example.integrations.aws.client import s3_generate_presigned_post
 
 from styleguide_example.users.models import BaseUser
-
-from styleguide_example.files.utils import file_generate_name
 
 
 class FileDirectUploadService:
@@ -82,70 +81,66 @@ class FileDirectUploadService:
         return file
 
 
-@transaction.atomic
-def file_pass_thru_upload_start(
-    *,
-    user: BaseUser,
-    file_name: str,
-    file_type: str
-) -> Dict[str, Any]:
-    file = File(
-        original_file_name=file_name,
-        file_name=file_generate_name(file_name),
-        file_type=file_type,
-        uploaded_by=user,
-        file=None
-    )
-    file.full_clean()
-    file.save()
-
-    upload_path = file_generate_upload_path(file, file.file_name)
-
+class FilePassThruUploadService:
     """
-    We are doing this in order to have an associated file for the field.
+    This also serves as an example of a service class,
+    which encapsulates a flow (start & finish) + one-off action (upload_local) into a namespace.
+
+    Meaning, we use the class here for:
+
+    1. The namespace
     """
-    file.file = file.file.field.attr_class(file, file.file.field, upload_path)
-    file.save()
+    def __init__(self, user: BaseUser):
+        self.user = user
 
-    presigned_data: Dict[str, Any] = {}
-
-    if settings.FILE_UPLOAD_STORAGE == "s3":
-        presigned_data = s3_generate_presigned_post(
-            file_path=upload_path, file_type=file.file_type
+    @transaction.atomic
+    def start(self, *, file_name: str, file_type: str) -> Dict[str, Any]:
+        file = File(
+            original_file_name=file_name,
+            file_name=file_generate_name(file_name),
+            file_type=file_type,
+            uploaded_by=self.user,
+            file=None
         )
+        file.full_clean()
+        file.save()
 
-    else:
-        presigned_data = {
-            "url": file_generate_local_upload_url(file_id=str(file.id)),
-        }
+        upload_path = file_generate_upload_path(file, file.file_name)
 
-    return {"id": file.id, **presigned_data}
+        """
+        We are doing this in order to have an associated file for the field.
+        """
+        file.file = file.file.field.attr_class(file, file.file.field, upload_path)
+        file.save()
 
+        presigned_data: Dict[str, Any] = {}
 
-@transaction.atomic
-def file_pass_thru_upload_local(
-    *,
-    user: BaseUser,
-    file: File,
-    file_object
-) -> File:
-    # Potentially, check against user
-    file.file = file_object
-    file.full_clean()
-    file.save()
+        if settings.FILE_UPLOAD_STORAGE == "s3":
+            presigned_data = s3_generate_presigned_post(
+                file_path=upload_path, file_type=file.file_type
+            )
 
-    return file
+        else:
+            presigned_data = {
+                "url": file_generate_local_upload_url(file_id=str(file.id)),
+            }
 
+        return {"id": file.id, **presigned_data}
 
-@transaction.atomic
-def file_pass_thru_upload_finish(
-    *,
-    user: BaseUser,
-    file: File
-) -> File:
-    # Potentially, check against user
-    file.upload_finished_at = timezone.now()
-    file.full_clean()
-    file.save()
+    @transaction.atomic
+    def finish(self, *, file: File) -> File:
+        # Potentially, check against user
+        file.upload_finished_at = timezone.now()
+        file.full_clean()
+        file.save()
 
-    return file
+        return file
+
+    @transaction.atomic
+    def upload_local(self, *, file: File, file_object) -> File:
+        # Potentially, check against user
+        file.file = file_object
+        file.full_clean()
+        file.save()
+
+        return file

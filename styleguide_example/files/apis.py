@@ -7,9 +7,7 @@ from rest_framework.views import APIView
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
     FileDirectUploadService,
-    file_pass_thru_upload_start,
-    file_pass_thru_upload_local,
-    file_pass_thru_upload_finish,
+    FilePassThruUploadService
 )
 
 from styleguide_example.api.mixins import ApiAuthMixin
@@ -35,10 +33,8 @@ class FilePassThruUploadStartApi(ApiAuthMixin, APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        presigned_data = file_pass_thru_upload_start(
-            user=request.user,
-            **serializer.validated_data
-        )
+        service = FilePassThruUploadService(request.user)
+        presigned_data = service.start(**serializer.validated_data)
 
         return Response(data=presigned_data)
 
@@ -49,11 +45,8 @@ class FilePassThruUploadLocalApi(ApiAuthMixin, APIView):
 
         file_object = request.FILES["file"]
 
-        file = file_pass_thru_upload_local(
-            user=request.user,
-            file=file,
-            file_object=file_object
-        )
+        service = FilePassThruUploadService(request.user)
+        file = service.upload_local(file=file, file_object=file_object)
 
         return Response({"id": file.id})
 
@@ -70,9 +63,7 @@ class FilePassThruUploadFinishApi(ApiAuthMixin, APIView):
 
         file = get_object_or_404(File, id=file_id)
 
-        file = file_pass_thru_upload_finish(
-            file=file,
-            user=request.user
-        )
+        service = FilePassThruUploadService(request.user)
+        service.finish(file=file)
 
         return Response({"id": file.id})
