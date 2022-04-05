@@ -14,12 +14,12 @@ FILE_UPLOAD_STORAGE = env_to_enum(
     env("FILE_UPLOAD_STORAGE", default="local")
 )
 
-if FILE_UPLOAD_STORAGE == "local":
+if FILE_UPLOAD_STORAGE == FileUploadStorage.LOCAL:
     MEDIA_ROOT_NAME = "media"
     MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_ROOT_NAME)
     MEDIA_URL = f"/{MEDIA_ROOT_NAME}/"
 
-if FILE_UPLOAD_STORAGE == "s3":
+if FILE_UPLOAD_STORAGE == FileUploadStorage.S3:
     # Using django-storages
     # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
