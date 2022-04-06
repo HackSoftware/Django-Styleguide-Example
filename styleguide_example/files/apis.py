@@ -6,16 +6,16 @@ from rest_framework.views import APIView
 
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
-    FileDirectUploadService,
+    FileStandardUploadService,
     FilePassThruUploadService
 )
 
 from styleguide_example.api.mixins import ApiAuthMixin
 
 
-class FileDirectUploadApi(ApiAuthMixin, APIView):
+class FileStandardUploadApi(ApiAuthMixin, APIView):
     def post(self, request):
-        service = FileDirectUploadService(
+        service = FileStandardUploadService(
             user=request.user,
             file_obj=request.FILES["file"]
         )

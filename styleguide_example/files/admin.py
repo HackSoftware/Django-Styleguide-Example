@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
-    FileDirectUploadService
+    FileStandardUploadService
 )
 
 
@@ -64,7 +64,7 @@ class FileAdmin(admin.ModelAdmin):
         try:
             cleaned_data = form.cleaned_data
 
-            service = FileDirectUploadService(
+            service = FileStandardUploadService(
                 file_obj=cleaned_data["file"],
                 user=cleaned_data["uploaded_by"]
             )

@@ -7,7 +7,7 @@ from styleguide_example.files.enums import FileUploadStrategy, FileUploadStorage
 
 FILE_UPLOAD_STRATEGY = env_to_enum(
     FileUploadStrategy,
-    env("FILE_UPLOAD_STRATEGY", default="direct")
+    env("FILE_UPLOAD_STRATEGY", default="standard")
 )
 FILE_UPLOAD_STORAGE = env_to_enum(
     FileUploadStorage,

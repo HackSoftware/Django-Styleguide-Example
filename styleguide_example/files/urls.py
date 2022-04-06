@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from styleguide_example.files.apis import (
-    FileDirectUploadApi,
+    FileStandardUploadApi,
 
     FilePassThruUploadStartApi,
     FilePassThruUploadFinishApi,
@@ -14,9 +14,9 @@ urlpatterns = [
         "upload/",
         include(([
             path(
-                "direct/",
-                FileDirectUploadApi.as_view(),
-                name="direct"
+                "standard/",
+                FileStandardUploadApi.as_view(),
+                name="standard"
             ),
             path(
                 "pass-thru/",

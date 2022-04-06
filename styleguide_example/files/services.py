@@ -19,7 +19,7 @@ from styleguide_example.integrations.aws.client import s3_generate_presigned_pos
 from styleguide_example.users.models import BaseUser
 
 
-class FileDirectUploadService:
+class FileStandardUploadService:
     """
     This also serves as an example of a service class,
     which encapsulates 2 different behaviors (create & update) under a namespace.
