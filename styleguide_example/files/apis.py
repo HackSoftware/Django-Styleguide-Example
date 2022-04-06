@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
     FileStandardUploadService,
-    FilePassThruUploadService
+    FileDirectUploadService
 )
 
 from styleguide_example.api.mixins import ApiAuthMixin
@@ -24,7 +24,7 @@ class FileStandardUploadApi(ApiAuthMixin, APIView):
         return Response(data={"id": file.id}, status=status.HTTP_201_CREATED)
 
 
-class FilePassThruUploadStartApi(ApiAuthMixin, APIView):
+class FileDirectUploadStartApi(ApiAuthMixin, APIView):
     class InputSerializer(serializers.Serializer):
         file_name = serializers.CharField()
         file_type = serializers.CharField()
@@ -33,25 +33,25 @@ class FilePassThruUploadStartApi(ApiAuthMixin, APIView):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        service = FilePassThruUploadService(request.user)
+        service = FileDirectUploadService(request.user)
         presigned_data = service.start(**serializer.validated_data)
 
         return Response(data=presigned_data)
 
 
-class FilePassThruUploadLocalApi(ApiAuthMixin, APIView):
+class FileDirectUploadLocalApi(ApiAuthMixin, APIView):
     def post(self, request, file_id):
         file = get_object_or_404(File, id=file_id)
 
         file_object = request.FILES["file"]
 
-        service = FilePassThruUploadService(request.user)
+        service = FileDirectUploadService(request.user)
         file = service.upload_local(file=file, file_object=file_object)
 
         return Response({"id": file.id})
 
 
-class FilePassThruUploadFinishApi(ApiAuthMixin, APIView):
+class FileDirectUploadFinishApi(ApiAuthMixin, APIView):
     class InputSerializer(serializers.Serializer):
         file_id = serializers.CharField()
 
@@ -63,7 +63,7 @@ class FilePassThruUploadFinishApi(ApiAuthMixin, APIView):
 
         file = get_object_or_404(File, id=file_id)
 
-        service = FilePassThruUploadService(request.user)
+        service = FileDirectUploadService(request.user)
         service.finish(file=file)
 
         return Response({"id": file.id})

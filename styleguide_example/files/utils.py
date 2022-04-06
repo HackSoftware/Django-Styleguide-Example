@@ -18,7 +18,7 @@ def file_generate_upload_path(instance, filename):
 
 def file_generate_local_upload_url(*, file_id: str):
     url = reverse(
-        "api:files:upload:pass-thru:local",
+        "api:files:upload:direct:local",
         kwargs={"file_id": file_id}
     )
 

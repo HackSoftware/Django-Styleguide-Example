@@ -3,9 +3,9 @@ from django.urls import path, include
 from styleguide_example.files.apis import (
     FileStandardUploadApi,
 
-    FilePassThruUploadStartApi,
-    FilePassThruUploadFinishApi,
-    FilePassThruUploadLocalApi,
+    FileDirectUploadStartApi,
+    FileDirectUploadFinishApi,
+    FileDirectUploadLocalApi,
 )
 
 
@@ -19,24 +19,24 @@ urlpatterns = [
                 name="standard"
             ),
             path(
-                "pass-thru/",
+                "direct/",
                 include(([
                     path(
                         "start/",
-                        FilePassThruUploadStartApi.as_view(),
+                        FileDirectUploadStartApi.as_view(),
                         name="start"
                     ),
                     path(
                         "finish/",
-                        FilePassThruUploadFinishApi.as_view(),
+                        FileDirectUploadFinishApi.as_view(),
                         name="finish"
                     ),
                     path(
                         "local/<str:file_id>/",
-                        FilePassThruUploadLocalApi.as_view(),
+                        FileDirectUploadLocalApi.as_view(),
                         name="local"
                     )
-                ], "pass-thru"))
+                ], "direct"))
             )
         ], "upload"))
     )

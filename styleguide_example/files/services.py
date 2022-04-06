@@ -82,7 +82,7 @@ class FileStandardUploadService:
         return file
 
 
-class FilePassThruUploadService:
+class FileDirectUploadService:
     """
     This also serves as an example of a service class,
     which encapsulates a flow (start & finish) + one-off action (upload_local) into a namespace.
