@@ -23,3 +23,8 @@ def file_generate_local_upload_url(*, file_id: str):
     )
 
     return f"{settings.APP_DOMAIN}{url}"
+
+
+def bytes_to_mib(value: int) -> float:
+    # 1 bytes = 9.5367431640625E-7 mebibytes
+    return value * 9.5367431640625E-7

@@ -43,10 +43,10 @@ class FileDirectUploadLocalApi(ApiAuthMixin, APIView):
     def post(self, request, file_id):
         file = get_object_or_404(File, id=file_id)
 
-        file_object = request.FILES["file"]
+        file_obj = request.FILES["file"]
 
         service = FileDirectUploadService(request.user)
-        file = service.upload_local(file=file, file_object=file_object)
+        file = service.upload_local(file=file, file_obj=file_obj)
 
         return Response({"id": file.id})
 

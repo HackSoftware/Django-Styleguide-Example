@@ -5,18 +5,27 @@ from typing import Tuple, Dict, Any
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from styleguide_example.files.models import File
 from styleguide_example.files.utils import (
     file_generate_upload_path,
     file_generate_local_upload_url,
-    file_generate_name
+    file_generate_name,
+    bytes_to_mib
 )
 from styleguide_example.files.enums import FileUploadStorage
 
 from styleguide_example.integrations.aws.client import s3_generate_presigned_post
 
 from styleguide_example.users.models import BaseUser
+
+
+def _validate_file_size(file_obj):
+    max_size = settings.FILE_MAX_SIZE
+
+    if file_obj.size > max_size:
+        raise ValidationError(f"File is too large. It should not exceed {bytes_to_mib(max_size)} MiB")
 
 
 class FileStandardUploadService:
@@ -49,6 +58,8 @@ class FileStandardUploadService:
 
     @transaction.atomic
     def create(self, file_name: str = "", file_type: str = "") -> File:
+        _validate_file_size(self.file_obj)
+
         file_name, file_type = self._infer_file_name_and_type(file_name, file_type)
 
         obj = File(
@@ -67,6 +78,8 @@ class FileStandardUploadService:
 
     @transaction.atomic
     def update(self, file: File, file_name: str = "", file_type: str = "") -> File:
+        _validate_file_size(self.file_obj)
+
         file_name, file_type = self._infer_file_name_and_type(file_name, file_type)
 
         file.file = self.file_obj
@@ -138,9 +151,11 @@ class FileDirectUploadService:
         return file
 
     @transaction.atomic
-    def upload_local(self, *, file: File, file_object) -> File:
+    def upload_local(self, *, file: File, file_obj) -> File:
+        _validate_file_size(file_obj)
+
         # Potentially, check against user
-        file.file = file_object
+        file.file = file_obj
         file.full_clean()
         file.save()
 

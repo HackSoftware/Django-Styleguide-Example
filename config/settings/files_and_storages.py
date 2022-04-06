@@ -14,6 +14,8 @@ FILE_UPLOAD_STORAGE = env_to_enum(
     env("FILE_UPLOAD_STORAGE", default="local")
 )
 
+FILE_MAX_SIZE = env.int("FILE_MAX_SIZE", default=10485760)  # 10 MiB
+
 if FILE_UPLOAD_STORAGE == FileUploadStorage.LOCAL:
     MEDIA_ROOT_NAME = "media"
     MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_ROOT_NAME)
