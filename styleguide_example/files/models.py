@@ -12,7 +12,11 @@ from styleguide_example.files.enums import FileUploadStorage
 
 
 class File(BaseModel):
-    file = models.FileField(upload_to=file_generate_upload_path, null=True, blank=True)
+    file = models.FileField(
+        upload_to=file_generate_upload_path,
+        blank=True,
+        null=True
+    )
 
     original_file_name = models.TextField()
 
