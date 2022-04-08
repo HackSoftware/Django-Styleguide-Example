@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class FileUploadStrategy(Enum):
+    STANDARD = "standard"
     DIRECT = "direct"
-    PASS_THRU = "pass-thru"
 
 
 class FileUploadStorage(Enum):

@@ -18,8 +18,13 @@ def file_generate_upload_path(instance, filename):
 
 def file_generate_local_upload_url(*, file_id: str):
     url = reverse(
-        "api:files:upload:pass-thru:local",
+        "api:files:upload:direct:local",
         kwargs={"file_id": file_id}
     )
 
     return f"{settings.APP_DOMAIN}{url}"
+
+
+def bytes_to_mib(value: int) -> float:
+    # 1 bytes = 9.5367431640625E-7 mebibytes
+    return value * 9.5367431640625E-7
