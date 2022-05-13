@@ -8,6 +8,9 @@ from styleguide_example.files.apis import (
     FileDirectUploadLocalApi,
 )
 
+# Depending on your case, you might want to exclude certain urls, based on the values of
+# FILE_UPLOAD_STRATEGY and FILE_UPLOAD_STORAGE
+# For the sake fo simplicity and to serve as an example project, we are including everything here.
 
 urlpatterns = [
     path(
