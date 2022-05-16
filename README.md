@@ -9,6 +9,34 @@
 
 ---
 
+**Table of contents:**
+
+<!-- toc -->
+
+- [General API Stuff](#general-api-stuff)
+  * [CORS](#cors)
+- [Authentication - JWT](#authentication---jwt)
+  * [Settings](#settings)
+  * [APIs](#apis)
+  * [Requiring authentication](#requiring-authentication)
+- [Authentication - Sessions](#authentication---sessions)
+  * [DRF & Overriding `SessionAuthentication`](#drf--overriding-sessionauthentication)
+  * [Cross origin](#cross-origin)
+  * [APIs](#apis-1)
+  * [`HTTP Only` / `SameSite`](#http-only--samesite)
+  * [Reading list](#reading-list)
+- [Example List API](#example-list-api)
+- [File uploads](#file-uploads)
+- [Helpful commands for local development without docker-compose](#helpful-commands-for-local-development-without-docker-compose)
+- [Helpful commands for local development with docker-compose](#helpful-commands-for-local-development-with-docker-compose)
+- [Deployment](#deployment)
+  * [Heroku](#heroku)
+  * [AWS ECS](#aws-ecs)
+
+<!-- tocstop -->
+
+---
+
 This project serves as an [example of our styleguide](https://github.com/HackSoftware/Django-Styleguide)
 
 The structure is inspired by [cookiecutter-django](https://github.com/pydanny/cookiecutter-django) and modified based on our experience with Django.
@@ -201,6 +229,25 @@ Example data structure:
     ]
 }
 ```
+
+## File uploads
+
+Following this article - <https://www.hacksoft.io/blog/direct-to-s3-file-upload-with-django> - there's a rich file-upload implementation in the Django Styleguide Example.
+
+Everything is located in the `files` app.
+
+Configuration wise, everything is located in [`config/settings/files_and_storages.py`](config/settings/files_and_storages.py)
+
+Additionally, you can check the available options in [`.env.example`](.env.example)
+
+Currently, the following is supported:
+
+1. Standard local file upload.
+1. Standard S3 file upload.
+1. Using CloudFront as CDN.
+1. The so-called "direct" upload that can work both locally and with S3 (for more context, [check the article](https://www.hacksoft.io/blog/direct-to-s3-file-upload-with-django))
+
+Feel free to use this as the basis of your file upload needs.
 
 ## Helpful commands for local development without docker-compose
 
