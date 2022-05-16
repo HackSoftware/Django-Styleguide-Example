@@ -9,6 +9,33 @@
 
 ---
 
+**Table of contents:**
+
+<!-- toc -->
+
+- [General API Stuff](#general-api-stuff)
+  * [CORS](#cors)
+- [Authentication - JWT](#authentication---jwt)
+  * [Settings](#settings)
+  * [APIs](#apis)
+  * [Requiring authentication](#requiring-authentication)
+- [Authentication - Sessions](#authentication---sessions)
+  * [DRF & Overriding `SessionAuthentication`](#drf--overriding-sessionauthentication)
+  * [Cross origin](#cross-origin)
+  * [APIs](#apis-1)
+  * [`HTTP Only` / `SameSite`](#http-only--samesite)
+  * [Reading list](#reading-list)
+- [Example List API](#example-list-api)
+- [Helpful commands for local development without docker-compose](#helpful-commands-for-local-development-without-docker-compose)
+- [Helpful commands for local development with docker-compose](#helpful-commands-for-local-development-with-docker-compose)
+- [Deployment](#deployment)
+  * [Heroku](#heroku)
+  * [AWS ECS](#aws-ecs)
+
+<!-- tocstop -->
+
+---
+
 This project serves as an [example of our styleguide](https://github.com/HackSoftware/Django-Styleguide)
 
 The structure is inspired by [cookiecutter-django](https://github.com/pydanny/cookiecutter-django) and modified based on our experience with Django.
