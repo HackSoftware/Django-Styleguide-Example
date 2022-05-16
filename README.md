@@ -305,7 +305,7 @@ Deploying a Python / Django application on Heroku is quite straighforward & this
 
 To get an overview of how Heroku deployment works, we recommend reading this first - <https://devcenter.heroku.com/articles/deploying-python>
 
-There's a current deployment that can be found here - <https://hacksoft-styleguide-example.herokuapp.com/>
+There's a current deployment that can be found here - <https://django-styleguide.hacksoft.io/>
 
 **Files related to Heroku deployment:**
 
