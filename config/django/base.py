@@ -40,6 +40,7 @@ LOCAL_APPS = [
     'styleguide_example.testing_examples.apps.TestingExamplesConfig',
     'styleguide_example.integrations.apps.IntegrationsConfig',
     'styleguide_example.files.apps.FilesConfig',
+    'styleguide_example.emails.apps.EmailsConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -181,3 +182,4 @@ from config.settings.celery import *  # noqa
 from config.settings.sentry import *  # noqa
 
 from config.settings.files_and_storages import *  # noqa
+from config.settings.email_sending import *  # noqa
