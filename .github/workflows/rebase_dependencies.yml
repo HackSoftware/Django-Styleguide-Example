@@ -1,0 +1,19 @@
+name: Automatic Rebase
+on:
+  push:
+    branches:
+      - master
+jobs:
+  rebase:
+    name: Rebase `dependencies` with `master`
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+          ref: dependencies
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git rebase origin/master
+          git push origin dependencies --force-with-lease
