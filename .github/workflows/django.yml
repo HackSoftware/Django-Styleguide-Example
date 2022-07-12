@@ -4,7 +4,7 @@ jobs:
   docker_build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Build docker
       run: docker-compose build
     - name: Type check
@@ -28,7 +28,7 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Fetch history, because Heroku deploy fails otherwise.
       uses: actions/setup-python@v4
       with:
@@ -51,7 +51,7 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: "0"
       - name: Deploy to Heroku
