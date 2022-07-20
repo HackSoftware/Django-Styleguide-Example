@@ -1,3 +1,4 @@
+import shutil
 from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -27,14 +28,13 @@ class StandardUploadApiTests(TestCase):
 
     @override_settings(FILE_MAX_SIZE=10)
     def test_standard_upload(self):
-        file_max_size = settings.FILE_MAX_SIZE
 
         self.assertEqual(0, File.objects.count())
         self.assertEqual(0, BaseUser.objects.count())
 
         # Create a user
         credentials = {
-            "email": "some_email@hacksoft.io",
+            "email": "test@hacksoft.io",
             "password": "123456"
         }
         user_create(**credentials)
@@ -53,42 +53,45 @@ class StandardUploadApiTests(TestCase):
 
         # Create a small sized file
         file_1 = SimpleUploadedFile(
-            name="file_small.txt", content=b"Test", content_type="text/plain"
+            name="file_small.txt",
+            content=(settings.FILE_MAX_SIZE - 5) * "a".encode(),
+            content_type="text/plain"
         )
 
         with self.subTest("1. Upload a file, below the size limit, assert models gets created accordingly"):
-            response = self.client.post(
-                self.standard_upload_url, {"file": file_1}, enctype="multipart/form-data", **auth_headers
-            )
+            response = self.client.post(self.standard_upload_url, {"file": file_1}, **auth_headers)
 
             self.assertEqual(201, response.status_code)
             self.assertEqual(1, File.objects.count())
 
         # Create a file above the size limit
         file_2 = SimpleUploadedFile(
-            name="file_big.txt", content=(file_max_size + 1) * "a".encode(), content_type="text/plain"
+            name="file_big.txt",
+            content=(settings.FILE_MAX_SIZE + 1) * "a".encode(),
+            content_type="text/plain"
         )
 
         with self.subTest("2. Upload a file, above the size limit, assert API error, nothing gets created"):
-            response = self.client.post(
-                self.standard_upload_url, {"file": file_2}, enctype="multipart/form-data", **auth_headers
-            )
+            response = self.client.post(self.standard_upload_url, {"file": file_2}, **auth_headers)
 
             self.assertEqual(400, response.status_code)
             self.assertEqual(1, File.objects.count())
 
         # Create a file equal to the size limit
         file_3 = SimpleUploadedFile(
-            name="file_equal.txt", content=file_max_size * "b".encode(), content_type="text/plain"
+            name="file_equal.txt",
+            content=settings.FILE_MAX_SIZE * "a".encode(),
+            content_type="text/plain"
         )
 
         with self.subTest("3. Upload a file, equal to the size limit, assert models gets created accordingly"):
-            response = self.client.post(
-                self.standard_upload_url, {"file": file_3}, enctype="multipart/form-data", **auth_headers
-            )
+            response = self.client.post(self.standard_upload_url, {"file": file_3}, **auth_headers)
 
             self.assertEqual(201, response.status_code)
             self.assertEqual(2, File.objects.count())
+
+    def tearDown(self):
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
 
 
 class StandardUploadAdminTests(TestCase):
@@ -117,13 +120,12 @@ class StandardUploadAdminTests(TestCase):
 
     @override_settings(FILE_MAX_SIZE=10)
     def test_standard_admin_upload_and_update(self):
-        file_max_size = settings.FILE_MAX_SIZE
 
         self.assertEqual(0, File.objects.count())
 
         # Create a superuser
         credentials = {
-            "email": "admin_email@hacksoft.io",
+            "email": "test@hacksoft.io",
             "password": "123456",
             "is_admin": True,
             "is_superuser": True
@@ -133,7 +135,9 @@ class StandardUploadAdminTests(TestCase):
         self.assertEqual(1, BaseUser.objects.count())
 
         file_1 = SimpleUploadedFile(
-            name="first_file.txt", content=b"Test!", content_type="text/plain"
+            name="first_file.txt",
+            content=(settings.FILE_MAX_SIZE - 5) * "a".encode(),
+            content_type="text/plain"
         )
 
         data_file_1 = {
@@ -149,12 +153,13 @@ class StandardUploadAdminTests(TestCase):
             successfully_uploaded_file = File.objects.last()
 
             self.assertEqual(302, response.status_code)
-            self.assertEqual(self.admin_files_list_url, response.url)
             self.assertEqual(1, File.objects.count())
             self.assertEqual(file_1.name, successfully_uploaded_file.original_file_name)
 
         file_2 = SimpleUploadedFile(
-            name="second_file.txt", content=(file_max_size - 1) * "a".encode(), content_type="text/plain"
+            name="second_file.txt",
+            content=(settings.FILE_MAX_SIZE - 1) * "a".encode(),
+            content_type="text/plain"
         )
 
         data_file_2 = {
@@ -166,12 +171,13 @@ class StandardUploadAdminTests(TestCase):
             response = self.client.post(self.admin_update_file_url(successfully_uploaded_file), data_file_2)
 
             self.assertEqual(302, response.status_code)
-            self.assertRedirects(response, self.admin_files_list_url)
             self.assertEqual(1, File.objects.count())
             self.assertEqual(file_2.name, File.objects.last().original_file_name)
 
         file_3 = SimpleUploadedFile(
-            name="oversized_file.txt", content=(file_max_size + 10) * "b".encode(), content_type="text/plain"
+            name="oversized_file.txt",
+            content=(settings.FILE_MAX_SIZE + 1) * "a".encode(),
+            content_type="text/plain"
         )
 
         data_oversized_file = {
@@ -180,15 +186,16 @@ class StandardUploadAdminTests(TestCase):
         }
 
         with self.subTest("3. Create a new oversized file via the Django admin, assert error, nothing gets created"):
-            response = self.client.post(self.admin_upload_file_url, data_oversized_file)
-            response_2 = self.client.get(response.url)
+            response = self.client.post(self.admin_upload_file_url, data_oversized_file, follow=True)
 
-            self.assertContains(response_2, "File is too large")
+            self.assertContains(response, "File is too large")
             self.assertEqual(1, File.objects.count())
             self.assertEqual(file_2.name, File.objects.last().original_file_name)
 
         file_4 = SimpleUploadedFile(
-            name="new_oversized_file.txt", content=(file_max_size + 20) * "c".encode(), content_type="text/plain"
+            name="new_oversized_file.txt",
+            content=(settings.FILE_MAX_SIZE + 1) * "a".encode(),
+            content_type="text/plain"
         )
 
         data_new_oversized_file = {
@@ -199,9 +206,13 @@ class StandardUploadAdminTests(TestCase):
         with self.subTest(
             "4. Update an existing file with an oversized one via the Django admin, assert error, nothing gets created"
         ):
-            response = self.client.post(self.admin_update_file_url(File.objects.last()), data_new_oversized_file)
-            response_2 = self.client.get(response.url)
+            response = self.client.post(
+                self.admin_update_file_url(File.objects.last()), data_new_oversized_file, follow=True
+            )
 
-            self.assertContains(response_2, "File is too large")
+            self.assertContains(response, "File is too large")
             self.assertEqual(1, File.objects.count())
             self.assertEqual(file_2.name, File.objects.last().original_file_name)
+
+    def tearDown(self):
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
