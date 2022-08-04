@@ -6,7 +6,7 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.views import APIView
 from rest_framework import serializers
 
-from styleguide_example.api.pagination import get_paginated_response, LimitOffsetPagination
+from styleguide_example.api.pagination import response_paginate, LimitOffsetPagination
 
 from styleguide_example.users.services import user_create
 from styleguide_example.users.models import BaseUser
@@ -24,7 +24,7 @@ class ExampleListApi(APIView):
     def get(self, request):
         queryset = BaseUser.objects.order_by('id')
 
-        response = get_paginated_response(
+        response = response_paginate(
             pagination_class=self.Pagination,
             serializer_class=self.OutputSerializer,
             queryset=queryset,
@@ -35,7 +35,7 @@ class ExampleListApi(APIView):
         return response
 
 
-class GetPaginatedResponseTests(TestCase):
+class ResponsePaginateTests(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
 
