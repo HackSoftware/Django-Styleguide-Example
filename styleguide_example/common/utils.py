@@ -57,3 +57,18 @@ def assert_settings(required_settings, error_message_prefix=""):
         raise ImproperlyConfigured(f"{error_message_prefix} Could not find: {stringified_not_present}")
 
     return values
+
+
+def trycast(value, cast_f):
+    """
+    Try to convert value via cast_f & catch ValueError.
+
+    For example:
+
+    x = trycast("5", int)
+    """
+
+    try:
+        return cast_f(value)
+    except ValueError:
+        return None
