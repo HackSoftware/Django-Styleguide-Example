@@ -18,3 +18,5 @@ drf-jwt==1.19.2
 
 boto3==1.24.33
 attrs==21.4.0
+
+drf-spectacular==0.23.1
