@@ -1,6 +1,6 @@
 import shutil
 from django.conf import settings
-from django.test import TestCase, override_settings
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -109,7 +109,7 @@ class StandardUploadAdminTests(TestCase):
     2. Update an existing fila via the Django admin, assert error, nothing gets created.
     """
     def setUp(self):
-        self.client = APIClient()
+        self.client = Client()
 
         self.admin_upload_file_url = reverse("admin:files_file_add")
         self.admin_files_list_url = reverse("admin:files_file_changelist")
