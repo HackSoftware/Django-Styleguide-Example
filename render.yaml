@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: web
+    env: docker
+    region: frankfurt
+    plan: starter
+    branch: master
+    dockerCommand: ./docker/web_entrypoint.sh
+    numInstances: 1
+
+  - type: worker
+    name: celery
+    env: docker
+    region: frankfurt
+    plan: starter
+    branch: master
+    dockerCommand: ./docker/celery_entrypoint.sh
+    numInstances: 1
+
+  - type: worker
+    name: beats
+    env: docker
+    region: frankfurt
+    plan: starter
+    branch: master
+    dockerCommand: ./docker/celery_entrypoint.sh
+    numInstances: 1
+
+  - type: redis
+    name: redis
+    plan: free
+
+databases:
+  - name: postgres
+    plan: free
+    postgresMajorVersion: 14
+
+
+envVarGroups:
+  - name: app-settings
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: redis
+          property: connectionString
+      - key: DATABASE_URL
+        fromService:
+          name: postgres
+          property: connectionString
