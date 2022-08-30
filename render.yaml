@@ -7,6 +7,16 @@ services:
     branch: master
     dockerCommand: ./docker/web_entrypoint.sh
     numInstances: 1
+    envVars:
+     - fromGroup: app-settings
+     - key: REDIS_URL
+        fromService:
+          name: redis
+          property: connectionString
+    - key: DATABASE_URL
+        fromService:
+          name: postgres
+          property: connectionString
 
   - type: worker
     name: celery
@@ -16,6 +26,16 @@ services:
     branch: master
     dockerCommand: ./docker/celery_entrypoint.sh
     numInstances: 1
+    envVars:
+     - fromGroup: app-settings
+     - key: REDIS_URL
+        fromService:
+          name: redis
+          property: connectionString
+    - key: DATABASE_URL
+        fromService:
+          name: postgres
+          property: connectionString
 
   - type: worker
     name: beats
@@ -25,10 +45,21 @@ services:
     branch: master
     dockerCommand: ./docker/celery_entrypoint.sh
     numInstances: 1
+    envVars:
+     - fromGroup: app-settings
+     - key: REDIS_URL
+        fromService:
+          name: redis
+          property: connectionString
+    - key: DATABASE_URL
+        fromService:
+          name: postgres
+          property: connectionString
 
   - type: redis
     name: redis
     plan: free
+    ipAllowList: []
 
 databases:
   - name: postgres
@@ -39,11 +70,5 @@ databases:
 envVarGroups:
   - name: app-settings
     envVars:
-      - key: REDIS_URL
-        fromService:
-          name: redis
-          property: connectionString
-      - key: DATABASE_URL
-        fromService:
-          name: postgres
-          property: connectionString
+      name: test
+      value: 1
