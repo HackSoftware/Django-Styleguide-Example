@@ -64,12 +64,14 @@ services:
           property: connectionString
 
   - type: redis
+    region: frankfurt
     name: redis
     plan: free
     ipAllowList: []
 
 databases:
   - name: postgres
+    region: frankfurt
     plan: free
     postgresMajorVersion: 14
 
