@@ -5,7 +5,7 @@ services:
     region: frankfurt
     plan: starter
     branch: master
-    dockerCommand: ./docker/web_entrypoint.sh
+    dockerCommand: ./app/docker/web_entrypoint.sh
     dockerfilePath: ./docker/production.Dockerfile
     numInstances: 1
     healthCheckPath: /admin
@@ -27,7 +27,7 @@ services:
     region: frankfurt
     plan: starter
     branch: master
-    dockerCommand: ./docker/celery_entrypoint.sh
+    dockerCommand: ./app/docker/celery_entrypoint.sh
     dockerfilePath: ./docker/production.Dockerfile
     numInstances: 1
     envVars:
@@ -48,7 +48,7 @@ services:
     region: frankfurt
     plan: starter
     branch: master
-    dockerCommand: ./docker/celery_entrypoint.sh
+    dockerCommand: ./app/docker/celery_entrypoint.sh
     dockerfilePath: ./docker/production.Dockerfile
     numInstances: 1
     envVars:
