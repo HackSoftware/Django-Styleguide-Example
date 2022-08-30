@@ -7,6 +7,7 @@ services:
     branch: master
     dockerCommand: ./docker/web_entrypoint.sh
     numInstances: 1
+    healthCheckPath: /
     envVars:
      - fromGroup: app-settings
     #  - key: REDIS_URL
