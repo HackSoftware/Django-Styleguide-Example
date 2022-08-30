@@ -9,11 +9,11 @@ services:
     numInstances: 1
     envVars:
      - fromGroup: app-settings
-     - key: REDIS_URL
-        fromService:
-          type: redis
-          name: redis
-          property: connectionString
+    #  - key: REDIS_URL
+    #     fromService:
+    #       type: redis
+    #       name: redis
+    #       property: connectionString
     - key: DATABASE_URL
         formDatabase:
           name: postgres
@@ -49,10 +49,11 @@ services:
     numInstances: 1
     envVars:
      - fromGroup: app-settings
-     - key: REDIS_URL
-        fromService:
-          name: redis
-          property: connectionString
+    #  - key: REDIS_URL
+    #     fromService:
+    #       type: redis
+    #       name: redis
+    #       property: connectionString
     - key: DATABASE_URL
         fromService:
           name: postgres
