@@ -4,7 +4,7 @@ pytest==7.1.2
 pytest-django==4.5.2
 
 factory-boy==3.2.1
-Faker==13.15.1
+Faker==14.2.0
 
 flake8==5.0.4
 
