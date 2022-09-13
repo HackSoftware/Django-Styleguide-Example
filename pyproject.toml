@@ -3,3 +3,12 @@ line-length = 120
 # By default, `black` will ignore skip configuration when paths are explicitly provided.
 # In order for `pre-commit` to respect this configuration, `force-exclude` needs to be explicitly set.
 force-exclude = 'migrations'
+
+[tool.isort]
+# https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#isort
+profile = "black"
+# By default, `isort` will ignore skip configuration when paths are explicitly provided.
+# In order for `pre-commit` to respect this configuration, `filter_files` needs to be set to true.
+# https://jugmac00.github.io/blog/isort-and-pre-commit-a-friendship-with-obstacles/
+filter_files = true
+skip_glob = ["*/migrations/*", "config/*"]
