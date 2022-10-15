@@ -11,7 +11,7 @@ services:
     healthCheckPath: /admin/login/
     envVars:
       - fromGroup: app-settings
-      - key: REDIS_URL
+      - key: CELERY_BROKER_URL
         fromService:
           type: redis
           name: redis
@@ -32,7 +32,7 @@ services:
     numInstances: 1
     envVars:
       - fromGroup: app-settings
-      - key: REDIS_URL
+      - key: CELERY_BROKER_URL
         fromService:
           type: redis
           name: redis
@@ -53,7 +53,7 @@ services:
     numInstances: 1
     envVars:
       - fromGroup: app-settings
-      - key: REDIS_URL
+      - key: CELERY_BROKER_URL
         fromService:
           type: redis
           name: redis
