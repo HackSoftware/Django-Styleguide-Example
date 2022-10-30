@@ -1,6 +1,6 @@
 Django==4.1.2
 django-environ==0.9.0
-psycopg2==2.9.3
+psycopg2==2.9.5
 djangorestframework==3.14.0
 
 celery==5.2.7
@@ -16,5 +16,5 @@ django-storages==1.13.1
 
 drf-jwt==1.19.2
 
-boto3==1.24.96
+boto3==1.25.4
 attrs==22.1.0
