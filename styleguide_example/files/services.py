@@ -1,23 +1,20 @@
 import mimetypes
-
-from typing import Tuple, Dict, Any
+from typing import Any, Dict, Tuple
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 
+from styleguide_example.files.enums import FileUploadStorage
 from styleguide_example.files.models import File
 from styleguide_example.files.utils import (
-    file_generate_upload_path,
+    bytes_to_mib,
     file_generate_local_upload_url,
     file_generate_name,
-    bytes_to_mib
+    file_generate_upload_path,
 )
-from styleguide_example.files.enums import FileUploadStorage
-
 from styleguide_example.integrations.aws.client import s3_generate_presigned_post
-
 from styleguide_example.users.models import BaseUser
 
 
@@ -38,6 +35,7 @@ class FileStandardUploadService:
     1. The namespace
     2. The ability to reuse `_infer_file_name_and_type` (which can also be an util)
     """
+
     def __init__(self, user: BaseUser, file_obj):
         self.user = user
         self.file_obj = file_obj
@@ -68,7 +66,7 @@ class FileStandardUploadService:
             file_name=file_generate_name(file_name),
             file_type=file_type,
             uploaded_by=self.user,
-            upload_finished_at=timezone.now()
+            upload_finished_at=timezone.now(),
         )
 
         obj.full_clean()
@@ -104,6 +102,7 @@ class FileDirectUploadService:
 
     1. The namespace
     """
+
     def __init__(self, user: BaseUser):
         self.user = user
 
@@ -114,7 +113,7 @@ class FileDirectUploadService:
             file_name=file_generate_name(file_name),
             file_type=file_type,
             uploaded_by=self.user,
-            file=None
+            file=None,
         )
         file.full_clean()
         file.save()
@@ -130,9 +129,7 @@ class FileDirectUploadService:
         presigned_data: Dict[str, Any] = {}
 
         if settings.FILE_UPLOAD_STORAGE == FileUploadStorage.S3:
-            presigned_data = s3_generate_presigned_post(
-                file_path=upload_path, file_type=file.file_type
-            )
+            presigned_data = s3_generate_presigned_post(file_path=upload_path, file_type=file.file_type)
 
         else:
             presigned_data = {

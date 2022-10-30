@@ -1,10 +1,8 @@
-from typing import Dict, Any
-
 from functools import lru_cache
-
-from attrs import define
+from typing import Any, Dict
 
 import boto3
+from attrs import define
 
 from styleguide_example.common.utils import assert_settings
 
@@ -30,9 +28,9 @@ def s3_get_credentials() -> S3Credentials:
             "AWS_STORAGE_BUCKET_NAME",
             "AWS_DEFAULT_ACL",
             "AWS_PRESIGNED_EXPIRY",
-            "FILE_MAX_SIZE"
+            "FILE_MAX_SIZE",
         ],
-        "S3 credentials not found."
+        "S3 credentials not found.",
     )
 
     return S3Credentials(
@@ -42,7 +40,7 @@ def s3_get_credentials() -> S3Credentials:
         bucket_name=required_config["AWS_STORAGE_BUCKET_NAME"],
         default_acl=required_config["AWS_DEFAULT_ACL"],
         presigned_expiry=required_config["AWS_PRESIGNED_EXPIRY"],
-        max_size=required_config["FILE_MAX_SIZE"]
+        max_size=required_config["FILE_MAX_SIZE"],
     )
 
 
@@ -53,7 +51,7 @@ def s3_get_client():
         service_name="s3",
         aws_access_key_id=credentials.access_key_id,
         aws_secret_access_key=credentials.secret_access_key,
-        region_name=credentials.region_name
+        region_name=credentials.region_name,
     )
 
 
@@ -85,17 +83,14 @@ def s3_generate_presigned_post(*, file_path: str, file_type: str) -> Dict[str, A
     presigned_data = s3_client.generate_presigned_post(
         credentials.bucket_name,
         file_path,
-        Fields={
-            "acl": acl,
-            "Content-Type": file_type
-        },
+        Fields={"acl": acl, "Content-Type": file_type},
         Conditions=[
             {"acl": acl},
             {"Content-Type": file_type},
             # As an example, allow file size up to 10 MiB
             # More on conditions, here:
             # https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-HTTPPOSTConstructPolicy.html
-            ["content-length-range", 1, credentials.max_size]
+            ["content-length-range", 1, credentials.max_size],
         ],
         ExpiresIn=expires_in,
     )

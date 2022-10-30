@@ -1,17 +1,12 @@
-from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
-
-from rest_framework.views import APIView
+from django.contrib.auth import authenticate, login, logout
+from rest_framework import serializers, status
 from rest_framework.response import Response
-from rest_framework import serializers
-from rest_framework import status
-
+from rest_framework.views import APIView
 from rest_framework_jwt.views import ObtainJSONWebTokenView
 
 from styleguide_example.api.mixins import ApiAuthMixin
-
 from styleguide_example.authentication.services import auth_logout
-
 from styleguide_example.users.selectors import user_get_login_data
 
 
@@ -19,6 +14,7 @@ class UserSessionLoginApi(APIView):
     """
     Following https://docs.djangoproject.com/en/3.1/topics/auth/default/#how-to-log-a-user-in
     """
+
     class InputSerializer(serializers.Serializer):
         email = serializers.EmailField()
         password = serializers.CharField()
@@ -37,10 +33,7 @@ class UserSessionLoginApi(APIView):
         data = user_get_login_data(user=user)
         session_key = request.session.session_key
 
-        return Response({
-            'session': session_key,
-            'data': data
-        })
+        return Response({"session": session_key, "data": data})
 
 
 class UserSessionLogoutApi(APIView):
@@ -73,8 +66,8 @@ class UserJwtLogoutApi(ApiAuthMixin, APIView):
 
         response = Response()
 
-        if settings.JWT_AUTH['JWT_AUTH_COOKIE'] is not None:
-            response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
+        if settings.JWT_AUTH["JWT_AUTH_COOKIE"] is not None:
+            response.delete_cookie(settings.JWT_AUTH["JWT_AUTH_COOKIE"])
 
         return response
 

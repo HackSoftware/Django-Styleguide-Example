@@ -1,9 +1,8 @@
 import pathlib
-
 from uuid import uuid4
 
-from django.urls import reverse
 from django.conf import settings
+from django.urls import reverse
 
 
 def file_generate_name(original_file_name):
@@ -17,14 +16,11 @@ def file_generate_upload_path(instance, filename):
 
 
 def file_generate_local_upload_url(*, file_id: str):
-    url = reverse(
-        "api:files:upload:direct:local",
-        kwargs={"file_id": file_id}
-    )
+    url = reverse("api:files:upload:direct:local", kwargs={"file_id": file_id})
 
     return f"{settings.APP_DOMAIN}{url}"
 
 
 def bytes_to_mib(value: int) -> float:
     # 1 bytes = 9.5367431640625E-7 mebibytes
-    return value * 9.5367431640625E-7
+    return value * 9.5367431640625e-7

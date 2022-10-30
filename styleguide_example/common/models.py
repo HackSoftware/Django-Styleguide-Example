@@ -16,13 +16,13 @@ class RandomModel(BaseModel):
     This is an example model, to be used as reference in the Styleguide,
     when discussing model validation via constraints.
     """
+
     start_date = models.DateField()
     end_date = models.DateField()
 
     class Meta:
         constraints = [
             models.CheckConstraint(
-                name="start_date_before_end_date",
-                check=Q(start_date__lt=F("end_date")) | Q(end_date__isnull=True)
+                name="start_date_before_end_date", check=Q(start_date__lt=F("end_date")) | Q(end_date__isnull=True)
             )
         ]

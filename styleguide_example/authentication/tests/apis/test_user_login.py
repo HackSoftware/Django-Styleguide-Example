@@ -1,7 +1,6 @@
+from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
-from django.conf import settings
-
 from rest_framework.test import APIClient
 
 from styleguide_example.users.models import BaseUser
@@ -12,17 +11,14 @@ class UserSessionLoginTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.session_login_url = reverse('api:authentication:session:login')
-        self.session_logout_url = reverse('api:authentication:session:logout')
-        self.me_url = reverse('api:authentication:me')
+        self.session_login_url = reverse("api:authentication:session:login")
+        self.session_logout_url = reverse("api:authentication:session:logout")
+        self.me_url = reverse("api:authentication:me")
 
     def test_non_existing_user_cannot_login(self):
         self.assertEqual(0, BaseUser.objects.count())
 
-        data = {
-            'email': 'test@hacksoft.io',
-            'password': 'hacksoft'
-        }
+        data = {"email": "test@hacksoft.io", "password": "hacksoft"}
 
         response = self.client.post(self.session_login_url, data)
 
@@ -35,14 +31,9 @@ class UserSessionLoginTests(TestCase):
         3. Call /api/auth/me
         4. Assert valid response
         """
-        credentials = {
-            "email": "test@hacksoft.io",
-            "password": "password"
-        }
+        credentials = {"email": "test@hacksoft.io", "password": "password"}
 
-        user_create(
-            **credentials
-        )
+        user_create(**credentials)
 
         response = self.client.post(self.session_login_url, credentials)
 
@@ -64,9 +55,7 @@ class UserSessionLoginTests(TestCase):
         response = client.get(self.me_url)
         self.assertEqual(403, response.status_code)
 
-        auth_headers = {
-            "HTTP_AUTHORIZATION": f"Session {session}"
-        }
+        auth_headers = {"HTTP_AUTHORIZATION": f"Session {session}"}
         response = client.get(self.me_url, **auth_headers)
         self.assertEqual(200, response.status_code)
 
@@ -76,14 +65,9 @@ class UserSessionLoginTests(TestCase):
         2. Login, can access APIs
         3. Logout, cannot access APIs
         """
-        credentials = {
-            "email": "test@hacksoft.io",
-            "password": "password"
-        }
+        credentials = {"email": "test@hacksoft.io", "password": "password"}
 
-        user_create(
-            **credentials
-        )
+        user_create(**credentials)
 
         response = self.client.post(self.session_login_url, credentials)
         self.assertEqual(200, response.status_code)
@@ -101,17 +85,14 @@ class UserJwtLoginTests(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        self.jwt_login_url = reverse('api:authentication:jwt:login')
-        self.jwt_logout_url = reverse('api:authentication:jwt:logout')
-        self.me_url = reverse('api:authentication:me')
+        self.jwt_login_url = reverse("api:authentication:jwt:login")
+        self.jwt_logout_url = reverse("api:authentication:jwt:logout")
+        self.me_url = reverse("api:authentication:me")
 
     def test_non_existing_user_cannot_login(self):
         self.assertEqual(0, BaseUser.objects.count())
 
-        data = {
-            'email': 'test@hacksoft.io',
-            'password': 'hacksoft'
-        }
+        data = {"email": "test@hacksoft.io", "password": "hacksoft"}
 
         response = self.client.post(self.jwt_login_url, data)
 
@@ -124,14 +105,9 @@ class UserJwtLoginTests(TestCase):
         3. Call /api/auth/me
         4. Assert valid response
         """
-        credentials = {
-            "email": "test@hacksoft.io",
-            "password": "password"
-        }
+        credentials = {"email": "test@hacksoft.io", "password": "password"}
 
-        user_create(
-            **credentials
-        )
+        user_create(**credentials)
 
         response = self.client.post(self.jwt_login_url, credentials)
 
@@ -154,9 +130,7 @@ class UserJwtLoginTests(TestCase):
         response = client.get(self.me_url)
         self.assertEqual(403, response.status_code)
 
-        auth_headers = {
-            "HTTP_AUTHORIZATION": f"{settings.JWT_AUTH['JWT_AUTH_HEADER_PREFIX']} {token}"
-        }
+        auth_headers = {"HTTP_AUTHORIZATION": f"{settings.JWT_AUTH['JWT_AUTH_HEADER_PREFIX']} {token}"}
         response = client.get(self.me_url, **auth_headers)
         self.assertEqual(200, response.status_code)
 
@@ -166,14 +140,9 @@ class UserJwtLoginTests(TestCase):
         2. Login, can access APIs
         3. Logout, cannot access APIs
         """
-        credentials = {
-            "email": "test@hacksoft.io",
-            "password": "password"
-        }
+        credentials = {"email": "test@hacksoft.io", "password": "password"}
 
-        user = user_create(
-            **credentials
-        )
+        user = user_create(**credentials)
 
         key_before_logout = user.jwt_key
 

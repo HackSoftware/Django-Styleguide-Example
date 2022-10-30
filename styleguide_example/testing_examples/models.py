@@ -15,45 +15,47 @@ class School(models.Model):
 class Student(models.Model):
     email = models.EmailField(max_length=255)
     identifier = models.UUIDField(default=uuid4)
-    school = models.ForeignKey(School, related_name='students', on_delete=models.CASCADE)
+    school = models.ForeignKey(School, related_name="students", on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (
-            ('email', 'school'),
-            ('identifier', 'school'),
+            ("email", "school"),
+            ("identifier", "school"),
         )
 
     def __str__(self):
-        return f'Student {self.email} ({self.identifier})'
+        return f"Student {self.email} ({self.identifier})"
 
 
 class SchoolCourse(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    school = models.ForeignKey(School, related_name='school_courses', on_delete=models.CASCADE)
+    school = models.ForeignKey(School, related_name="school_courses", on_delete=models.CASCADE)
 
     start_date = models.DateField()
     end_date = models.DateField()
 
     class Meta:
         constraints = [
-            models.CheckConstraint(
-                name="school_course_start_before_end",
-                check=Q(start_date__lt=F("end_date"))
-            )
+            models.CheckConstraint(name="school_course_start_before_end", check=Q(start_date__lt=F("end_date")))
         ]
 
         unique_together = (
-            ('name', 'slug', 'start_date', 'end_date', ),
+            (
+                "name",
+                "slug",
+                "start_date",
+                "end_date",
+            ),
         )
 
     def __str__(self):
-        return f'{self.name} in {self.school}'
+        return f"{self.name} in {self.school}"
 
 
 class Roster(models.Model):
-    student = models.ForeignKey(Student, related_name='rosters', on_delete=models.CASCADE)
-    school_course = models.ForeignKey(SchoolCourse, related_name='rosters', on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, related_name="rosters", on_delete=models.CASCADE)
+    school_course = models.ForeignKey(SchoolCourse, related_name="rosters", on_delete=models.CASCADE)
 
     start_date = models.DateField()
     end_date = models.DateField()
@@ -62,9 +64,4 @@ class Roster(models.Model):
     deactivated_at = models.DateField(null=True, blank=True)
 
     class Meta:
-        constraints = [
-            models.CheckConstraint(
-                name="roster_start_before_end",
-                check=Q(start_date__lt=F("end_date"))
-            )
-        ]
+        constraints = [models.CheckConstraint(name="roster_start_before_end", check=Q(start_date__lt=F("end_date")))]

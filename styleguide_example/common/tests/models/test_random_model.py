@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
+
 from styleguide_example.common.models import RandomModel
 
 

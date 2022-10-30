@@ -1,23 +1,22 @@
 from datetime import timedelta
 
 import factory
-
 from django.utils.text import slugify
 
-from styleguide_example.utils.tests import faker
 from styleguide_example.testing_examples.models import (
-    School,
-    Student,
     Roster,
-    SchoolCourse
+    School,
+    SchoolCourse,
+    Student,
 )
+from styleguide_example.utils.tests import faker
 
 
 class SchoolFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = School
 
-    name = factory.LazyAttribute(lambda _: f'{faker.unique.company()} School')
+    name = factory.LazyAttribute(lambda _: f"{faker.unique.company()} School")
     slug = factory.LazyAttribute(lambda self: slugify(self.name))
 
 
@@ -34,10 +33,7 @@ class SchoolWithStudentsFactory(SchoolFactory):
     @factory.post_generation
     def students(obj, create, extracted, **kwargs):
         if create:
-            students = extracted or StudentFactory.create_batch(
-                kwargs.pop('count', 5),
-                **kwargs
-            )
+            students = extracted or StudentFactory.create_batch(kwargs.pop("count", 5), **kwargs)
             obj.students.set(students)
             return students
 
@@ -65,10 +61,7 @@ class RosterFactory(factory.django.DjangoModelFactory):
     # NOTE: You can use `factory.SelfAttribute` for the below attributes.
     # We prefer using `factory.LazyAttribute` as we find the definition more explicit.
     school_course = factory.SubFactory(
-        SchoolCourseFactory,
-        school=factory.LazyAttribute(
-            lambda course: course.factory_parent.student.school
-        )
+        SchoolCourseFactory, school=factory.LazyAttribute(lambda course: course.factory_parent.student.school)
     )
 
     start_date = factory.LazyAttribute(lambda _self: _self.school_course.start_date)
@@ -100,9 +93,7 @@ class SchoolCourseWithRostersFactory(SchoolCourseFactory):
     def rosters(obj, create, extracted, **kwargs):
         if create:
             rosters = extracted or RosterFactory.create_batch(
-                kwargs.pop('count', 5),
-                **kwargs,
-                student__school=obj.school  # NOTE!
+                kwargs.pop("count", 5), **kwargs, student__school=obj.school  # NOTE!
             )
 
             obj.rosters.set(rosters)

@@ -1,22 +1,14 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 from styleguide_example.common.models import BaseModel
-
-from styleguide_example.users.models import BaseUser
-
-from styleguide_example.files.utils import (
-    file_generate_upload_path
-)
 from styleguide_example.files.enums import FileUploadStorage
+from styleguide_example.files.utils import file_generate_upload_path
+from styleguide_example.users.models import BaseUser
 
 
 class File(BaseModel):
-    file = models.FileField(
-        upload_to=file_generate_upload_path,
-        blank=True,
-        null=True
-    )
+    file = models.FileField(upload_to=file_generate_upload_path, blank=True, null=True)
 
     original_file_name = models.TextField()
 
@@ -26,11 +18,7 @@ class File(BaseModel):
     # As a specific behavior,
     # We might want to preserve files after the uploader has been deleted.
     # In case you want to delete the files too, use models.CASCADE & drop the null=True
-    uploaded_by = models.ForeignKey(
-        BaseUser,
-        null=True,
-        on_delete=models.SET_NULL
-    )
+    uploaded_by = models.ForeignKey(BaseUser, null=True, on_delete=models.SET_NULL)
 
     upload_finished_at = models.DateTimeField(blank=True, null=True)
 
