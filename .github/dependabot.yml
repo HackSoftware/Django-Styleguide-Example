@@ -8,9 +8,9 @@ updates:
   # Enable version updates for Python
   - package-ecosystem: "pip"
     directory: "/" # Location of package manifests
-    # Check for updates once a week
+    # Check for updates once a month
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     # Use the `dependencies` branch as a target
     target-branch: "dependencies"
 
@@ -18,7 +18,7 @@ updates:
   - package-ecosystem: "github-actions"
     # Look for a `/workflows` in the `root` directory
     directory: "/"
-    # Check for updates once a week
+    # Check for updates once a month
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "dependencies"
