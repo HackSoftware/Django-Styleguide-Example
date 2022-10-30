@@ -16,5 +16,5 @@ django-storages==1.13.1
 
 drf-jwt==1.19.2
 
-boto3==1.24.96
+boto3==1.25.4
 attrs==22.1.0
