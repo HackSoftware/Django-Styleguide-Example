@@ -14,4 +14,4 @@ ipython==8.5.0
 mypy==0.971
 django-stubs==1.12.0
 djangorestframework-stubs==1.7.0
-boto3-stubs==1.24.71
+boto3-stubs==1.24.96
