@@ -15,3 +15,8 @@ mypy==0.971
 django-stubs==1.12.0
 djangorestframework-stubs==1.7.0
 boto3-stubs==1.25.4
+
+flake8==5.0.4
+isort==5.10.1
+black==22.10.0
+pre-commit==2.20.0
