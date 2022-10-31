@@ -7,14 +7,14 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build docker
         run: docker-compose build
-      - name: Type check
-        run: docker-compose run django mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
       - name: Run isort
         run: docker-compose run django isort styleguide_example/ --check
       - name: Run black
         run: docker-compose run django black styleguide_example/ --check
       - name: Run Flake8
         run: docker-compose run django flake8
+      - name: Type check
+        run: docker-compose run django mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
       - name: Run migrations
         run: docker-compose run django python manage.py migrate
       - name: Run tests
@@ -43,16 +43,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements/local.txt
-      - name: Type check
-        run: |
-          mypy --version
-          mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
       - name: Run isort
         uses: isort/isort-action@master
       - name: Run black
         uses: psf/black@stable
       - name: Run flake8
         run: flake8
+      - name: Type check
+        run: |
+          mypy --version
+          mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
       - name: Run migrations
         run: python manage.py migrate
       - name: Run tests
