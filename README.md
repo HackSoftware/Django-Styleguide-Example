@@ -346,8 +346,8 @@ In all our Django projects we use:
 
 To make sure all of the above tools work in symbiosis, you'd need to add some configuration:
 
-1. Add `.pre-commit-config.yaml` file to the root of your project. Here you can add the instructions for `pre-commit`
-2. Add `pyproject.toml` file to the root of your project. Here you can add the `black` config. **NOTE:** `black` does not respect any other config files.
+1. Add `.pre-commit-config.yaml` file to the root of your project. There you can add the instructions for `pre-commit`
+2. Add `pyproject.toml` file to the root of your project. There you can add the `black` config. **NOTE:** `black` does not respect any other config files.
 3. Add the following to `setup.cfg` for the `isort` config:
 
 ```
@@ -365,7 +365,19 @@ skip_glob = */migrations/*
 
 This will tell `pre-commit` to respect the `isort` config.
 
-4. Make sure the linters are run against each PR on your CI. This is the config you need if you use GH actions:
+4. You can add a custom `flake8` configuration to `setup.cfg` as well. We usually have the following config in all our projects:
+
+```
+[flake8]
+max-line-length = 120
+extend-ignore = E203
+exclude =
+    .git,
+    __pycache__,
+    */migrations/*
+```
+
+5. Make sure the linters are run against each PR on your CI. This is the config you need if you use GH actions:
 
 ```
 build:
@@ -379,4 +391,4 @@ build:
       run: flake8
 ```
 
-5. Last but not least, we highly recommend you to setup you editor to run `black` and `isort` every time you save a new Python file.
+6. Last but not least, we highly recommend you to setup you editor to run `black` and `isort` every time you save a new Python file.
