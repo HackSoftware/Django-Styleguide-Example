@@ -33,11 +33,21 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v3
-      - name: Fetch history, because Heroku deploy fails otherwise.
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.10.8
           cache: "pip"
+          cache-dependency-path: |
+            requirements/local.txt
+            requirements/base.txt
+      # This is a more aggresive cache.
+      # The one above caches the wheel files, but still runs the installation for them
+      # While the cache below caches the entire Python directory.
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/Python/3.10.8/x64/ # This path is specific to Ubuntu
+          key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
       - name: Install dependencies
         run: pip install -r requirements/local.txt
       - name: Run isort
