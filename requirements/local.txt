@@ -7,7 +7,7 @@ factory-boy==3.2.1
 Faker==15.1.1
 
 ipdb==0.13.9
-ipython==8.5.0
+ipython==8.6.0
 
 mypy==0.982
 
