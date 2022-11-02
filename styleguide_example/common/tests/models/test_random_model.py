@@ -9,7 +9,7 @@ from styleguide_example.common.models import RandomModel
 
 
 class RandomModelTests(TestCase):
-    def test_object_save_with_database_constraint_fails_with_integrity_error(self):
+    def test_object_save_with_database_constraint_fails_with_validation_error_when_full_cleaned(self):
         start_date = timezone.now().date()
         end_date = start_date - timedelta(days=1)
 
