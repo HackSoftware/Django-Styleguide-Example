@@ -1,18 +1,14 @@
 import inspect
 import sys
 
-from django.core.exceptions import (
-    ValidationError as DjangoValidationError,
-    PermissionDenied,
-    ObjectDoesNotExist
-)
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import Http404
-
-from rest_framework import serializers, exceptions
+from rest_framework import exceptions, serializers
 from rest_framework.exceptions import ValidationError as RestValidationError
 
-from styleguide_example.users.models import BaseUser
 from styleguide_example.core.exceptions import ApplicationError
+from styleguide_example.users.models import BaseUser
 
 
 class NestedSerializer(serializers.Serializer):
@@ -56,10 +52,7 @@ def trigger_rest_validation_detail():
 
 
 def trigger_serialization_validation():
-    serializer = PlainSerializer(data={
-        "email": "foo",
-        "nested": {}
-    })
+    serializer = PlainSerializer(data={"email": "foo", "nested": {}})
     serializer.is_valid(raise_exception=True)
 
 

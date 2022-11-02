@@ -10,12 +10,7 @@ class Email(BaseModel):
         SENT = "SENT", "Sent"
         FAILED = "FAILED", "Failed"
 
-    status = models.CharField(
-        max_length=255,
-        db_index=True,
-        choices=Status.choices,
-        default=Status.READY
-    )
+    status = models.CharField(max_length=255, db_index=True, choices=Status.choices, default=Status.READY)
 
     to = models.EmailField()
     subject = models.CharField(max_length=255)

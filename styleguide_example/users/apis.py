@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from rest_framework.views import APIView
-from styleguide_example.api.pagination import (LimitOffsetPagination,
-                                               get_paginated_response)
+
+from styleguide_example.api.pagination import (
+    LimitOffsetPagination,
+    get_paginated_response,
+)
 from styleguide_example.users.models import BaseUser
 from styleguide_example.users.selectors import user_list
 
@@ -19,11 +22,7 @@ class UserListApi(APIView):
     class OutputSerializer(serializers.ModelSerializer):
         class Meta:
             model = BaseUser
-            fields = (
-                'id',
-                'email',
-                'is_admin'
-            )
+            fields = ("id", "email", "is_admin")
 
     def get(self, request):
         # Make sure the filters are valid, if passed
@@ -37,5 +36,5 @@ class UserListApi(APIView):
             serializer_class=self.OutputSerializer,
             queryset=users,
             request=request,
-            view=self
+            view=self,
         )

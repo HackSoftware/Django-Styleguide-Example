@@ -11,10 +11,6 @@ jobs:
         run: docker-compose run django isort styleguide_example/ --check
       - name: Run black
         run: docker-compose run django black styleguide_example/ --check
-      - name: Run Flake8
-        run: docker-compose run django flake8
-      - name: Type check
-        run: docker-compose run django mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
       - name: Run migrations
         run: docker-compose run django python manage.py migrate
       - name: Run tests

@@ -1,14 +1,9 @@
-from typing import List, Dict, Any, Tuple
+from typing import Any, Dict, List, Tuple
 
 from styleguide_example.common.types import DjangoModelType
 
 
-def model_update(
-    *,
-    instance: DjangoModelType,
-    fields: List[str],
-    data: Dict[str, Any]
-) -> Tuple[DjangoModelType, bool]:
+def model_update(*, instance: DjangoModelType, fields: List[str], data: Dict[str, Any]) -> Tuple[DjangoModelType, bool]:
     """
     Generic update service meant to be reused in local update services
 

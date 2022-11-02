@@ -1,24 +1,19 @@
 from django.shortcuts import get_object_or_404
-
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from styleguide_example.api.mixins import ApiAuthMixin
 from styleguide_example.files.models import File
 from styleguide_example.files.services import (
+    FileDirectUploadService,
     FileStandardUploadService,
-    FileDirectUploadService
 )
-
-from styleguide_example.api.mixins import ApiAuthMixin
 
 
 class FileStandardUploadApi(ApiAuthMixin, APIView):
     def post(self, request):
-        service = FileStandardUploadService(
-            user=request.user,
-            file_obj=request.FILES["file"]
-        )
+        service = FileStandardUploadService(user=request.user, file_obj=request.FILES["file"])
         file = service.create()
 
         return Response(data={"id": file.id}, status=status.HTTP_201_CREATED)

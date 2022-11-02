@@ -1,12 +1,9 @@
 from django import forms
-
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 
 from styleguide_example.files.models import File
-from styleguide_example.files.services import (
-    FileStandardUploadService
-)
+from styleguide_example.files.services import FileStandardUploadService
 
 
 class FileForm(forms.ModelForm):
@@ -49,14 +46,7 @@ class FileAdmin(admin.ModelAdmin):
         """
 
         if obj is not None:
-            return [
-                "original_file_name",
-                "file_name",
-                "file_type",
-                "created_at",
-                "updated_at",
-                "upload_finished_at"
-            ]
+            return ["original_file_name", "file_name", "file_type", "created_at", "updated_at", "upload_finished_at"]
 
         return []
 
@@ -64,10 +54,7 @@ class FileAdmin(admin.ModelAdmin):
         try:
             cleaned_data = form.cleaned_data
 
-            service = FileStandardUploadService(
-                file_obj=cleaned_data["file"],
-                user=cleaned_data["uploaded_by"]
-            )
+            service = FileStandardUploadService(file_obj=cleaned_data["file"], user=cleaned_data["uploaded_by"])
 
             if change:
                 service.update(file=obj)

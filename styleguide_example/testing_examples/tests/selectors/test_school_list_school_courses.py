@@ -1,20 +1,19 @@
 from datetime import timedelta
 
 import factory
-
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 from django.utils import timezone
 
-from styleguide_example.utils.tests import faker
 from styleguide_example.testing_examples.selectors import (
+    SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG,
     school_list_school_courses,
-    SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG
 )
 from styleguide_example.testing_examples.tests.factories import (
+    SchoolCourseFactory,
     SchoolFactory,
-    SchoolCourseFactory
 )
+from styleguide_example.utils.tests import faker
 
 
 class SchoolListSchoolCoursesTests(TestCase):
@@ -23,15 +22,8 @@ class SchoolListSchoolCoursesTests(TestCase):
         return sorted(school_courses, key=lambda x: x.start_date)
 
     def test_selector_raises_validation_error_if_unexpected_period_is_given(self):
-        with self.assertRaisesMessage(
-            ValidationError,
-            SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG
-        ):
-            school_list_school_courses(
-                school=SchoolFactory.build(),
-                start_date=None,
-                end_date=faker.future_date()
-            )
+        with self.assertRaisesMessage(ValidationError, SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG):
+            school_list_school_courses(school=SchoolFactory.build(), start_date=None, end_date=faker.future_date())
 
     def test_selector_returns_all_school_courses_if_no_dates_passed(self):
         school = SchoolFactory()
@@ -39,10 +31,7 @@ class SchoolListSchoolCoursesTests(TestCase):
 
         result = school_list_school_courses(school=school)
 
-        self.assertEqual(
-            self._order_school_courses(school_courses),
-            list(result)
-        )
+        self.assertEqual(self._order_school_courses(school_courses), list(result))
 
     def test_selector_does_not_return_school_courses_for_other_schools(self):
         expected_school_course = SchoolCourseFactory()
@@ -57,33 +46,26 @@ class SchoolListSchoolCoursesTests(TestCase):
         school = SchoolFactory()
         now = timezone.now()
 
-        future_school_course = SchoolCourseFactory(
-            school=school,
-            start_date=faker.future_date()
-        )
+        future_school_course = SchoolCourseFactory(school=school, start_date=faker.future_date())
         started_school_course = SchoolCourseFactory(
-            school=school,
-            start_date=faker.past_date(),
-            end_date=faker.future_date()
+            school=school, start_date=faker.past_date(), end_date=faker.future_date()
         )
 
         finished_school_course = SchoolCourseFactory(
             school=school,
             start_date=faker.past_date(),
             # Uses timedelta in order to make sure the generated date is not equal to the period
-            end_date=factory.LazyAttribute(lambda _self: faker.date_between_dates(
-                date_start=_self.start_date + timedelta(days=1),
-                date_end=now - timedelta(days=1)
-            ))
+            end_date=factory.LazyAttribute(
+                lambda _self: faker.date_between_dates(
+                    date_start=_self.start_date + timedelta(days=1), date_end=now - timedelta(days=1)
+                )
+            ),
         )
 
         result = school_list_school_courses(school=school, start_date=now)
 
         self.assertNotIn(finished_school_course, result)
-        self.assertEqual(
-            [started_school_course, future_school_course],
-            list(result)
-        )
+        self.assertEqual([started_school_course, future_school_course], list(result))
 
     def test_selector_returns_all_school_courses_for_a_given_period(self):
         school = SchoolFactory()
@@ -92,51 +74,37 @@ class SchoolListSchoolCoursesTests(TestCase):
         period_end = period_start + timedelta(days=100)
 
         started_school_course = SchoolCourseFactory(
-            school=school,
-            start_date=period_start - timedelta(days=10),
-            end_date=period_end - timedelta(days=10)
+            school=school, start_date=period_start - timedelta(days=10), end_date=period_end - timedelta(days=10)
         )
         school_course_inside_period = SchoolCourseFactory(
-            school=school,
-            start_date=period_start + timedelta(days=10),
-            end_date=period_end - timedelta(days=10)
+            school=school, start_date=period_start + timedelta(days=10), end_date=period_end - timedelta(days=10)
         )
         school_course_wrapping_period = SchoolCourseFactory(
-            school=school,
-            start_date=period_start - timedelta(days=5),
-            end_date=period_end + timedelta(days=5)
+            school=school, start_date=period_start - timedelta(days=5), end_date=period_end + timedelta(days=5)
         )
         starting_school_course = SchoolCourseFactory(
-            school=school,
-            start_date=period_end - timedelta(days=10),
-            end_date=period_end + timedelta(days=10)
+            school=school, start_date=period_end - timedelta(days=10), end_date=period_end + timedelta(days=10)
         )
 
         past_school_course = SchoolCourseFactory(
-            school=school,
-            start_date=period_start - timedelta(days=20),
-            end_date=period_start - timedelta(days=10)
+            school=school, start_date=period_start - timedelta(days=20), end_date=period_start - timedelta(days=10)
         )
         future_school_course = SchoolCourseFactory(
-            school=school,
-            start_date=period_end + timedelta(days=10),
-            end_date=period_end + timedelta(days=20)
+            school=school, start_date=period_end + timedelta(days=10), end_date=period_end + timedelta(days=20)
         )
 
-        result = school_list_school_courses(
-            school=school,
-            start_date=period_start,
-            end_date=period_end
-        )
+        result = school_list_school_courses(school=school, start_date=period_start, end_date=period_end)
 
         self.assertNotIn(past_school_course, result)
         self.assertNotIn(future_school_course, result)
         self.assertEqual(
-            self._order_school_courses([
-                started_school_course,
-                school_course_inside_period,
-                school_course_wrapping_period,
-                starting_school_course
-            ]),
-            list(result)
+            self._order_school_courses(
+                [
+                    started_school_course,
+                    school_course_inside_period,
+                    school_course_wrapping_period,
+                    starting_school_course,
+                ]
+            ),
+            list(result),
         )

@@ -1,14 +1,11 @@
 import uuid
 
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager as BUM
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager as BUM,
-    PermissionsMixin,
-    AbstractBaseUser
-)
 
 from styleguide_example.common.models import BaseModel
-
 
 # Taken from here:
 # https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#a-full-example
@@ -18,13 +15,9 @@ from styleguide_example.common.models import BaseModel
 class BaseUserManager(BUM):
     def create_user(self, email, is_active=True, is_admin=False, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError("Users must have an email address")
 
-        user = self.model(
-            email=self.normalize_email(email.lower()),
-            is_active=is_active,
-            is_admin=is_admin
-        )
+        user = self.model(email=self.normalize_email(email.lower()), is_active=is_active, is_admin=is_admin)
 
         if password is not None:
             user.set_password(password)
@@ -52,7 +45,7 @@ class BaseUserManager(BUM):
 
 class BaseUser(BaseModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
-        verbose_name='email address',
+        verbose_name="email address",
         max_length=255,
         unique=True,
     )
@@ -65,7 +58,7 @@ class BaseUser(BaseModel, AbstractBaseUser, PermissionsMixin):
 
     objects = BaseUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
     def __str__(self):
         return self.email

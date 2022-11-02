@@ -7,31 +7,22 @@ from styleguide_example.users.services import user_create
 
 @admin.register(BaseUser)
 class BaseUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'is_admin', 'is_superuser', 'is_active', 'created_at', 'updated_at')
+    list_display = ("email", "is_admin", "is_superuser", "is_active", "created_at", "updated_at")
 
-    search_fields = ('email',)
+    search_fields = ("email",)
 
-    list_filter = ('is_active', 'is_admin', 'is_superuser')
+    list_filter = ("is_active", "is_admin", "is_superuser")
 
     fieldsets = (
-        (
-            None, {
-                'fields': ('email',)
-            }
-        ),
-        (
-            "Booleans", {
-                "fields": ("is_active", "is_admin", "is_superuser")
-            }
-        ),
-        (
-            "Timestamps", {
-                "fields": ("created_at", "updated_at")
-            }
-        )
+        (None, {"fields": ("email",)}),
+        ("Booleans", {"fields": ("is_active", "is_admin", "is_superuser")}),
+        ("Timestamps", {"fields": ("created_at", "updated_at")}),
     )
 
-    readonly_fields = ("created_at", "updated_at", )
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
 
     def save_model(self, request, obj, form, change):
         if change:

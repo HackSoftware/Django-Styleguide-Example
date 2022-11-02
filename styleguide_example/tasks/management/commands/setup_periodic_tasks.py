@@ -1,8 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.timezone import get_default_timezone_name
-
-from django_celery_beat.models import IntervalSchedule, CrontabSchedule, PeriodicTask
+from django_celery_beat.models import CrontabSchedule, IntervalSchedule, PeriodicTask
 
 
 class Command(BaseCommand):
@@ -16,7 +15,7 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **kwargs):
-        print('Deleting all periodic tasks and schedules...\n')
+        print("Deleting all periodic tasks and schedules...\n")
 
         IntervalSchedule.objects.all().delete()
         CrontabSchedule.objects.all().delete()
@@ -46,14 +45,11 @@ class Command(BaseCommand):
         for periodic_task in periodic_tasks_data:
             print(f'Setting up {periodic_task["task"].name}')
 
-            cron = CrontabSchedule.objects.create(
-                timezone=timezone,
-                **periodic_task['cron']
-            )
+            cron = CrontabSchedule.objects.create(timezone=timezone, **periodic_task["cron"])
 
             PeriodicTask.objects.create(
-                name=periodic_task['name'],
-                task=periodic_task['task'].name,
+                name=periodic_task["name"],
+                task=periodic_task["task"].name,
                 crontab=cron,
-                enabled=periodic_task['enabled']
+                enabled=periodic_task["enabled"],
             )
