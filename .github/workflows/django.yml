@@ -4,17 +4,21 @@ jobs:
   docker_build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Build docker
-      run: docker-compose build
-    - name: Type check
-      run: docker-compose run django mypy --config mypy.ini styleguide_example/
-    - name: Run Flake8
-      run: docker-compose run django flake8
-    - name: Run migrations
-      run: docker-compose run django python manage.py migrate
-    - name: Run tests
-      run: docker-compose run django py.test
+      - uses: actions/checkout@v3
+      - name: Build docker
+        run: docker-compose build
+      - name: Run isort
+        run: docker-compose run django isort styleguide_example/ --check
+      - name: Run black
+        run: docker-compose run django black styleguide_example/ --check
+      - name: Run Flake8
+        run: docker-compose run django flake8
+      - name: Type check
+        run: docker-compose run django mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
+      - name: Run migrations
+        run: docker-compose run django python manage.py migrate
+      - name: Run tests
+        run: docker-compose run django py.test
 
   build:
     runs-on: ubuntu-latest
@@ -30,25 +34,29 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-    - uses: actions/checkout@v3
-    - name: Fetch history, because Heroku deploy fails otherwise.
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.10.5
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements/local.txt
-    - name: Type check
-      run: |
-        mypy --version
-        mypy --config mypy.ini styleguide_example/
-    - name: Run migrations
-      run: flake8
-    - name: Run migrations
-      run: python manage.py migrate
-    - name: Run tests
-      run: py.test
+      - uses: actions/checkout@v3
+      - name: Fetch history, because Heroku deploy fails otherwise.
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10.5
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/local.txt
+      - name: Run isort
+        uses: isort/isort-action@master
+      - name: Run black
+        uses: psf/black@stable
+      - name: Run flake8
+        run: flake8
+      - name: Type check
+        run: |
+          mypy --version
+          mypy --config mypy.ini --cache-dir=/dev/null styleguide_example/
+      - name: Run migrations
+        run: python manage.py migrate
+      - name: Run tests
+        run: py.test
 
   deploy_to_heroku:
     runs-on: ubuntu-latest
@@ -61,5 +69,5 @@ jobs:
       - name: Deploy to Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          HEROKU_APP_NAME: 'hacksoft-styleguide-example'
+          HEROKU_APP_NAME: "hacksoft-styleguide-example"
         run: git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master

@@ -32,6 +32,7 @@
 - [Deployment](#deployment)
   * [Heroku](#heroku)
   * [AWS ECS](#aws-ecs)
+- [Linters and Code Formatters](#linters-and-code-formatters)
 
 <!-- tocstop -->
 
@@ -43,18 +44,18 @@ The structure is inspired by [cookiecutter-django](https://github.com/pydanny/co
 
 Few important things:
 
-* Linux / Ubuntu is our primary OS and things are tested for that.
-* It's dockerized for local development with `docker-compose`.
-* It uses Postgres as the primary database.
-* It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup, even for local development.
-* It comes with [`mypy`](https://mypy.readthedocs.io/en/stable/) configured, using both <https://github.com/typeddjango/django-stubs> and <https://github.com/typeddjango/djangorestframework-stubs/>
-  * Basic `mypy` configuration is located in [`setup.cfg`](setup.cfg)
-  * `mypy` is ran as a build step in [`.github/workflows/django.yml`](.github/workflows/django.yml)
-  * ⚠️  The provided configuration is quite minimal. **You should figure out your team needs & configure accordingly** - <https://mypy.readthedocs.io/en/stable/config_file.html>
-* It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
-* It can be easily deployed to Heroku or AWS ECS.
-* It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
-* It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
+- Linux / Ubuntu is our primary OS and things are tested for that.
+- It's dockerized for local development with `docker-compose`.
+- It uses Postgres as the primary database.
+- It comes with [`whitenoise`](http://whitenoise.evans.io/en/stable/) setup, even for local development.
+- It comes with [`mypy`](https://mypy.readthedocs.io/en/stable/) configured, using both <https://github.com/typeddjango/django-stubs> and <https://github.com/typeddjango/djangorestframework-stubs/>
+  - Basic `mypy` configuration is located in [`setup.cfg`](setup.cfg)
+  - `mypy` is ran as a build step in [`.github/workflows/django.yml`](.github/workflows/django.yml)
+  - ⚠️ The provided configuration is quite minimal. **You should figure out your team needs & configure accordingly** - <https://mypy.readthedocs.io/en/stable/config_file.html>
+- It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
+- It can be easily deployed to Heroku or AWS ECS.
+- It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
+- It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
 
 ## General API Stuff
 
@@ -99,12 +100,11 @@ The current implementation of the login API returns just the token:
 
 ```json
 {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InJhZG9yYWRvQGhhY2tzb2Z0LmlvIiwiaWF0IjoxNjQxMjIxMDMxLCJleHAiOjE2NDE4MjU4MzEsImp0aSI6ImIyNTEyNmY4LTM3ZDctNGI5NS04Y2M0LTkzZjI3MjE4ZGZkOSIsInVzZXJfaWQiOjJ9.TUoQQPSijO2O_3LN-Pny4wpQp-0rl4lpTs_ulkbxzO4"
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InJhZG9yYWRvQGhhY2tzb2Z0LmlvIiwiaWF0IjoxNjQxMjIxMDMxLCJleHAiOjE2NDE4MjU4MzEsImp0aSI6ImIyNTEyNmY4LTM3ZDctNGI5NS04Y2M0LTkzZjI3MjE4ZGZkOSIsInVzZXJfaWQiOjJ9.TUoQQPSijO2O_3LN-Pny4wpQp-0rl4lpTs_ulkbxzO4"
 }
 ```
 
 This can be changed from `auth_jwt_response_payload_handler`.
-
 
 ### Requiring authentication
 
@@ -130,7 +130,7 @@ axios.get(url, { withCredentials: true });
 axios.post(url, data, { withCredentials: true });
 ```
 
-3. For convenience, `CSRF_USE_SESSIONS` is set to `True` 
+3. For convenience, `CSRF_USE_SESSIONS` is set to `True`
 
 4. Check `config/settings/sessions.py` for all configuration that's related to sessions.
 
@@ -196,7 +196,6 @@ Since cookies can be somewhat elusive, check the following urls:
 1. <https://docs.djangoproject.com/en/3.1/ref/settings/#sessions> - It's a good idea to just read every description for `SESSION_*`
 1. <https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies> - It's a good idea to read everything, several times.
 
-
 ## Example List API
 
 You can find the `UserListApi` in [`styleguide_example/users/apis.py`](https://github.com/HackSoftware/Styleguide-Example/blob/master/styleguide_example/users/apis.py#L12)
@@ -207,9 +206,9 @@ List API is located at:
 
 The API can be filtered:
 
-* <http://localhost:8000/api/users/?is_admin=True>
-* <http://localhost:8000/api/users/?id=1>
-* <http://localhost:8000/api/users/?email=radorado@hacksoft.io>
+- <http://localhost:8000/api/users/?is_admin=True>
+- <http://localhost:8000/api/users/?id=1>
+- <http://localhost:8000/api/users/?email=radorado@hacksoft.io>
 
 Example data structure:
 
@@ -310,12 +309,12 @@ There's a current deployment that can be found here - <https://django-styleguide
 **Files related to Heroku deployment:**
 
 1. `Procfile`
-    - Comes with default `web`, `worker` and `beat` processes.
-    - Additionally, there's a `release` phase to run migrations safely, before releasing the new build.
+   - Comes with default `web`, `worker` and `beat` processes.
+   - Additionally, there's a `release` phase to run migrations safely, before releasing the new build.
 1. `runtime.txt`
-    - Simply specifies the Python version to be used.
+   - Simply specifies the Python version to be used.
 1. `requirements.txt`
-    - Heroku requires a root-level `requirements.txt`, so we've added that.
+   - Heroku requires a root-level `requirements.txt`, so we've added that.
 
 **Additionally, you need to specify at least the following settings:**
 
@@ -330,9 +329,72 @@ On top of that, we've added `gunicorn.conf.py` with some example settings.
 1. <https://devcenter.heroku.com/articles/python-gunicorn>
 1. <https://adamj.eu/tech/2019/09/19/working-around-memory-leaks-in-your-django-app/>
 1. <https://adamj.eu/tech/2021/12/29/set-up-a-gunicorn-configuration-file-and-test-it/>
-1. Worker settings - <https://docs.gunicorn.org/en/latest/settings.html#worker-processes>
+1. Worker settings - <https://docs.gunicorn.org/(en/latest/settings.html#worker-processes>
 1. A brief description of the architecture of Gunicorn - <https://docs.gunicorn.org/en/latest/design.html>
 
 ### AWS ECS
 
-*Coming soon*
+_Coming soon_
+
+## Linters and Code Formatters
+
+In all our Django projects we use:
+
+- [flake8](https://flake8.pycqa.org/en/latest/) - a linter that ensures we follow the PEP8 conventions.
+- [black](https://github.com/psf/black) - a code formatter that ensures we have the same code style everywhere.
+- [isort](https://github.com/PyCQA/isort) - a code formatter that ensures we have the same import style everywhere.
+- [pre-commit](https://pre-commit.com/) - a tool that triggers the linters before each commit.
+
+To make sure all of the above tools work in symbiosis, you'd need to add some configuration:
+
+1. Add `.pre-commit-config.yaml` file to the root of your project. There you can add the instructions for `pre-commit`
+2. Add `pyproject.toml` file to the root of your project. There you can add the `black` config. **NOTE:** `black` [does not respect any other config files.](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html)
+3. Add the following to `setup.cfg` for the `isort` config:
+
+```
+[isort]
+profile = black
+```
+
+This will tell `isort` to follow the `black` guidelines.
+
+```
+[isort]
+filter_files = true
+skip_glob = */migrations/*
+```
+
+This will tell `pre-commit` to respect the `isort` config.
+
+4. You can add a custom `flake8` configuration to `setup.cfg` as well. We usually have the following config in all our projects:
+
+```
+[flake8]
+max-line-length = 120
+extend-ignore = E203
+exclude =
+    .git,
+    __pycache__,
+    */migrations/*
+```
+
+5. Make sure the linters are run against each PR on your CI. This is the config you need if you use GH actions:
+
+```
+build:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Run isort
+      uses: isort/isort-action@master
+    - name: Run black
+      uses: psf/black@stable
+    - name: Run flake8
+      run: flake8
+```
+
+6. Last but not least, we highly recommend you to setup you editor to run `black` and `isort` every time you save a new Python file.
+
+In order to test if your local setup is up to date, you can either:
+
+1. Try making a commit, to see if `pre-commit` is going to be triggered.
+1. Or run `black --check .` and `isort --check .` in the project root directory.
