@@ -14,24 +14,25 @@
 <!-- toc -->
 
 - [General API Stuff](#general-api-stuff)
-  - [CORS](#cors)
+  * [CORS](#cors)
 - [Authentication - JWT](#authentication---jwt)
-  - [Settings](#settings)
-  - [APIs](#apis)
-  - [Requiring authentication](#requiring-authentication)
+  * [Settings](#settings)
+  * [APIs](#apis)
+  * [Requiring authentication](#requiring-authentication)
 - [Authentication - Sessions](#authentication---sessions)
-  - [DRF & Overriding `SessionAuthentication`](#drf--overriding-sessionauthentication)
-  - [Cross origin](#cross-origin)
-  - [APIs](#apis-1)
-  - [`HTTP Only` / `SameSite`](#http-only--samesite)
-  - [Reading list](#reading-list)
+  * [DRF & Overriding `SessionAuthentication`](#drf--overriding-sessionauthentication)
+  * [Cross origin](#cross-origin)
+  * [APIs](#apis-1)
+  * [`HTTP Only` / `SameSite`](#http-only--samesite)
+  * [Reading list](#reading-list)
 - [Example List API](#example-list-api)
 - [File uploads](#file-uploads)
 - [Helpful commands for local development without docker-compose](#helpful-commands-for-local-development-without-docker-compose)
 - [Helpful commands for local development with docker-compose](#helpful-commands-for-local-development-with-docker-compose)
 - [Deployment](#deployment)
-  - [Heroku](#heroku)
-  - [AWS ECS](#aws-ecs)
+  * [Heroku](#heroku)
+  * [AWS ECS](#aws-ecs)
+- [Linters and Code Formatters](#linters-and-code-formatters)
 
 <!-- tocstop -->
 
@@ -339,15 +340,15 @@ _Coming soon_
 
 In all our Django projects we use:
 
-- [flake8](https://flake8.pycqa.org/en/latest/) - a linter that ensures we follow the PEP8 conventions
-- [black](https://github.com/psf/black) - a code formatter that ensures we have the same code style throughout the whole project
-- [isort](https://github.com/PyCQA/isort) - a code formatter that ensures we have the same imports style throughout the whole project
-- [pre-commit](https://pre-commit.com/) - a tool that triggers the linters before each commit
+- [flake8](https://flake8.pycqa.org/en/latest/) - a linter that ensures we follow the PEP8 conventions.
+- [black](https://github.com/psf/black) - a code formatter that ensures we have the same code style everywhere.
+- [isort](https://github.com/PyCQA/isort) - a code formatter that ensures we have the same import style everywhere.
+- [pre-commit](https://pre-commit.com/) - a tool that triggers the linters before each commit.
 
 To make sure all of the above tools work in symbiosis, you'd need to add some configuration:
 
 1. Add `.pre-commit-config.yaml` file to the root of your project. There you can add the instructions for `pre-commit`
-2. Add `pyproject.toml` file to the root of your project. There you can add the `black` config. **NOTE:** `black` does not respect any other config files.
+2. Add `pyproject.toml` file to the root of your project. There you can add the `black` config. **NOTE:** `black` [does not respect any other config files.](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html)
 3. Add the following to `setup.cfg` for the `isort` config:
 
 ```
@@ -392,3 +393,8 @@ build:
 ```
 
 6. Last but not least, we highly recommend you to setup you editor to run `black` and `isort` every time you save a new Python file.
+
+In order to test if your local setup is up to date, you can either:
+
+1. Try making a commit, to see if `pre-commit` is going to be triggered.
+1. Or run `black --check .` and `isort --check .` in the project root directory.
