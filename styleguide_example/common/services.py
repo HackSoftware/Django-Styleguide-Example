@@ -7,7 +7,7 @@ from styleguide_example.common.types import DjangoModelType
 
 def model_update(*, instance: DjangoModelType, fields: List[str], data: Dict[str, Any]) -> Tuple[DjangoModelType, bool]:
     """
-    Generic update service meant to be reused in local update services
+    Generic update service meant to be reused in local update services.
 
     For example:
 
@@ -20,8 +20,15 @@ def model_update(*, instance: DjangoModelType, fields: List[str], data: Dict[str
         return user
 
     Return value: Tuple with the following elements:
-        1. The instance we updated
+        1. The instance we updated.
         2. A boolean value representing whether we performed an update or not.
+
+    Some important notes:
+
+        - Only keys present in `fields` will be taken from `data`.
+        - If something in present in `fields` but not present in `data`, we simply skip.
+        - There's a strict assertion that all values in `fields` are actual fields in `instance`.
+        - `fields` can support m2m fields, which are handled after the update on `instance`.
     """
     has_updated = False
     m2m_data = {}
