@@ -1,6 +1,5 @@
 from typing import Any, Dict, List, Tuple
 
-from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.db import models
 
 from styleguide_example.common.types import DjangoModelType
@@ -28,20 +27,21 @@ def model_update(*, instance: DjangoModelType, fields: List[str], data: Dict[str
     m2m_data = {}
     update_fields = []
 
+    model_fields = {field.name: field for field in instance._meta.get_fields()}
+
     for field in fields:
         # Skip if a field is not present in the actual data
         if field not in data:
             continue
 
-        try:
-            model_field = instance._meta.get_field(field)
-        except FieldDoesNotExist as exc:
-            raise ValidationError(str(exc))
+        # If field is not an actual model field, raise an error
+        model_field = model_fields.get(field)
 
+        assert model_field is not None, f"{field} is not part of {instance.__class__.__name__} fields."
+
+        # If we have m2m field, handle differently
         if isinstance(model_field, models.ManyToManyField):
-            has_updated = True
             m2m_data[field] = data[field]
-
             continue
 
         if getattr(instance, field) != data[field]:
@@ -60,5 +60,9 @@ def model_update(*, instance: DjangoModelType, fields: List[str], data: Dict[str
     for field_name, value in m2m_data.items():
         related_manager = getattr(instance, field_name)
         related_manager.set(value)
+
+        # Still not sure about this.
+        # What if we only update m2m relations & nothing on the model? Is this still considered as updated?
+        has_updated = True
 
     return instance, has_updated
