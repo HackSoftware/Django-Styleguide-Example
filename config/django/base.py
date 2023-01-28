@@ -41,6 +41,7 @@ LOCAL_APPS = [
     "styleguide_example.integrations.apps.IntegrationsConfig",
     "styleguide_example.files.apps.FilesConfig",
     "styleguide_example.emails.apps.EmailsConfig",
+    "styleguide_example.blog_examples.apps.BlogExamplesConfig",
 ]
 
 THIRD_PARTY_APPS = [
