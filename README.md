@@ -31,6 +31,7 @@
 - [Helpful commands for local development with docker-compose](#helpful-commands-for-local-development-with-docker-compose)
 - [Deployment](#deployment)
   * [Heroku](#heroku)
+  * [Render](#render)
   * [AWS ECS](#aws-ecs)
 - [Linters and Code Formatters](#linters-and-code-formatters)
 
@@ -53,7 +54,7 @@ Few important things:
   - `mypy` is ran as a build step in [`.github/workflows/django.yml`](.github/workflows/django.yml)
   - ⚠️ The provided configuration is quite minimal. **You should figure out your team needs & configure accordingly** - <https://mypy.readthedocs.io/en/stable/config_file.html>
 - It comes with GitHub Actions support, [based on that article](https://hacksoft.io/github-actions-in-action-setting-up-django-and-postgres/)
-- It can be easily deployed to Heroku or AWS ECS.
+- It can be easily deployed to Heroku, Render or AWS ECS.
 - It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
 - It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
 
@@ -296,15 +297,13 @@ docker-compose run django python manage.py shell
 
 ## Deployment
 
-This project is ready to be deployed either on **Heroku** or **AWS ECS**.
+This project is ready to be deployed either on **Heroku** **Render** or **AWS ECS**.
 
 ### Heroku
 
 Deploying a Python / Django application on Heroku is quite straighforward & this project is ready to be deployed.
 
 To get an overview of how Heroku deployment works, we recommend reading this first - <https://devcenter.heroku.com/articles/deploying-python>
-
-There's a current deployment that can be found here - <https://django-styleguide.hacksoft.io/>
 
 **Files related to Heroku deployment:**
 
@@ -331,6 +330,23 @@ On top of that, we've added `gunicorn.conf.py` with some example settings.
 1. <https://adamj.eu/tech/2021/12/29/set-up-a-gunicorn-configuration-file-and-test-it/>
 1. Worker settings - <https://docs.gunicorn.org/(en/latest/settings.html#worker-processes>
 1. A brief description of the architecture of Gunicorn - <https://docs.gunicorn.org/en/latest/design.html>
+
+### Render
+
+To get an overview of how Render deployment works, we recommend reading this first - <https://render.com/docs/deploy-django>
+
+There's a current deployment that can be found here - <https://django-styleguide.hacksoft.io/>
+
+**Files related to Heroku deployment:**
+
+1. `render.yaml`
+    - Describes the setup. Also known as [Render Blueprint](https://render.com/docs/blueprint-spec)
+1. `docker/*_entrypoint.sh`
+    - Entrypoint for every different process type.
+1. `docker/production.Dockerfile`
+    - Dockerfile for production build.
+1. `requirements.txt`
+    - Heroku requires a root-level `requirements.txt`, so we've added that.
 
 ### AWS ECS
 
