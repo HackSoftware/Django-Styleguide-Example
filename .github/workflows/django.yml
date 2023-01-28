@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Create env file
+        run: touch .env
       - name: Build docker
         run: docker-compose build
       - name: Run migrations
