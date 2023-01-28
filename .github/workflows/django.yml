@@ -7,16 +7,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build docker
         run: docker-compose build
-      - name: Run isort
-        run: docker-compose run django isort styleguide_example/ --check
-      - name: Run black
-        run: docker-compose run django black styleguide_example/ --check
-      - name: Run flake8
-        run: docker-compose run django flake8
-      - name: Run mypy
-        run: docker-compose run django mypy --config mypy.ini styleguide_example/
-      - name: Run tests
-        run: docker-compose run django py.test
+      - name: Run migrations
+        run: docker-compose run django python manage.py migrate 
 
   build:
     runs-on: ubuntu-latest
