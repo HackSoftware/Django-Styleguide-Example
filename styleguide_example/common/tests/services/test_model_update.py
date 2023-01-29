@@ -80,12 +80,19 @@ class ModelUpdateTests(TestCase):
 
         self.assertNotIn(simple_obj, instance.simple_objects.all())
 
+        original_updated_at = instance.updated_at
+
         updated_instance, has_updated = model_update(instance=instance, fields=update_fields, data=data)
 
         self.assertEqual(updated_instance, instance)
         self.assertTrue(has_updated)
 
         self.assertIn(simple_obj, updated_instance.simple_objects.all())
+        self.assertEqual(
+            original_updated_at,
+            updated_instance.updated_at,
+            "If we are only updating m2m fields, don't auto-bump `updated_at`",
+        )
 
     def test_model_update_updates_standard_and_many_to_many_fields(self):
         instance = RandomModelFactory()

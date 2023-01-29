@@ -32,6 +32,7 @@ def model_update(
         - If something in present in `fields` but not present in `data`, we simply skip.
         - There's a strict assertion that all values in `fields` are actual fields in `instance`.
         - `fields` can support m2m fields, which are handled after the update on `instance`.
+        - If `auto_updated_at` is True, we'll try bumping `updated_at` with the current timestmap.
     """
     has_updated = False
     m2m_data = {}
@@ -62,7 +63,7 @@ def model_update(
     # Perform an update only if any of the fields were actually changed
     if has_updated:
         if auto_updated_at:
-            # We want to take care of the updated_at field,
+            # We want to take care of the `updated_at` field,
             # Only if the models has that field
             # And if no value for updated_at has been provided
             if "updated_at" in model_fields and "updated_at" not in update_fields:
