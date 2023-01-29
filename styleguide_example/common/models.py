@@ -11,7 +11,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class SimpleModel(BaseModel):
+class SimpleModel(models.Model):
     """
     This is a basic model used to illustrate a many-to-many relationship
     with RandomModel.
