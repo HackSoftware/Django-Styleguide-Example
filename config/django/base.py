@@ -23,7 +23,7 @@ env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = "=ug_ucl@yi6^mrcjyz%(u0%&g2adt#bz3@yos%#@*t#t!ypx=a"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -181,3 +181,8 @@ from config.settings.files_and_storages import *  # noqa
 from config.settings.jwt import *  # noqa
 from config.settings.sentry import *  # noqa
 from config.settings.sessions import *  # noqa
+
+from config.settings.debug_toolbar.settings import *  # noqa
+from config.settings.debug_toolbar.setup import DebugToolbarSetup  # noqa
+
+INSTALLED_APPS, MIDDLEWARE = DebugToolbarSetup.do_settings(INSTALLED_APPS, MIDDLEWARE)
