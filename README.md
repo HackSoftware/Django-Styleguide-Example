@@ -1,18 +1,12 @@
-# Styleguide-Example
-
----
-
-## 📢 **The Django Styleguide Survey has ended. Expect results soon.** 📢
-
-1. More about it here - <https://www.hacksoft.io/blog/django-styleguide-survey>.
-1. Issue where we track the feedback - <https://github.com/HackSoftware/Django-Styleguide/issues/90>.
-
----
+# Django Styleguide Example
 
 **Table of contents:**
 
 <!-- toc -->
 
+- [How to ask a question or propose something?](#how-to-ask-a-question-or-propose-something)
+- [What is this?](#what-is-this)
+- [Structure](#structure)
 - [General API Stuff](#general-api-stuff)
   * [CORS](#cors)
 - [Authentication - JWT](#authentication---jwt)
@@ -39,9 +33,43 @@
 
 ---
 
-This project serves as an [example of our styleguide](https://github.com/HackSoftware/Django-Styleguide)
+## How to ask a question or propose something?
 
-The structure is inspired by [cookiecutter-django](https://github.com/pydanny/cookiecutter-django) and modified based on our experience with Django.
+Few points to navigate yourself:
+
+1. If you have an issue with something related to the Django Styleguide Example - **just open an issue. We will respond.**
+1. If you have a general question or suggestion - **just open na issue. We will respond.**
+1. Even if you have a question that you are not sure if it's related to the Django Styleguide - **just open an issue anyway. We will respond.**
+
+That's about it ✨
+
+## What is this?
+
+Hello 👋
+
+This projects serves as the following:
+
+1. As an [example of our Django Styleguide](https://github.com/HackSoftware/Django-Styleguide), where people can explore actual code & not just snippets.
+1. As a Django project, where we can test various things & concepts. A lot of the things you see here are being used as a foundation of our internal projects at [HackSoft](https://www.hacksoft.io/).
+    - Usually, this is how something ends up as a section in the [Django Styleguide](https://github.com/HackSoftware/Django-Styleguide)
+1. As a place for all code examples from [our blog](https://www.hacksoft.io/blog).
+    - Code snippets tend to decay & **we want most of our blog articles to be up to date.** That's why we place the code here, write tests for it & guarantee a longer shelf life of the examples.
+
+If you want to learn more about the Django Styleguide, you can watch the videos below:
+
+**Radoslav Georgiev's [Django structure for scale and longevity](https://www.youtube.com/watch?v=yG3ZdxBb1oo) for the philosophy behind the styleguide:**
+
+[![Django structure for scale and longevity by Radoslav Georgiev](https://img.youtube.com/vi/yG3ZdxBb1oo/0.jpg)](https://www.youtube.com/watch?v=yG3ZdxBb1oo)
+
+**Radoslav Georgiev & Ivaylo Bachvarov's [discussion on HackCast, around the Django Styleguide](https://www.youtube.com/watch?v=9VfRaPECbpY):**
+
+[![HackCast S02E08 - Django Community & Django Styleguide](https://img.youtube.com/vi/9VfRaPECbpY/0.jpg)](https://www.youtube.com/watch?v=9VfRaPECbpY)
+
+## Structure
+
+The initial structure was inspired by [cookiecutter-django](https://github.com/pydanny/cookiecutter-django).
+
+**The structure now is modified based on our work & production experince with Django.**
 
 Few important things:
 

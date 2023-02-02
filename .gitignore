@@ -131,3 +131,6 @@ dmypy.json
 
 # media files
 /media
+
+node_modules/
+package*.json
