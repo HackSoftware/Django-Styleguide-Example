@@ -59,7 +59,7 @@ jobs:
       - name: Type check
         run: mypy --config mypy.ini styleguide_example/
       - name: Run tests
-        run: py.test
+        run: pytest
 
   deploy_to_heroku:
     runs-on: ubuntu-latest
