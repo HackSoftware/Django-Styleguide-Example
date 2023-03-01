@@ -6,7 +6,7 @@ pytest-django==4.5.2
 factory-boy==3.2.1
 Faker==15.1.1
 
-ipdb==0.13.9
+ipdb==0.13.11
 ipython==8.10.0
 
 django-debug-toolbar==3.8.1
