@@ -9,7 +9,7 @@ django-celery-beat==2.4.0
 
 whitenoise==6.3.0
 
-django-filter==22.1
+django-filter==23.2
 django-extensions==3.2.1
 django-cors-headers==3.13.0
 django-storages==1.13.1
