@@ -29,3 +29,13 @@ class TimestampsOpinionated(models.Model):
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(blank=True, null=True)
+
+
+class SomeDataModel(models.Model):
+    name = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+    stored_field = models.JSONField(
+        blank=True,
+    )
