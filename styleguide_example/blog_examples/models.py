@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from .f_expressions.models import SomeDataModel  # noqa
+
 
 class TimestampsWithAuto(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
