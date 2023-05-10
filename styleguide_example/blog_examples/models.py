@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from .f_expressions.models import SomeDataModel
+
 
 class TimestampsWithAuto(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,13 +31,3 @@ class TimestampsOpinionated(models.Model):
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(blank=True, null=True)
-
-
-class SomeDataModel(models.Model):
-    name = models.CharField(
-        max_length=255,
-        blank=True,
-    )
-    stored_field = models.JSONField(
-        blank=True,
-    )
