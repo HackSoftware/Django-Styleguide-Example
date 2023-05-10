@@ -1,7 +1,7 @@
 from django.db import models
 
 """
-This is a basic model used to illustrate 
+This is a basic model used to illustrate
 JSON field increment with f expressions
 """
 
