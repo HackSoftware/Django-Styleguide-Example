@@ -2,14 +2,15 @@ from django.db.models import CharField, F, IntegerField, JSONField, Value
 from django.db.models.expressions import Func
 from django.db.models.functions import Cast
 
-"""
-An F() object represents the value of a model field, transformed value of a model field, or annotated column.
-It makes it possible to refer to model field values and perform database operations using them without actually
-having to pull them out of the database into Python memory.
-"""
-
 
 class JSONIncrement(Func):
+    """
+    This is an example from this blog post
+    - https://www.hacksoft.io/blog/django-jsonfield-incrementation-with-f-expressions
+    Django docs reference
+    - https://docs.djangoproject.com/en/4.2/ref/models/expressions/#f-expressions
+    """
+
     function = "jsonb_set"
 
     def __init__(self, full_path, value=1, **extra):
