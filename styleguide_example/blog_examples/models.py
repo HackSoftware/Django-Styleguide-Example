@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from .f_expressions.models import SomeDataModel
+from .f_expressions.models import SomeDataModel  # noqa
 
 
 class TimestampsWithAuto(models.Model):
