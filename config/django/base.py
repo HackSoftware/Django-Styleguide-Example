@@ -27,7 +27,6 @@ DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 LOCAL_APPS = [
@@ -99,7 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -119,7 +117,6 @@ if os.environ.get("GITHUB_WORKFLOW"):
             "PORT": "5432",
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -141,7 +138,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "users.BaseUser"
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -154,7 +150,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -178,6 +173,7 @@ from config.settings.celery import *  # noqa
 from config.settings.cors import *  # noqa
 from config.settings.email_sending import *  # noqa
 from config.settings.files_and_storages import *  # noqa
+from config.settings.google_oauth2 import *  # noqa
 from config.settings.jwt import *  # noqa
 from config.settings.sentry import *  # noqa
 from config.settings.sessions import *  # noqa
