@@ -2,7 +2,7 @@ from datetime import date
 from typing import Optional
 
 from django.core.exceptions import ValidationError
-from django.db.models import Q, QuerySet
+from django.db.models.query import Q, QuerySet
 
 from styleguide_example.testing_examples.models import School, SchoolCourse
 

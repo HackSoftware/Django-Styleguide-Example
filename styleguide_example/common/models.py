@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Q
+from django.db.models.query import F, Q
 from django.utils import timezone
 
 

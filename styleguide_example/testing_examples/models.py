@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from django.db import models
-from django.db.models import F, Q
+from django.db.models.query import F, Q
 
 
 class School(models.Model):
