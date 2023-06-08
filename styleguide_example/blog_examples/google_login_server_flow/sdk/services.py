@@ -3,7 +3,7 @@ from typing import Any, Dict
 import google_auth_oauthlib.flow
 import jwt
 import requests
-from attr import define
+from attrs import define
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.urls import reverse_lazy

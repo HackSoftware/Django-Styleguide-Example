@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 
 import jwt
 import requests
-from attr import define
+from attrs import define
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse_lazy
