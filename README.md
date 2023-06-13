@@ -88,6 +88,7 @@ Few important things:
 - It comes with an example list API, that uses [`django-filter`](https://django-filter.readthedocs.io/en/stable/) for filtering & pagination from DRF.
 - It comes with setup for [Django Debug Toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/)
 - It comes with examples for writing tests with fakes & factories, based on the following articles - <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories>, <https://www.hacksoft.io/blog/improve-your-tests-django-fakes-and-factories-advanced-usage>
+- It comes with examples for how to add Google login, based on the following article - <https://www.hacksoft.io/blog/adding-google-login-to-your-existing-django-and-django-rest-framework-applications>
 
 ## General API Stuff
 
