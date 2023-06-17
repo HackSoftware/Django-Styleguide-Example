@@ -71,7 +71,7 @@ If you want to learn more about the Django Styleguide, you can watch the videos 
 
 The initial structure was inspired by [cookiecutter-django](https://github.com/pydanny/cookiecutter-django).
 
-**The structure now is modified based on our work & production experince with Django.**
+**The structure now is modified based on our work & production experience with Django.**
 
 Few important things:
 
