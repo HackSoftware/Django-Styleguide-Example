@@ -1,12 +1,12 @@
 -r base.txt
 
-pytest==7.2.1
+pytest==7.4.0
 pytest-django==4.5.2
 
 factory-boy==3.2.1
 Faker==18.6.0
 
-ipdb==0.13.11
+ipdb==0.13.13
 ipython==8.10.0
 
 django-debug-toolbar==3.8.1
