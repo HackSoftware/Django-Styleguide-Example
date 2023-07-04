@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from config.env import BASE_DIR, env
+from config.env import BASE_DIR, APPS_DIR, env
 
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
@@ -54,7 +54,8 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # "django.contrib.admin",
+    "styleguide_example.admin.apps.AdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -80,10 +81,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+print(os.path.join(APPS_DIR, "templates"))
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(APPS_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

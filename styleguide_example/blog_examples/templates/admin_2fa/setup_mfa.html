@@ -1,0 +1,27 @@
+{% extends "admin/login.html" %}
+
+{% block content %}
+  <form action="" method="post">
+    {% csrf_token %}
+
+    {% if otp_secret %}
+      <p>OTP Secret: {{ otp_secret }}</p>
+      <p>Enter it inside a 2FA app (Google Authenticator, Authy) or scan the QR code below.</p>
+      {{ qr_code|safe }}
+    {% else %}
+      {% if form_errors %}
+	{% for error in form_errors %}
+	  <p class="errornote">
+	    {{ error }}
+	  </p>
+	{% endfor %}
+      {% else %}
+	<label>Click the button generate a 2FA application code.</label>
+      {% endif %}
+    {% endif %}
+
+    <div class="submit-row">
+      <input type="submit" value="Generate">
+    </div>
+  </form>
+{% endblock %}
