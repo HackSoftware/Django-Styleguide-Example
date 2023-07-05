@@ -5,7 +5,7 @@ from .services import user_two_factor_auth_data_create
 
 
 class AdminSetupTwoFactorAuthView(TemplateView):
-    template_name = "blog_examples/admin_2fa/setup_mfa.html"
+    template_name = "admin_2fa/setup_2fa.html"
 
     def post(self, request):
         context = {}
@@ -16,7 +16,7 @@ class AdminSetupTwoFactorAuthView(TemplateView):
             otp_secret = two_factor_auth_data.otp_secret
 
             context["otp_secret"] = otp_secret
-            context["qr_code"] = two_factor_auth_data.generate_qr_code(otp_secret=otp_secret, name=user.username)
+            context["qr_code"] = two_factor_auth_data.generate_qr_code(name=user.email)
         except ValidationError as exc:
             context["form_errors"] = exc.messages
 

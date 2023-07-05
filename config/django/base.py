@@ -55,7 +55,7 @@ THIRD_PARTY_APPS = [
 
 INSTALLED_APPS = [
     # "django.contrib.admin",
-    "styleguide_example.admin.apps.AdminConfig",
+    "styleguide_example.custom_admin.apps.CustomAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",

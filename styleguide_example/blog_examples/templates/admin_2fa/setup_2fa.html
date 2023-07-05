@@ -5,7 +5,8 @@
     {% csrf_token %}
 
     {% if otp_secret %}
-      <p>OTP Secret: {{ otp_secret }}</p>
+      <p><strong>OTP Secret:</strong></p>
+      <p>{{ otp_secret }}</p>
       <p>Enter it inside a 2FA app (Google Authenticator, Authy) or scan the QR code below.</p>
       {{ qr_code|safe }}
     {% else %}
