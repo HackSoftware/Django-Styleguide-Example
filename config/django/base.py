@@ -54,8 +54,10 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = [
-    # "django.contrib.admin",
-    "styleguide_example.custom_admin.apps.CustomAdminConfig",
+    "django.contrib.admin",
+    # If you want to have required 2FA for the Django admin
+    # Uncomment the line below and comment out the default admin
+    # "styleguide_example.custom_admin.apps.CustomAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
