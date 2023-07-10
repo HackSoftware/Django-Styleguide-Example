@@ -1,13 +1,12 @@
 import pyotp
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+
+from styleguide_example.users.models import BaseUser
 
 from .models import UserTwoFactorAuthData
 
-User = get_user_model()
 
-
-def user_two_factor_auth_data_create(*, user: User) -> UserTwoFactorAuthData:
+def user_two_factor_auth_data_create(*, user: BaseUser) -> UserTwoFactorAuthData:
     if hasattr(user, "two_factor_auth_data"):
         raise ValidationError("Can not have more than one 2FA related data.")
 
