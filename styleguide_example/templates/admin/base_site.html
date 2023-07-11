@@ -1,0 +1,9 @@
+{% extends "admin/base_site.html" %}
+
+{% block userlinks %}
+  {% if user.is_active and user.is_staff %}
+    <a href="{% url "admin:setup-2fa" %}"> Setup 2FA </a> /
+  {% endif %}
+
+  {{ block.super }}
+{% endblock %}

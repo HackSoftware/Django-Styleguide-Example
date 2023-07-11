@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+from .admin_2fa.models import UserTwoFactorAuthData  # noqa
 from .f_expressions.models import SomeDataModel  # noqa
 
 

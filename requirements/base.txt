@@ -28,3 +28,6 @@ google-api-python-client==2.86.0
 google-auth==2.21.0
 google-auth-httplib2==0.1.0
 google-auth-oauthlib==1.0.0
+
+pyotp==2.8.0
+qrcode==7.4.2
