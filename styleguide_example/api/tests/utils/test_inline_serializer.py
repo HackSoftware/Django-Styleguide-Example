@@ -3,7 +3,8 @@ from datetime import datetime, timezone
 
 from rest_framework import serializers
 
-from styleguide_example.common.utils import inline_serializer, make_mock_object
+from styleguide_example.api.utils import inline_serializer
+from styleguide_example.common.utils import make_mock_object
 
 
 class InlineSerializerTests(unittest.TestCase):
