@@ -9,7 +9,7 @@ Faker==18.6.0
 ipdb==0.13.13
 ipython==8.10.0
 
-django-debug-toolbar==3.8.1
+django-debug-toolbar==4.2.0
 
 mypy==1.2.0
 
