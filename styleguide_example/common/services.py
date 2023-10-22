@@ -29,7 +29,7 @@ def model_update(
     Some important notes:
 
         - Only keys present in `fields` will be taken from `data`.
-        - If something in present in `fields` but not present in `data`, we simply skip.
+        - If something is present in `fields` but not present in `data`, we simply skip.
         - There's a strict assertion that all values in `fields` are actual fields in `instance`.
         - `fields` can support m2m fields, which are handled after the update on `instance`.
         - If `auto_updated_at` is True, we'll try bumping `updated_at` with the current timestmap.
