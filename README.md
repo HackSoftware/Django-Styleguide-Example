@@ -360,7 +360,7 @@ On top of that, we've added `gunicorn.conf.py` with some example settings.
 1. <https://devcenter.heroku.com/articles/python-gunicorn>
 1. <https://adamj.eu/tech/2019/09/19/working-around-memory-leaks-in-your-django-app/>
 1. <https://adamj.eu/tech/2021/12/29/set-up-a-gunicorn-configuration-file-and-test-it/>
-1. Worker settings - <https://docs.gunicorn.org/(en/latest/settings.html#worker-processes>
+1. Worker settings - <https://docs.gunicorn.org/en/latest/settings.html#worker-processes>
 1. A brief description of the architecture of Gunicorn - <https://docs.gunicorn.org/en/latest/design.html>
 
 ### Render
