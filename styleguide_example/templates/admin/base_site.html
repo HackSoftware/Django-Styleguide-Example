@@ -2,7 +2,9 @@
 
 {% block userlinks %}
   {% if user.is_active and user.is_staff %}
-    <a href="{% url "admin:setup-2fa" %}"> Setup 2FA </a> /
+    {% if "styleguide_example.custom_admin" in INSTALLED_APPS %}
+      <a href="{% url "admin:setup-2fa" %}"> Setup 2FA </a> /
+    {% endif %}
   {% endif %}
 
   {{ block.super }}
