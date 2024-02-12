@@ -1,3 +1,3 @@
 #!/bin/bash
 echo "--> Starting beats process"
-celery -A styleguide_example.tasks worker -l info --without-gossip --without-mingle --without-heartbeat
+celery -A styleguide_example.tasks beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
