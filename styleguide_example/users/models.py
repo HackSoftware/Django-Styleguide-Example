@@ -1,8 +1,7 @@
 import uuid
 
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.contrib.auth.models import BaseUserManager as BUM
-from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
 from styleguide_example.common.models import BaseModel
@@ -17,7 +16,11 @@ class BaseUserManager(BUM):
         if not email:
             raise ValueError("Users must have an email address")
 
-        user = self.model(email=self.normalize_email(email.lower()), is_active=is_active, is_admin=is_admin)
+        user = self.model(
+            email=self.normalize_email(email.lower()),
+            is_active=is_active,
+            is_admin=is_admin,
+        )
 
         if password is not None:
             user.set_password(password)
