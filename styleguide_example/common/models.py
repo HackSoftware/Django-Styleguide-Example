@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.query import F, Q
+from django.db.models import F, Q
 from django.utils import timezone
 
 
@@ -29,7 +29,13 @@ class RandomModel(BaseModel):
     start_date = models.DateField()
     end_date = models.DateField()
 
-    simple_objects = models.ManyToManyField(SimpleModel, blank=True, related_name="random_objects")
+    simple_objects = models.ManyToManyField(
+        SimpleModel, blank=True, related_name="random_objects"
+    )
 
     class Meta:
-        constraints = [models.CheckConstraint(name="start_date_before_end_date", check=Q(start_date__lt=F("end_date")))]
+        constraints = [
+            models.CheckConstraint(
+                name="start_date_before_end_date", check=Q(start_date__lt=F("end_date"))
+            )
+        ]
