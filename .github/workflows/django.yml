@@ -46,12 +46,8 @@ jobs:
           key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
       - name: Install dependencies
         run: pip install -r requirements/local.txt
-      - name: Run isort
-        uses: isort/isort-action@master
-      - name: Run black
-        uses: psf/black@stable
-      - name: Run flake8
-        run: flake8
+      - name: Run ruff
+        uses: chartboost/ruff-action@v1
       - name: Type check
         run: mypy --config mypy.ini styleguide_example/
       - name: Run tests
