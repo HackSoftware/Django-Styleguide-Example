@@ -13,6 +13,7 @@ django-filter==23.2
 django-extensions==3.2.1
 django-cors-headers==4.1.0
 django-storages==1.13.1
+django-redis==5.4.0
 
 drf-jwt==1.19.2
 

@@ -17,6 +17,10 @@ services:
       timeout: 30s
       retries: 3
 
+  redis:
+    image: "redis:alpine"
+    restart: always
+
   django:
     build:
       context: .
@@ -32,6 +36,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
     restart: on-failure
 
   celery:
@@ -47,6 +52,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
     restart: on-failure
 
   beats:
@@ -62,4 +68,5 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
     restart: on-failure
