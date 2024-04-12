@@ -47,7 +47,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements/local.txt
       - name: Run ruff
-        uses: chartboost/ruff-action@v1
+        run: ruff check .
       - name: Type check
         run: mypy --config mypy.ini styleguide_example/
       - name: Run tests

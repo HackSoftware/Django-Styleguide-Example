@@ -397,12 +397,19 @@ To make sure all of the above tools work in symbiosis, you'd need to add some co
 2. Add `pyproject.toml` file to the root of your project. There you can add the `ruff` config.
 3. Make sure the linters are run against each PR on your CI. This is the config you need if you use GH actions:
 
+- If you are running it as a separate step in the build process:
 ```
 build:
   runs-on: ubuntu-latest
   steps:
     - name: Run ruff
 	  uses: chartboost/ruff-action@v1
+```
+
+- If you would like to run it as a part of another step, which has already ran the package installation commands:
+```
+- name: Run ruff
+  run: ruff check .
 ```
 
 4. Last but not least, we highly recommend you to setup you editor to run `ruff` every time you save a new Python file.
