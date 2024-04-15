@@ -7,12 +7,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build docker
         run: docker compose build
-      - name: Run isort
-        run: docker compose run django isort styleguide_example/ --check
-      - name: Run black
-        run: docker compose run django black styleguide_example/ --check
-      - name: Run flake8
-        run: docker compose run django flake8
+      - name: Run ruff
+        run: docker compose run django ruff check styleguide_example/
       - name: Run mypy
         run: docker compose run django mypy --config mypy.ini styleguide_example/
       - name: Run tests
@@ -50,12 +46,8 @@ jobs:
           key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
       - name: Install dependencies
         run: pip install -r requirements/local.txt
-      - name: Run isort
-        uses: isort/isort-action@master
-      - name: Run black
-        uses: psf/black@stable
-      - name: Run flake8
-        run: flake8
+      - name: Run ruff
+        run: ruff check .
       - name: Type check
         run: mypy --config mypy.ini styleguide_example/
       - name: Run tests

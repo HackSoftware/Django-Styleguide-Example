@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from django.db import models
-from django.db.models.query import F, Q
+from django.db.models import F, Q
 
 
 class School(models.Model):
@@ -15,7 +15,9 @@ class School(models.Model):
 class Student(models.Model):
     email = models.EmailField(max_length=255)
     identifier = models.UUIDField(default=uuid4)
-    school = models.ForeignKey(School, related_name="students", on_delete=models.CASCADE)
+    school = models.ForeignKey(
+        School, related_name="students", on_delete=models.CASCADE
+    )
 
     class Meta:
         unique_together = (
@@ -30,14 +32,19 @@ class Student(models.Model):
 class SchoolCourse(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    school = models.ForeignKey(School, related_name="school_courses", on_delete=models.CASCADE)
+    school = models.ForeignKey(
+        School, related_name="school_courses", on_delete=models.CASCADE
+    )
 
     start_date = models.DateField()
     end_date = models.DateField()
 
     class Meta:
         constraints = [
-            models.CheckConstraint(name="school_course_start_before_end", check=Q(start_date__lt=F("end_date")))
+            models.CheckConstraint(
+                name="school_course_start_before_end",
+                check=Q(start_date__lt=F("end_date")),
+            )
         ]
 
         unique_together = (
@@ -54,8 +61,12 @@ class SchoolCourse(models.Model):
 
 
 class Roster(models.Model):
-    student = models.ForeignKey(Student, related_name="rosters", on_delete=models.CASCADE)
-    school_course = models.ForeignKey(SchoolCourse, related_name="rosters", on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        Student, related_name="rosters", on_delete=models.CASCADE
+    )
+    school_course = models.ForeignKey(
+        SchoolCourse, related_name="rosters", on_delete=models.CASCADE
+    )
 
     start_date = models.DateField()
     end_date = models.DateField()
@@ -64,4 +75,8 @@ class Roster(models.Model):
     deactivated_at = models.DateField(null=True, blank=True)
 
     class Meta:
-        constraints = [models.CheckConstraint(name="roster_start_before_end", check=Q(start_date__lt=F("end_date")))]
+        constraints = [
+            models.CheckConstraint(
+                name="roster_start_before_end", check=Q(start_date__lt=F("end_date"))
+            )
+        ]

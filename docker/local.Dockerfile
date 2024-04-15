@@ -1,6 +1,6 @@
 # This docker file is used for local development via docker-compose
 # Creating image based on official python3 image
-FROM python:3.10.8
+FROM python:3.12.0
 
 # Fix python printing
 ENV PYTHONUNBUFFERED 1

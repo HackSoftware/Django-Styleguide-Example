@@ -388,61 +388,33 @@ _Coming soon_
 
 In all our Django projects we use:
 
-- [flake8](https://flake8.pycqa.org/en/latest/) - a linter that ensures we follow the PEP8 conventions.
-- [black](https://github.com/psf/black) - a code formatter that ensures we have the same code style everywhere.
-- [isort](https://github.com/PyCQA/isort) - a code formatter that ensures we have the same import style everywhere.
+- [ruff](https://docs.astral.sh/ruff/) - an extremely fast Python linter and code formatter, written in Rust.
 - [pre-commit](https://pre-commit.com/) - a tool that triggers the linters before each commit.
 
 To make sure all of the above tools work in symbiosis, you'd need to add some configuration:
 
 1. Add `.pre-commit-config.yaml` file to the root of your project. There you can add the instructions for `pre-commit`
-2. Add `pyproject.toml` file to the root of your project. There you can add the `black` config. **NOTE:** `black` [does not respect any other config files.](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html)
-3. Add the following to `setup.cfg` for the `isort` config:
+2. Add `pyproject.toml` file to the root of your project. There you can add the `ruff` config.
+3. Make sure the linters are run against each PR on your CI. This is the config you need if you use GH actions:
 
-```
-[isort]
-profile = black
-```
-
-This will tell `isort` to follow the `black` guidelines.
-
-```
-[isort]
-filter_files = true
-skip_glob = */migrations/*
-```
-
-This will tell `pre-commit` to respect the `isort` config.
-
-4. You can add a custom `flake8` configuration to `setup.cfg` as well. We usually have the following config in all our projects:
-
-```
-[flake8]
-max-line-length = 120
-extend-ignore = E203
-exclude =
-    .git,
-    __pycache__,
-    */migrations/*
-```
-
-5. Make sure the linters are run against each PR on your CI. This is the config you need if you use GH actions:
-
+- If you are running it as a separate step in the build process:
 ```
 build:
   runs-on: ubuntu-latest
   steps:
-    - name: Run isort
-      uses: isort/isort-action@master
-    - name: Run black
-      uses: psf/black@stable
-    - name: Run flake8
-      run: flake8
+    - name: Run ruff
+	  uses: chartboost/ruff-action@v1
 ```
 
-6. Last but not least, we highly recommend you to setup you editor to run `black` and `isort` every time you save a new Python file.
+- If you would like to run it as a part of another step, which has already ran the package installation commands:
+```
+- name: Run ruff
+  run: ruff check .
+```
+
+4. Last but not least, we highly recommend you to setup you editor to run `ruff` every time you save a new Python file.
 
 In order to test if your local setup is up to date, you can either:
 
 1. Try making a commit, to see if `pre-commit` is going to be triggered.
-1. Or run `black --check .` and `isort --check .` in the project root directory.
+2. Or run `ruff check .` in the project root directory.
