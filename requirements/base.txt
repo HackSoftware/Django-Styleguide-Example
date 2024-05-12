@@ -5,7 +5,7 @@ djangorestframework==3.14.0
 
 celery==5.3.6
 django-celery-results==2.5.1
-django-celery-beat==2.5.0
+django-celery-beat==2.6.0
 
 whitenoise==6.5.0
 
@@ -29,5 +29,5 @@ google-auth==2.21.0
 google-auth-httplib2==0.1.0
 google-auth-oauthlib==1.0.0
 
-pyotp==2.8.0
+pyotp==2.9.0
 qrcode==7.4.2
