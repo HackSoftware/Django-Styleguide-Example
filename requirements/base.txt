@@ -5,7 +5,7 @@ djangorestframework==3.14.0
 
 celery==5.3.6
 django-celery-results==2.5.1
-django-celery-beat==2.5.0
+django-celery-beat==2.6.0
 
 whitenoise==6.5.0
 
