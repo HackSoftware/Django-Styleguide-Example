@@ -35,9 +35,9 @@ class GoogleLoginApi(View):
 
         validated_data = input_form.cleaned_data
 
-        code = validated_data["code"] if validated_data.get("code") != "" else None
-        error = validated_data["error"] if validated_data.get("error") != "" else None
-        state = validated_data["state"] if validated_data.get("state") != "" else None
+        code = validated_data.get("code") or None
+        error = validated_data.get("error") or None
+        state = validated_data.get("state") or None
 
         if error is not None:
             return JsonResponse({"error": error}, status=400)
