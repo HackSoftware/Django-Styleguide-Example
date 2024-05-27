@@ -22,7 +22,7 @@ attrs==23.2.0
 gunicorn==22.0.0
 sentry-sdk==1.40.5
 
-requests==2.31.0
+requests==2.32.0
 
 google-api-python-client==2.86.0
 google-auth==2.21.0
