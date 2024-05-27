@@ -29,7 +29,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.10.8
           cache: "pip"
@@ -40,7 +40,7 @@ jobs:
       # The one above caches the wheel files, but still runs the installation for them
       # While the cache below caches the entire Python directory.
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/Python/3.10.8/x64/ # This path is specific to Ubuntu
           key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
