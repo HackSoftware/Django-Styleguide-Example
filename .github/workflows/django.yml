@@ -40,7 +40,7 @@ jobs:
       # The one above caches the wheel files, but still runs the installation for them
       # While the cache below caches the entire Python directory.
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /opt/hostedtoolcache/Python/3.10.8/x64/ # This path is specific to Ubuntu
           key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
