@@ -2,7 +2,10 @@
 
 {% block userlinks %}
   {% if user.is_active and user.is_staff %}
-    <a href="{% url "admin:setup-2fa" %}"> Setup 2FA </a> /
+    {% comment %}
+      You'll need the custom admin app loaded, otherwise you'll get an error.
+      <a href="{% url "admin:setup-2fa" %}"> Setup 2FA </a> /
+    {% endcomment %}
   {% endif %}
 
   {{ block.super }}
