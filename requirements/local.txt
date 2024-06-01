@@ -11,7 +11,7 @@ ipython==8.10.0
 
 django-debug-toolbar==4.3.0
 
-mypy==1.8.0
+mypy==1.10.0
 
 django-stubs==4.2.7
 djangorestframework-stubs==3.14.5
