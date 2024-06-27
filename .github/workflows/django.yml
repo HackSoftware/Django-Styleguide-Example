@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.10.8
+          python-version: 3.12.4
           cache: "pip"
           cache-dependency-path: |
             requirements/local.txt
@@ -42,7 +42,7 @@ jobs:
       - name: Cache pip
         uses: actions/cache@v4
         with:
-          path: /opt/hostedtoolcache/Python/3.10.8/x64/ # This path is specific to Ubuntu
+          path: /opt/hostedtoolcache/Python/3.12.4/x64/ # This path is specific to Ubuntu
           key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
       - name: Install dependencies
         run: pip install -r requirements/local.txt
