@@ -4,7 +4,7 @@ pytest==8.2.2
 pytest-django==4.8.0
 
 factory-boy==3.3.0
-Faker==25.3.0
+Faker==26.0.0
 
 ipdb==0.13.13
 ipython==8.26.0
