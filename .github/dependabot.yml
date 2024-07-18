@@ -13,6 +13,7 @@ updates:
       interval: "monthly"
     # Use the `dependencies` branch as a target
     target-branch: "dependencies"
+    open-pull-requests-limit: 10
 
   # Enable version updates for GH Actions
   - package-ecosystem: "github-actions"
