@@ -7,7 +7,7 @@ celery==5.4.0
 django-celery-results==2.5.1
 django-celery-beat==2.6.0
 
-whitenoise==6.5.0
+whitenoise==6.7.0
 
 django-filter==24.2
 django-extensions==3.2.3
