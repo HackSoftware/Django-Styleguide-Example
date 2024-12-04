@@ -17,7 +17,7 @@ django-storages==1.14.4
 drf-jwt==1.19.2
 
 boto3==1.35.53
-attrs==23.2.0
+attrs==24.2.0
 
 gunicorn==22.0.0
 sentry-sdk==2.17.0
