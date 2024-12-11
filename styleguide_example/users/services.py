@@ -6,6 +6,7 @@ from styleguide_example.common.services import model_update
 from styleguide_example.users.models import BaseUser
 
 
+@transaction.atomic
 def user_create(
     *, email: str, is_active: bool = True, is_admin: bool = False, password: Optional[str] = None
 ) -> BaseUser:
@@ -16,7 +17,10 @@ def user_create(
 
 @transaction.atomic
 def user_update(*, user: BaseUser, data) -> BaseUser:
-    non_side_effect_fields = ["first_name", "last_name"]
+    non_side_effect_fields = [
+        # "first_name",
+        # "last_name"
+    ]
 
     user, has_updated = model_update(instance=user, fields=non_side_effect_fields, data=data)
 

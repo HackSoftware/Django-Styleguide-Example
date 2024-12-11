@@ -1,5 +1,8 @@
+from typing import Optional
+
 from django.db.models.query import QuerySet
 
+from styleguide_example.common.utils import get_object
 from styleguide_example.users.filters import BaseUserFilter
 from styleguide_example.users.models import BaseUser
 
@@ -20,3 +23,9 @@ def user_list(*, filters=None) -> QuerySet[BaseUser]:
     qs = BaseUser.objects.all()
 
     return BaseUserFilter(filters, qs).qs
+
+
+def user_get(user_id) -> Optional[BaseUser]:
+    user = get_object(BaseUser, id=user_id)
+
+    return user
