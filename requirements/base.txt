@@ -11,7 +11,7 @@ whitenoise==6.7.0
 
 django-filter==24.3
 django-extensions==3.2.3
-django-cors-headers==4.4.0
+django-cors-headers==4.6.0
 django-storages==1.14.4
 
 drf-jwt==1.19.2
