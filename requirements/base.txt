@@ -30,4 +30,4 @@ google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 
 pyotp==2.9.0
-qrcode==7.4.2
+qrcode==8.0
