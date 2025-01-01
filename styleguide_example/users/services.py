@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from django.db import transaction
 
@@ -17,7 +17,7 @@ def user_create(
 
 @transaction.atomic
 def user_update(*, user: BaseUser, data) -> BaseUser:
-    non_side_effect_fields = [
+    non_side_effect_fields: List[str] = [
         # "first_name",
         # "last_name"
     ]

@@ -1,4 +1,4 @@
-from django.shortcuts import Http404
+from django.http import Http404
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
