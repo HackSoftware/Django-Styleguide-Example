@@ -14,7 +14,7 @@ django-debug-toolbar==4.4.6
 mypy==1.14.1
 
 django-stubs==5.1.1
-djangorestframework-stubs==3.15.0
+djangorestframework-stubs==3.15.2
 boto3-stubs==1.35.90
 
 ruff==0.5.2
