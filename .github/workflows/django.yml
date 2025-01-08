@@ -10,7 +10,9 @@ jobs:
       - name: Run ruff
         run: docker compose run django ruff check styleguide_example/
       - name: Run mypy
-        run: docker compose run django mypy --config mypy.ini styleguide_example/
+        run: |
+          docker compose run django mypy --config mypy.ini --install-types
+          docker compose run django mypy --config mypy.ini styleguide_example/
       - name: Run tests
         run: docker compose run django py.test
 
@@ -49,7 +51,9 @@ jobs:
       - name: Run ruff
         run: ruff check .
       - name: Type check
-        run: mypy --config mypy.ini styleguide_example/
+        run: |
+          mypy --config mypy.ini --install-types
+          mypy --config mypy.ini styleguide_example/
       - name: Run tests
         run: pytest
 
