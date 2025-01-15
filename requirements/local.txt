@@ -7,7 +7,7 @@ factory-boy==3.3.1
 Faker==33.1.0
 
 ipdb==0.13.13
-ipython==8.26.0
+ipython==8.31.0
 
 django-debug-toolbar==4.4.6
 
