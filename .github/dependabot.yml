@@ -6,8 +6,7 @@ updates:
     # Check for updates once a month
     schedule:
       interval: "weekly"
-    # Use the `dependencies` branch as a target
-    target-branch: "dependencies"
+    target-branch: "master"
     open-pull-requests-limit: 10
     groups:
       dependencies:
