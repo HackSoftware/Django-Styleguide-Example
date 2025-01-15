@@ -1,13 +1,13 @@
-Django==5.0.10
-django-environ==0.11.2
-psycopg2==2.9.9
+Django==5.1.5
+django-environ==0.12.0
+psycopg2==2.9.10
 djangorestframework==3.15.2
 
 celery==5.4.0
 django-celery-results==2.5.1
-django-celery-beat==2.6.0
+django-celery-beat==2.7.0
 
-whitenoise==6.7.0
+whitenoise==6.8.2
 
 django-filter==24.3
 django-extensions==3.2.3
@@ -16,16 +16,16 @@ django-storages==1.14.4
 
 drf-jwt==1.19.2
 
-boto3==1.35.53
-attrs==24.2.0
+boto3==1.35.99
+attrs==24.3.0
 
 gunicorn==23.0.0
-sentry-sdk==2.19.2
+sentry-sdk==2.20.0
 
 requests==2.32.3
 
-google-api-python-client==2.156.0
-google-auth==2.35.0
+google-api-python-client==2.159.0
+google-auth==2.37.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
 
