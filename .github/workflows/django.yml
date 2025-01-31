@@ -32,7 +32,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: ls .github
-      - uses: ./.github/workflows/python_and_pip/action.yml
+      - uses: .github/workflows/python_and_pip/action.yml
         with:
           python-version: 3.12.4
       - name: Run ruff
