@@ -29,7 +29,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/workflows/python_and_pip"
+      - uses: ./.github/workflows/python_and_pip/action.yml"
         with:
           python-version: 3.12.4
       - name: Run ruff
