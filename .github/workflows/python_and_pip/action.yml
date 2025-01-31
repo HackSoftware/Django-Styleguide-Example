@@ -18,3 +18,4 @@ runs:
           requirements/base.txt
     - name: Install dependencies
       run: pip install -r requirements/local.txt
+      shell: bash
