@@ -30,8 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/python_and_pip
-        with:
-          python-version: 3.12.4
       - name: Run ruff
         run: ruff check .
       - name: Type check

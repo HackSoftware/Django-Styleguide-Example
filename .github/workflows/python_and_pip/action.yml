@@ -5,6 +5,7 @@ inputs:
   python-version:
     description: "The version of Python to install"
     required: true
+    default: "3.12.4"
 
 runs:
   using: "composite"
