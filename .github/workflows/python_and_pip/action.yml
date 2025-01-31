@@ -1,10 +1,12 @@
 name: "Install & Cache Python dependencies"
 description: "Reusable step (aka 'composite action') for doing pip installs, with cache included."
+
 inputs:
   python-version:
     description: "The version of Python to install"
     required: true
-run:
+
+runs:
   using: "composite"
   steps:
     - uses: actions/setup-python@v5
