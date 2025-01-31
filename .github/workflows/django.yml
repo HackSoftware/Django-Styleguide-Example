@@ -1,18 +1,18 @@
 name: Django application
 on: [push]
 jobs:
-  docker_build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build docker
-        run: docker compose build
-      - name: Run ruff
-        run: docker compose run django ruff check styleguide_example/
-      - name: Run mypy
-        run: docker compose run django mypy --config mypy.ini styleguide_example/
-      - name: Run tests
-        run: docker compose run django py.test
+  # docker_build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Build docker
+  #       run: docker compose build
+  #     - name: Run ruff
+  #       run: docker compose run django ruff check styleguide_example/
+  #     - name: Run mypy
+  #       run: docker compose run django mypy --config mypy.ini styleguide_example/
+  #     - name: Run tests
+  #       run: docker compose run django py.test
 
   build:
     runs-on: ubuntu-latest
@@ -29,6 +29,8 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
+      - with:
+          fetch-depth: 0
       - run: ls
       - uses: ./.github/workflows/python_and_pip/action.yml"
         with:
