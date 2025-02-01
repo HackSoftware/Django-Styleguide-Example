@@ -33,6 +33,10 @@ jobs:
         run: mypy --config mypy.ini styleguide_example/
 
   tests:
+    strategy:
+      fail-fast: true
+    matrix:
+      groups: [1, 2, 3, 4, 5]
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -49,7 +53,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/python_and_pip
       - name: Run tests
-        run: pytest --nomigrations
+        run: pytest -s -n auto --splits 5 --group ${{ matrix.groups }} --splitting-algorithm least_duration
 
   deploy_to_heroku:
     runs-on: ubuntu-latest
