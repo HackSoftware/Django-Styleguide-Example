@@ -24,7 +24,15 @@ jobs:
       - name: Run ruff format checker
         run: ruff format --check
 
-  build:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/python_and_pip
+      - name: Type check
+        run: mypy --config mypy.ini styleguide_example/
+
+  tests:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -40,17 +48,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/workflows/python_and_pip
-      - name: Run ruff
-        run: ruff check .
-      - name: Type check
-        run: mypy --config mypy.ini styleguide_example/
       - name: Run tests
         run: pytest
 
   deploy_to_heroku:
     runs-on: ubuntu-latest
-    needs: build
-    # The project is currently hosted on render.com
+    needs: [lint_and_format, typecheck, tests]
+    # The project is currently not hosted anywhere
     if: false
     steps:
       - uses: actions/checkout@v4
