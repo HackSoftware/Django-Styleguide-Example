@@ -14,6 +14,16 @@ jobs:
   #     - name: Run tests
   #       run: docker compose run django py.test
 
+  lint_and_format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/python_and_pip
+      - name: Run ruff linter
+        run: ruff check .
+      - name: Run ruff format checker
+        run: ruff format --check
+
   build:
     runs-on: ubuntu-latest
     services:
