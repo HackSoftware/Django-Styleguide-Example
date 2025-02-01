@@ -35,8 +35,8 @@ jobs:
   tests:
     strategy:
       fail-fast: true
-    matrix:
-      groups: [1, 2, 3, 4, 5]
+      matrix:
+        groups: [1, 2, 3, 4, 5]
     runs-on: ubuntu-latest
     services:
       postgres:
