@@ -4,10 +4,10 @@ pytest==8.3.4
 pytest-django==4.9.0
 
 factory-boy==3.3.1
-Faker==35.0.0
+Faker==35.2.0
 
 ipdb==0.13.13
-ipython==8.31.0
+ipython==8.32.0
 
 django-debug-toolbar==5.0.1
 
@@ -15,7 +15,7 @@ mypy==1.14.1
 
 django-stubs==5.1.2
 djangorestframework-stubs==3.15.2
-boto3-stubs==1.36.6
+boto3-stubs==1.36.11
 
-ruff==0.9.3
+ruff==0.9.4
 pre-commit==4.1.0
