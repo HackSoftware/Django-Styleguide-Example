@@ -1,20 +1,42 @@
 name: Django application
 on: [push]
 jobs:
-  docker_build:
+  # docker_build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Build docker
+  #       run: docker compose build
+  #     - name: Run ruff
+  #       run: docker compose run django ruff check styleguide_example/
+  #     - name: Run mypy
+  #       run: docker compose run django mypy --config mypy.ini styleguide_example/
+  #     - name: Run tests
+  #       run: docker compose run django py.test
+
+  lint_and_format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build docker
-        run: docker compose build
-      - name: Run ruff
-        run: docker compose run django ruff check styleguide_example/
-      - name: Run mypy
-        run: docker compose run django mypy --config mypy.ini styleguide_example/
-      - name: Run tests
-        run: docker compose run django py.test
+      - uses: ./.github/workflows/python_and_pip
+      - name: Run ruff linter
+        run: ruff check .
+      - name: Run ruff format checker
+        run: ruff format --check
 
-  build:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/python_and_pip
+      - name: Type check
+        run: mypy --config mypy.ini styleguide_example/
+
+  tests:
+    strategy:
+      fail-fast: true
+      matrix:
+        groups: [1, 2]
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -29,34 +51,14 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.12.4
-          cache: "pip"
-          cache-dependency-path: |
-            requirements/local.txt
-            requirements/base.txt
-      # This is a more aggresive cache.
-      # The one above caches the wheel files, but still runs the installation for them
-      # While the cache below caches the entire Python directory.
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: /opt/hostedtoolcache/Python/3.12.4/x64/ # This path is specific to Ubuntu
-          key: python-${{ hashFiles('requirements/local.txt') }}-${{ hashFiles('requirements/base.txt') }}
-      - name: Install dependencies
-        run: pip install -r requirements/local.txt
-      - name: Run ruff
-        run: ruff check .
-      - name: Type check
-        run: mypy --config mypy.ini styleguide_example/
+      - uses: ./.github/workflows/python_and_pip
       - name: Run tests
-        run: pytest
+        run: pytest --splits 2 --group ${{ matrix.groups }} --splitting-algorithm least_duration
 
   deploy_to_heroku:
     runs-on: ubuntu-latest
-    needs: build
-    # The project is currently hosted on render.com
+    needs: [lint_and_format, typecheck, tests]
+    # The project is currently not hosted anywhere
     if: false
     steps:
       - uses: actions/checkout@v4
