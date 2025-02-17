@@ -9,22 +9,22 @@ django-celery-beat==2.7.0
 
 whitenoise==6.9.0
 
-django-filter==24.3
+django-filter==25.1
 django-extensions==3.2.3
 django-cors-headers==4.7.0
-django-storages==1.14.4
+django-storages==1.14.5
 
 drf-jwt==1.19.2
 
-boto3==1.36.16
+boto3==1.36.21
 attrs==25.1.0
 
 gunicorn==23.0.0
-sentry-sdk==2.20.0
+sentry-sdk==2.21.0
 
 requests==2.32.3
 
-google-api-python-client==2.160.0
+google-api-python-client==2.161.0
 google-auth==2.38.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
