@@ -16,11 +16,11 @@ django-storages==1.14.5
 
 drf-jwt==1.19.2
 
-boto3==1.36.21
+boto3==1.36.26
 attrs==25.1.0
 
 gunicorn==23.0.0
-sentry-sdk==2.21.0
+sentry-sdk==2.22.0
 
 requests==2.32.3
 
