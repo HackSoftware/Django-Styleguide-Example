@@ -40,7 +40,7 @@
 Few points to navigate yourself:
 
 1. If you have an issue with something related to the Django Styleguide Example - **just open an issue. We will respond.**
-1. If you have a general question or suggestion - **just open na issue. We will respond.**
+1. If you have a general question or suggestion - **just open an issue. We will respond.**
 1. Even if you have a question that you are not sure if it's related to the Django Styleguide - **just open an issue anyway. We will respond.**
 
 That's about it ✨
