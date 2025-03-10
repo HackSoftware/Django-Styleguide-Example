@@ -1,4 +1,4 @@
-Django==5.1.6
+Django==5.1.7
 django-environ==0.12.0
 psycopg2==2.9.10
 djangorestframework==3.15.2
@@ -16,7 +16,7 @@ django-storages==1.14.5
 
 drf-jwt==1.19.2
 
-boto3==1.37.4
+boto3==1.37.9
 attrs==25.1.0
 
 gunicorn==23.0.0
@@ -24,7 +24,7 @@ sentry-sdk==2.22.0
 
 requests==2.32.3
 
-google-api-python-client==2.162.0
+google-api-python-client==2.163.0
 google-auth==2.38.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
