@@ -369,7 +369,7 @@ To get an overview of how Render deployment works, we recommend reading this fir
 
 There's a current deployment that can be found here - <https://django-styleguide.hacksoft.io/>
 
-**Files related to Heroku deployment:**
+**Files related to Render deployment:**
 
 1. `render.yaml`
     - Describes the setup. Also known as [Render Blueprint](https://render.com/docs/blueprint-spec)
@@ -377,8 +377,6 @@ There's a current deployment that can be found here - <https://django-styleguide
     - Entrypoint for every different process type.
 1. `docker/production.Dockerfile`
     - Dockerfile for production build.
-1. `requirements.txt`
-    - Heroku requires a root-level `requirements.txt`, so we've added that.
 
 ### AWS ECS
 
@@ -412,7 +410,7 @@ build:
   run: ruff check .
 ```
 
-4. Last but not least, we highly recommend you to setup you editor to run `ruff` every time you save a new Python file.
+4. Last but not least, we highly recommend you to setup your editor to run `ruff` every time you save a new Python file.
 
 In order to test if your local setup is up to date, you can either:
 
