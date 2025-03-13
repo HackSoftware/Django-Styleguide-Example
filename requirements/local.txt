@@ -19,3 +19,4 @@ boto3-stubs==1.37.9
 
 ruff==0.9.10
 pre-commit==4.1.0
+pytest-split==0.10.0

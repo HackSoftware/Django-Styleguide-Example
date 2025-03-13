@@ -1,0 +1,22 @@
+name: "Install & Cache Python dependencies"
+description: "Reusable step (aka 'composite action') for doing pip installs, with cache included."
+
+inputs:
+  python-version:
+    description: "The version of Python to install"
+    required: true
+    default: "3.12.4"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: "pip"
+        cache-dependency-path: |
+          requirements/local.txt
+          requirements/base.txt
+    - name: Install dependencies
+      run: pip install -r requirements/local.txt
+      shell: bash
