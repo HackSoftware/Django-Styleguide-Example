@@ -341,7 +341,7 @@ To get an overview of how Heroku deployment works, we recommend reading this fir
 1. `Procfile`
    - Comes with default `web`, `worker` and `beat` processes.
    - Additionally, there's a `release` phase to run migrations safely, before releasing the new build.
-1. `runtime.txt`
+1. `.python-version`
    - Simply specifies the Python version to be used.
 1. `requirements.txt`
    - Heroku requires a root-level `requirements.txt`, so we've added that.
