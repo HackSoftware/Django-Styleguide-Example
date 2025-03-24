@@ -16,15 +16,15 @@ django-storages==1.14.5
 
 drf-jwt==1.19.2
 
-boto3==1.37.13
+boto3==1.37.18
 attrs==25.3.0
 
 gunicorn==23.0.0
-sentry-sdk==2.22.0
+sentry-sdk==2.24.0
 
 requests==2.32.3
 
-google-api-python-client==2.164.0
+google-api-python-client==2.165.0
 google-auth==2.38.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
