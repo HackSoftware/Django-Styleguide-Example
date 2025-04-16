@@ -3,20 +3,20 @@ django-environ==0.12.0
 psycopg2==2.9.10
 djangorestframework==3.16.0
 
-celery==5.4.0
-django-celery-results==2.5.1
+celery==5.5.1
+django-celery-results==2.6.0
 django-celery-beat==2.7.0
 
 whitenoise==6.9.0
 
 django-filter==25.1
-django-extensions==3.2.3
+django-extensions==4.1
 django-cors-headers==4.7.0
 django-storages==1.14.6
 
 drf-jwt==1.19.2
 
-boto3==1.37.28
+boto3==1.37.33
 attrs==25.3.0
 
 gunicorn==23.0.0
