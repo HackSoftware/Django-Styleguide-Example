@@ -20,7 +20,7 @@ def school_list_school_courses(
     if start_date is None and end_date:
         raise ValidationError(SCHOOL_LIST_SCHOOL_COURSES_PROVIDE_START_DATE_MSG)
 
-    school_courses = school.school_courses.order_by("start_date")
+    school_courses = school.school_courses.select_related("school").order_by("start_date")
 
     if start_date and end_date:
         started_courses_Q = Q(

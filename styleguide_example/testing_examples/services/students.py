@@ -19,9 +19,7 @@ def student_create(*, email: str, school: School, start_date: Optional[date] = N
 
     start_date = start_date or timezone.now()
 
-    school_courses = school_list_school_courses(school=school, start_date=start_date).select_related(
-        "school_course__school"
-    )
+    school_courses = school_list_school_courses(school=school, start_date=start_date)
 
     for school_course in school_courses:
         roster_create(
