@@ -15,7 +15,7 @@ mypy==1.18.2
 
 django-stubs==5.2.5
 djangorestframework-stubs==3.16.3
-boto3-stubs==1.40.37
+boto3-stubs==1.40.40
 
-ruff==0.13.1
+ruff==0.13.2
 pre-commit==4.3.0
