@@ -1,6 +1,6 @@
-Django==5.2.6
+Django==5.2.7
 django-environ==0.12.0
-psycopg2==2.9.10
+psycopg2==2.9.11
 djangorestframework==3.16.1
 
 celery==5.5.3
@@ -9,18 +9,18 @@ django-celery-beat==2.8.1
 
 whitenoise==6.11.0
 
-django-filter==25.1
+django-filter==25.2
 django-extensions==4.1
 django-cors-headers==4.9.0
 django-storages==1.14.6
 
 drf-jwt==1.19.2
 
-boto3==1.40.45
-attrs==25.3.0
+boto3==1.40.50
+attrs==25.4.0
 
 gunicorn==23.0.0
-sentry-sdk==2.39.0
+sentry-sdk==2.41.0
 
 requests==2.32.5
 
