@@ -4,7 +4,8 @@ from django.db import models
 from django.utils import timezone
 
 from styleguide_example.common.types import DjangoModelType
-
+from rest_framework.exceptions import ValidationError as DRFValidationError
+from django.core.exceptions import ValidationError
 
 def model_update(
     *, instance: DjangoModelType, fields: List[str], data: Dict[str, Any], auto_updated_at=True
@@ -69,13 +70,14 @@ def model_update(
             if "updated_at" in model_fields and "updated_at" not in update_fields:
                 update_fields.append("updated_at")
                 instance.updated_at = timezone.now()  # type: ignore
-
-        instance.full_clean()
-        # Update only the fields that are meant to be updated.
-        # Django docs reference:
-        # https://docs.djangoproject.com/en/dev/ref/models/instances/#specifying-which-fields-to-save
-        instance.save(update_fields=update_fields)
-
+       try:
+            instance.full_clean()
+            instance.save(update_fields=update_fields)
+        
+        except ValidationError as e:
+            
+            raise DRFValidationError(e.message_dict)
+        
     for field_name, value in m2m_data.items():
         related_manager = getattr(instance, field_name)
         related_manager.set(value)
