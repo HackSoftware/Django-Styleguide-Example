@@ -34,6 +34,27 @@ class LoggersSetup:
 
     @staticmethod
     def setup_structlog():
+        from django.conf import settings
+
+        from config.settings.loggers.settings import LoggingFormat
+
+        logging_format = settings.LOGGING_FORMAT
+
+        extra_processors = []
+
+        if logging_format == LoggingFormat.DEV:
+            extra_processors = [
+                structlog.processors.format_exc_info,
+            ]
+
+        if logging_format in [LoggingFormat.JSON, LoggingFormat.LOGFMT]:
+            dict_tracebacks = structlog.processors.ExceptionRenderer(
+                structlog.processors.ExceptionDictTransformer(show_locals=False)
+            )
+            extra_processors = [
+                dict_tracebacks,
+            ]
+
         structlog.configure(
             processors=[
                 structlog.contextvars.merge_contextvars,
@@ -44,8 +65,7 @@ class LoggersSetup:
                 structlog.stdlib.PositionalArgumentsFormatter(),
                 structlog.processors.StackInfoRenderer(),
                 structlog.dev.set_exc_info,
-                structlog.processors.format_exc_info,
-                # structlog.processors.dict_tracebacks,
+                *extra_processors,
                 structlog.processors.UnicodeDecoder(),
                 structlog.processors.CallsiteParameterAdder(
                     {
