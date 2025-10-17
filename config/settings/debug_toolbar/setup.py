@@ -1,12 +1,7 @@
-import structlog
 from django.urls import include, path
-
-logger = structlog.getLogger("styleguide_example.configuration")
 
 
 def show_toolbar(*args, **kwargs) -> bool:
-    log = logger.bind()
-
     """
     The general idea is the following:
 
@@ -31,7 +26,6 @@ def show_toolbar(*args, **kwargs) -> bool:
     try:
         import debug_toolbar  # noqa
     except ImportError:
-        log.info("django_debug_toolbar.setup", message="No installation found for: django_debug_toolbar")
         return False
 
     return True
@@ -44,10 +38,7 @@ class DebugToolbarSetup:
 
     @staticmethod
     def do_settings(INSTALLED_APPS, MIDDLEWARE, middleware_position=None):
-        log = logger.bind()
-
         _show_toolbar: bool = show_toolbar()
-        log.info("django_debuhg_toolbar.setup", message=f"Django Debug Toolbar in use: {_show_toolbar}")
 
         if not _show_toolbar:
             return INSTALLED_APPS, MIDDLEWARE

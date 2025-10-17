@@ -2,6 +2,8 @@ import logging
 
 import structlog
 
+logger = structlog.getLogger("styleguide_example.configuration")
+
 
 class IgnoreFilter(logging.Filter):
     def filter(self, record):
@@ -60,17 +62,37 @@ class LoggersSetup:
 
     @staticmethod
     def setup_logging():
+        from django.conf import settings
+
+        from config.settings.loggers.settings import LoggingFormat
+
+        logging_format = settings.LOGGING_FORMAT
+        formatter = "dev"
+
+        if logging_format == LoggingFormat.DEV:
+            formatter = "dev"
+
+        if logging_format == LoggingFormat.JSON:
+            formatter = "json"
+
+        if logging_format == LoggingFormat.LOGFMT:
+            formatter = "logfmt"
+
         return {
             "version": 1,
             "disable_existing_loggers": False,
             "formatters": {
-                "json_formatter": {
-                    "()": structlog.stdlib.ProcessorFormatter,
-                    "processor": structlog.processors.JSONRenderer(),
-                },
-                "plain_console": {
+                "dev": {
                     "()": structlog.stdlib.ProcessorFormatter,
                     "processor": structlog.dev.ConsoleRenderer(),
+                },
+                "logfmt": {
+                    "()": structlog.stdlib.ProcessorFormatter,
+                    "processor": structlog.processors.LogfmtRenderer(),
+                },
+                "json": {
+                    "()": structlog.stdlib.ProcessorFormatter,
+                    "processor": structlog.processors.JSONRenderer(),
                 },
             },
             "filters": {
@@ -90,7 +112,7 @@ class LoggersSetup:
                 # See https://docs.djangoproject.com/en/dev/topics/settings/#designating-the-settings
                 "console": {
                     "class": "logging.StreamHandler",
-                    "formatter": "plain_console",
+                    "formatter": formatter,
                 }
             },
             "loggers": {
