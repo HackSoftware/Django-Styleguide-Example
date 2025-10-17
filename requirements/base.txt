@@ -13,6 +13,7 @@ django-filter==25.2
 django-extensions==4.1
 django-cors-headers==4.9.0
 django-storages==1.14.6
+django-structlog[celery]==9.1.1
 
 drf-jwt==1.19.2
 

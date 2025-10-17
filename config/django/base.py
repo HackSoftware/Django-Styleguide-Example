@@ -188,7 +188,12 @@ from config.settings.debug_toolbar.setup import DebugToolbarSetup  # noqa
 
 INSTALLED_APPS, MIDDLEWARE = DebugToolbarSetup.do_settings(INSTALLED_APPS, MIDDLEWARE)
 
+from config.settings.loggers.settings import *  # noqa
+from config.settings.loggers.setup import LoggersSetup  # noqa
 
-SHELL_PLUS_IMPORTS = [
-    "from styleguide_example.blog_examples.print_qs_in_shell.utils import print_qs"
-]
+INSTALLED_APPS, MIDDLEWARE = LoggersSetup.setup_settings(INSTALLED_APPS, MIDDLEWARE)
+LoggersSetup.setup_structlog()
+LOGGING = LoggersSetup.setup_logging()
+
+
+SHELL_PLUS_IMPORTS = ["from styleguide_example.blog_examples.print_qs_in_shell.utils import print_qs"]
