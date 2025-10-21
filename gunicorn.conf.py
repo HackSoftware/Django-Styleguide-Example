@@ -41,6 +41,11 @@ def combined_logformat(logger, name, event_dict):
             res["referer"] = None
 
         event_dict.update(res)
+        method, path, version = res["request"].split(" ")
+
+        event_dict["method"] = method
+        event_dict["path"] = path
+        event_dict["version"] = version
 
     return event_dict
 
