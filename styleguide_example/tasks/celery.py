@@ -30,8 +30,8 @@ app.autodiscover_tasks()
 
 @setup_logging.connect
 def receiver_setup_logging(loglevel, logfile, format, colorize, **kwargs):  # pragma: no cover
-    logging.config.dictConfig(LoggersSetup.setup_logging())
     LoggersSetup.setup_structlog()
+    logging.config.dictConfig(LoggersSetup.setup_logging())
 
 
 @receiver(signals.bind_extra_task_metadata)
