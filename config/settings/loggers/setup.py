@@ -2,8 +2,6 @@ import logging
 
 import structlog
 
-logger = structlog.getLogger("styleguide_example.configuration")
-
 
 class IgnoreFilter(logging.Filter):
     def filter(self, record):
@@ -34,11 +32,9 @@ class LoggersSetup:
 
     @staticmethod
     def setup_structlog():
-        from django.conf import settings
+        from config.settings.loggers.settings import LOGGING_FORMAT, LoggingFormat
 
-        from config.settings.loggers.settings import LoggingFormat
-
-        logging_format = settings.LOGGING_FORMAT
+        logging_format = LOGGING_FORMAT
 
         extra_processors = []
 
@@ -82,11 +78,9 @@ class LoggersSetup:
 
     @staticmethod
     def setup_logging():
-        from django.conf import settings
+        from config.settings.loggers.settings import LOGGING_FORMAT, LoggingFormat
 
-        from config.settings.loggers.settings import LoggingFormat
-
-        logging_format = settings.LOGGING_FORMAT
+        logging_format = LOGGING_FORMAT
         formatter = "dev"
 
         if logging_format == LoggingFormat.DEV:
