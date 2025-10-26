@@ -136,3 +136,5 @@ google_client_secret.json
 
 # this is for educations
 .idea/
+.python-version
+pyrightconfig.json
