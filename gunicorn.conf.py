@@ -125,7 +125,7 @@ CONFIG_DEFAULTS = {
     "formatters": {
         "json_formatter": {
             "()": structlog.stdlib.ProcessorFormatter,
-            "processor": structlog.processors.JSONRenderer(),
+            "processor": structlog.processors.LogfmtRenderer(),
             "foreign_pre_chain": pre_chain,
         }
     },
