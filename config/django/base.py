@@ -83,8 +83,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-print(os.path.join(APPS_DIR, "templates"))
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -174,6 +172,13 @@ APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+from config.settings.loggers.settings import *  # noqa
+from config.settings.loggers.setup import LoggersSetup  # noqa
+
+INSTALLED_APPS, MIDDLEWARE = LoggersSetup.setup_settings(INSTALLED_APPS, MIDDLEWARE)
+LoggersSetup.setup_structlog()
+LOGGING = LoggersSetup.setup_logging()
+
 from config.settings.celery import *  # noqa
 from config.settings.cors import *  # noqa
 from config.settings.email_sending import *  # noqa
@@ -189,6 +194,4 @@ from config.settings.debug_toolbar.setup import DebugToolbarSetup  # noqa
 INSTALLED_APPS, MIDDLEWARE = DebugToolbarSetup.do_settings(INSTALLED_APPS, MIDDLEWARE)
 
 
-SHELL_PLUS_IMPORTS = [
-    "from styleguide_example.blog_examples.print_qs_in_shell.utils import print_qs"
-]
+SHELL_PLUS_IMPORTS = ["from styleguide_example.blog_examples.print_qs_in_shell.utils import print_qs"]

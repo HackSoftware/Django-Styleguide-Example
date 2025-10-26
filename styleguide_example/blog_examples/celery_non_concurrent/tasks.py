@@ -1,16 +1,18 @@
-import logging
 from functools import wraps
 
+import structlog
 from celery import shared_task
 
 from styleguide_example.tasks import celery_app
 
 inspect = celery_app.control.inspect
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 
 def non_concurrent_task(_func=None, *args, **kwargs):
+    log = logger.bind()
+
     def wrapper(func):
         @wraps(func)
         def inner(_bound_self, *_func_args, **_func_kwargs):
@@ -27,7 +29,10 @@ def non_concurrent_task(_func=None, *args, **kwargs):
                         running_task_count += 1
 
                     if running_task_count > 1:
-                        logger.warning(f"[non_concurrent_task] Task {_bound_self.name} is already running")
+                        log.warning(
+                            "non_concurrent_task",
+                            message=f"[non_concurrent_task] Task {_bound_self.name} is already running",
+                        )
                         return
 
             return func(*_func_args, **_func_kwargs)
@@ -42,7 +47,10 @@ def non_concurrent_task(_func=None, *args, **kwargs):
 
 @non_concurrent_task
 def test_non_concurrent_task():
-    logger.info("A non-concurrent task is running")
+    log = logger.bind()
+
+    log.info("non_concurrent_task", message="A non-concurrent task is running")
     import time
+
     time.sleep(10)
-    logger.info("A non-concurrent task finished")
+    log.info("non_concurrent_task", message="A non-concurrent task finished")

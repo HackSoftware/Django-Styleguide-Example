@@ -1,8 +1,4 @@
-import logging
-
 from django.urls import include, path
-
-logger = logging.getLogger("configuration")
 
 
 def show_toolbar(*args, **kwargs) -> bool:
@@ -30,7 +26,6 @@ def show_toolbar(*args, **kwargs) -> bool:
     try:
         import debug_toolbar  # noqa
     except ImportError:
-        logger.info("No installation found for: django_debug_toolbar")
         return False
 
     return True
@@ -44,7 +39,6 @@ class DebugToolbarSetup:
     @staticmethod
     def do_settings(INSTALLED_APPS, MIDDLEWARE, middleware_position=None):
         _show_toolbar: bool = show_toolbar()
-        logger.info(f"Django Debug Toolbar in use: {_show_toolbar}")
 
         if not _show_toolbar:
             return INSTALLED_APPS, MIDDLEWARE

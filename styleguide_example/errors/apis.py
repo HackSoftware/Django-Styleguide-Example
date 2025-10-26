@@ -1,3 +1,4 @@
+import structlog
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -7,6 +8,8 @@ from styleguide_example.api.exception_handlers import (
 )
 from styleguide_example.errors.services import trigger_errors
 from styleguide_example.users.services import user_create
+
+logger = structlog.get_logger(__name__)
 
 
 class TriggerErrorApi(APIView):
@@ -30,6 +33,12 @@ class TriggerValidateUniqueErrorApi(APIView):
 
 class TriggerUnhandledExceptionApi(APIView):
     def get(self, request):
-        raise Exception("Oops")
+        log = logger.bind()
+
+        try:
+            raise Exception("Oops")
+        except Exception:
+            log.exception("unhandled_exception")
+            raise
 
         return Response()
