@@ -13,19 +13,19 @@ django-filter==25.2
 django-extensions==4.1
 django-cors-headers==4.9.0
 django-storages==1.14.6
-django-structlog[celery]==9.1.1
+django-structlog[celery]==10.0.0
 
 drf-jwt==1.19.2
 
-boto3==1.40.52
+boto3==1.40.59
 attrs==25.4.0
 
 gunicorn==23.0.0
-sentry-sdk==2.42.0
+sentry-sdk==2.42.1
 
 requests==2.32.5
 
-google-api-python-client==2.184.0
+google-api-python-client==2.185.0
 google-auth==2.41.1
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.2
