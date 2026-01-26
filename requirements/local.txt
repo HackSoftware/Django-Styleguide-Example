@@ -1,21 +1,21 @@
 -r base.txt
 
-pytest==8.4.2
+pytest==9.0.2
 pytest-django==4.11.1
 
 factory-boy==3.3.3
-Faker==37.11.0
+Faker==40.1.2
 
 ipdb==0.13.13
-ipython==9.6.0
+ipython==9.9.0
 
-django-debug-toolbar==6.0.0
+django-debug-toolbar==6.2.0
 
-mypy==1.18.2
+mypy==1.19.1
 
-django-stubs==5.2.7
-djangorestframework-stubs==3.16.4
-boto3-stubs==1.40.52
+django-stubs==5.2.9
+djangorestframework-stubs==3.16.7
+boto3-stubs==1.42.34
 
-ruff==0.14.0
-pre-commit==4.3.0
+ruff==0.14.14
+pre-commit==4.5.1
